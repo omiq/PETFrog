@@ -219,7 +219,7 @@ x	dc.b	0
 	; LineNumber: 130
 y	dc.b	0
 	; LineNumber: 130
-this_str	= $04
+this_str	=     $04
 	; LineNumber: 130
 str_len	dc.b	0
 textat_block7
@@ -236,7 +236,7 @@ textat_rightvarInteger_var10 = $54
 	; Integer constant assigning
 	ldy #$80
 	lda #$00
-textat_rightvarInteger_var13 = $56
+textat_rightvarInteger_var13 =     $56
 	sta textat_rightvarInteger_var13
 	sty textat_rightvarInteger_var13+1
 	; Right is PURE NUMERIC : Is word =1
@@ -440,7 +440,7 @@ getat_rightvarInteger_var19 = $54
 	; Integer constant assigning
 	ldy #$80
 	lda #$00
-getat_rightvarInteger_var22 = $56
+getat_rightvarInteger_var22 =     $56
 	sta getat_rightvarInteger_var22
 	sty getat_rightvarInteger_var22+1
 	; Right is PURE NUMERIC : Is word =1

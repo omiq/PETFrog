@@ -1,6 +1,7 @@
 ; labels
 al  $400 .StartBlock400
-al  $410 .EndBlock400
+al  $40c .EndBlock400
+al  $410 .StartBlock410
 al  $413 .num
 al  $415 .divide16x8
 al  $41d .divloop16

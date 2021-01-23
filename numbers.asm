@@ -2,9 +2,9 @@
 	org $400
 	; Starting new memory block at $400
 StartBlock400
-	.byte    $0, $0E, $08, $0A, $00, $9E, $20, $28
+	.byte    $0, $0E, $08, $0A, $00, $9E, $20
 	.byte   $31,$30,$34,$30
-	.byte    $29, $00, $00, $00
+	.byte     $00
 	; Ending memory block
 EndBlock400
 	org $410
@@ -176,7 +176,7 @@ MainProgram_clearloop3
 	ldy initdiv16x8_dividend+1
 	sta ipd_div_lo
 	sty ipd_div_hi
-	ldy #$1 ; optimized, look out for bugs
+	ldy #$4 ; optimized, look out for bugs
 MainProgram_printdecimal4
 	jsr init_printdecimal_div10 
 	ora #$30
@@ -218,7 +218,7 @@ MainProgram_modulo7
 	adc MainProgram_val_var6
 	sta ipd_div_lo
 	sty ipd_div_hi
-	ldy #$1 ; optimized, look out for bugs
+	ldy #$4 ; optimized, look out for bugs
 MainProgram_printdecimal5
 	jsr init_printdecimal_div10 
 	ora #$30
@@ -249,7 +249,7 @@ MainProgram_modulo10
 	adc MainProgram_val_var9
 	sta ipd_div_lo
 	sty ipd_div_hi
-	ldy #$1 ; optimized, look out for bugs
+	ldy #$4 ; optimized, look out for bugs
 MainProgram_printdecimal8
 	jsr init_printdecimal_div10 
 	ora #$30

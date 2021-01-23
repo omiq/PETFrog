@@ -95,8 +95,10 @@ begin
 
 		
 		// Score and lives
-		numberat(9,0,player_score,3);		
-		numberat(36,0,player_lives,1);		
+		moveto(9,0,hi(#$8000));
+		printdecimal(player_score,3);		
+		moveto(36,0,hi(#$8000));
+		printdecimal(player_lives,1);		
 
 		// Crappy delay
 		shit_delay();
