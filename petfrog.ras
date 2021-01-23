@@ -100,8 +100,8 @@ begin
 		moveto(36,0,hi(#$8000));
 		printdecimal(player_lives,1);		
 
-		// Crappy delay
-		shit_delay();
+		// delay
+		sleep_delay();
 	end;
 
 end;

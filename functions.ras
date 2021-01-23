@@ -27,6 +27,18 @@ begin
 	end;
 end;
 
+
+procedure sleep_delay();
+var 
+	temp_delay: byte;
+begin
+		fori temp_delay := 1 to GAME_SPEED do
+		begin
+	        while ( ti = oldti ) do begin end;
+	        oldti := ti;
+	    end;
+end;
+
 function getat(sx: byte; sy: byte;) : byte;
 var 
 	szp : pointer;
@@ -107,13 +119,18 @@ begin
     MemCpyFast(#logo, 26, ^32848, 13 );  
     MemCpyFast(#logo, 39, ^32888, 13 );  
 
+	textat(2,21,#blk,28);
+	textat(2,22, #by,28);	
+	textat(2,23,#url,28);	
+
+	
 
 	while (getkey()<>$20) do
 	begin
-		textat(2,21,#blk,28);
-		textat(2,22, #by,28);	
-		textat(2,23,#url,28);	
-		textat(2,24,#space,28);
+		textat(4,24,#space,23);
+		sleep_delay();
+		textat(4,24,"                       ",23);		
+		sleep_delay();
 	end;
 	
 end;
@@ -121,27 +138,34 @@ end;
 procedure score_screen();
 begin
 	cls();
-	
+
+	if(WON_GAME=0) do
+	begin	
+		petscii_pointer:=#rip;
+		CopyFullScreen(petscii_pointer, #$8000);
+	end;
+
     MemCpyFast(#logo, 0, ^32768, 13 );  
     MemCpyFast(#logo, 13, ^32808, 13 );  
     MemCpyFast(#logo, 26, ^32848, 13 );  
     MemCpyFast(#logo, 39, ^32888, 13 );  
 
-	moveto(2,6,hi(#$8000));
-	printstring(#over,0,28);
+	moveto(13,0,hi(#$8000));
+	printstring(#over,0,13);
 		
-	moveto(2,7,hi(#$8000));
-	printstring(#score,0,28);
+	moveto(13,1,hi(#$8000));
+	printstring(#score,0,13);
 	
-	moveto(14,7,hi(#$8000));
+	moveto(25,1,hi(#$8000));
 	printdecimal(player_score,3);		
-
-	moveto(2,10,hi(#$8000));
-	printstring(#space,0,28);
 
 		
 	while (getkey()<>$20) do
 	begin
+		textat(14,24,#space,23);
+		sleep_delay();
+		textat(14,24,"                       ",23);		
+		sleep_delay();
 	end;
 	
 end;
@@ -246,16 +270,6 @@ begin
 	textat(37,1,#homeplate,1);
 end;
 
-procedure shit_delay();
-var 
-	temp_delay: byte;
-begin
-		fori temp_delay := 1 to GAME_SPEED do
-		begin
-	        while ( ti = oldti ) do begin end;
-	        oldti := ti;
-	    end;
-end;
 
 procedure show_obstacles();
 var
