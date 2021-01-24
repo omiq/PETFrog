@@ -139,11 +139,15 @@ procedure score_screen();
 begin
 	cls();
 
-	if(WON_GAME=0) do
+	if(WON_GAME=1) do
+	begin	
+		petscii_pointer:=#success;
+	end
+	else
 	begin	
 		petscii_pointer:=#rip;
-		CopyFullScreen(petscii_pointer, #$8000);
 	end;
+	CopyFullScreen(petscii_pointer, #$8000);
 
     MemCpyFast(#logo, 0, ^32768, 13 );  
     MemCpyFast(#logo, 13, ^32808, 13 );  
