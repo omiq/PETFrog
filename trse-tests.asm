@@ -2,9 +2,9 @@
 	org $400
 	; Starting new memory block at $400
 StartBlock400
-	.byte    $0, $0E, $08, $0A, $00, $9E, $20, $28
+	.byte    $0, $0E, $08, $0A, $00, $9E, $20
 	.byte   $31,$30,$34,$30
-	.byte    $29, $00, $00, $00
+	.byte     $00
 	; Ending memory block
 EndBlock400
 	org $410
@@ -219,7 +219,7 @@ x	dc.b	0
 	; LineNumber: 130
 y	dc.b	0
 	; LineNumber: 130
-this_str	=     $04
+this_str	= $04
 	; LineNumber: 130
 str_len	dc.b	0
 textat_block7
@@ -236,7 +236,7 @@ textat_rightvarInteger_var10 = $54
 	; Integer constant assigning
 	ldy #$80
 	lda #$00
-textat_rightvarInteger_var13 =     $56
+textat_rightvarInteger_var13 = $56
 	sta textat_rightvarInteger_var13
 	sty textat_rightvarInteger_var13+1
 	; Right is PURE NUMERIC : Is word =1
@@ -440,7 +440,7 @@ getat_rightvarInteger_var19 = $54
 	; Integer constant assigning
 	ldy #$80
 	lda #$00
-getat_rightvarInteger_var22 =     $56
+getat_rightvarInteger_var22 = $56
 	sta getat_rightvarInteger_var22
 	sty getat_rightvarInteger_var22+1
 	; Right is PURE NUMERIC : Is word =1
@@ -521,31 +521,33 @@ MainProgram_forloop23
 	sta $8000,x
 	; LineNumber: 190
 MainProgram_forloopcounter25
+MainProgram_loopstart26
 	; Compare is onpage
 	inc i
-	bne MainProgram_lblCounterWord29
+	bne MainProgram_lblCounterWord31
 	inc i+1
-MainProgram_lblCounterWord29
+MainProgram_lblCounterWord31
 	; Executing integer comparison #$ff
 	; Binary clause INTEGER: NOTEQUALS
 	; Compare INTEGER with pure num / var optimization. GREATER. 
 	lda i+1   ; compare high bytes
 	cmp #$00 ;keep
-	beq MainProgram_pass135
-	jmp MainProgram_ConditionalTrueBlock31
-MainProgram_pass135
+	beq MainProgram_pass137
+	jmp MainProgram_ConditionalTrueBlock33
+MainProgram_pass137
 	lda i
 	cmp #$ff ;keep
-	beq MainProgram_elsedoneblock33
-	jmp MainProgram_ConditionalTrueBlock31
-MainProgram_ConditionalTrueBlock31: ;Main true block ;keep 
+	beq MainProgram_elsedoneblock35
+	jmp MainProgram_ConditionalTrueBlock33
+MainProgram_ConditionalTrueBlock33: ;Main true block ;keep 
 	; LineNumber: 185
 	; LineNumber: 186
 	; ****** Inline assembler section
   jmp MainProgram_forloop23
-MainProgram_elsedoneblock33
-MainProgram_loopdone28: ;keep
+MainProgram_elsedoneblock35
+MainProgram_loopdone30: ;keep
 MainProgram_forloopend24
+MainProgram_loopend27
 	; LineNumber: 193
 	; MoveTo optimization
 	lda #$42
@@ -560,11 +562,11 @@ MainProgram_forloopend24
 	lda $c353 + $0
 	; Compare with pure num / var optimization
 	cmp #$a0;keep
-	bne MainProgram_localfailed49
-	jmp MainProgram_ConditionalTrueBlock38
-MainProgram_localfailed49
-	jmp MainProgram_elseblock39
-MainProgram_ConditionalTrueBlock38: ;Main true block ;keep 
+	bne MainProgram_localfailed51
+	jmp MainProgram_ConditionalTrueBlock40
+MainProgram_localfailed51
+	jmp MainProgram_elseblock41
+MainProgram_ConditionalTrueBlock40: ;Main true block ;keep 
 	; LineNumber: 195
 	; LineNumber: 196
 	ldx #0
@@ -575,20 +577,20 @@ MainProgram_ConditionalTrueBlock38: ;Main true block ;keep
 	lsr 
 	lsr 
 	cmp #$0A
-	bcc MainProgram_printnumber_l152
+	bcc MainProgram_printnumber_l154
 	sec
 	sbc #$39
-MainProgram_printnumber_l152
+MainProgram_printnumber_l154
 	adc #$30 + #64
 	sta print_number_text,x
 	inx
 	tya
 	and #$0F
 	cmp #$0A
-	bcc MainProgram_printnumber_l253
+	bcc MainProgram_printnumber_l255
 	sec
 	sbc #$39
-MainProgram_printnumber_l253
+MainProgram_printnumber_l255
 	adc #$30 + #64
 	sta print_number_text,x
 	inx
@@ -601,8 +603,8 @@ MainProgram_printnumber_l253
 	sty print_text+1
 	jsr printstring
 	; LineNumber: 197
-	jmp MainProgram_elsedoneblock40
-MainProgram_elseblock39
+	jmp MainProgram_elsedoneblock42
+MainProgram_elseblock41
 	; LineNumber: 199
 	; LineNumber: 200
 	
@@ -615,20 +617,20 @@ MainProgram_elseblock39
 	lsr 
 	lsr 
 	cmp #$0A
-	bcc MainProgram_printnumber_l156
+	bcc MainProgram_printnumber_l158
 	sec
 	sbc #$39
-MainProgram_printnumber_l156
+MainProgram_printnumber_l158
 	adc #$30 + #64
 	sta print_number_text,x
 	inx
 	tya
 	and #$0F
 	cmp #$0A
-	bcc MainProgram_printnumber_l257
+	bcc MainProgram_printnumber_l259
 	sec
 	sbc #$39
-MainProgram_printnumber_l257
+MainProgram_printnumber_l259
 	adc #$30 + #64
 	sta print_number_text,x
 	inx
@@ -641,18 +643,19 @@ MainProgram_printnumber_l257
 	sty print_text+1
 	jsr printstring
 	; LineNumber: 201
-MainProgram_elsedoneblock40
+MainProgram_elsedoneblock42
 	; LineNumber: 204
-MainProgram_while58
+MainProgram_while60
+MainProgram_loopstart64
 	; Binary clause Simplified: NOTEQUALS
 	lda #$1
 	; Compare with pure num / var optimization
 	cmp #$0;keep
-	beq MainProgram_localfailed156
-	jmp MainProgram_ConditionalTrueBlock59
-MainProgram_localfailed156
-	jmp MainProgram_elsedoneblock61
-MainProgram_ConditionalTrueBlock59: ;Main true block ;keep 
+	beq MainProgram_localfailed160
+	jmp MainProgram_ConditionalTrueBlock61
+MainProgram_localfailed160
+	jmp MainProgram_elsedoneblock63
+MainProgram_ConditionalTrueBlock61: ;Main true block ;keep 
 	; LineNumber: 205
 	; LineNumber: 206
 	
@@ -685,108 +688,108 @@ MainProgram_ConditionalTrueBlock59: ;Main true block ;keep
 	sta ipd_div_lo
 	sty ipd_div_hi
 	ldy #$2 ; optimized, look out for bugs
-MainProgram_printdecimal158
+MainProgram_printdecimal162
 	jsr init_printdecimal_div10 
 	ora #$30
 	sta (screenmemory),y
 	dey
-	bpl MainProgram_printdecimal158
+	bpl MainProgram_printdecimal162
 	; LineNumber: 212
 	; Binary clause Simplified: EQUALS
 	lda KEYPRESS
 	; Compare with pure num / var optimization
 	cmp #$b8;keep
-	bne MainProgram_elsedoneblock162
-MainProgram_ConditionalTrueBlock160: ;Main true block ;keep 
+	bne MainProgram_elsedoneblock166
+MainProgram_ConditionalTrueBlock164: ;Main true block ;keep 
 	; LineNumber: 213
 	; LineNumber: 214
 	; Binary clause Simplified: GREATEREQUAL
 	lda frog_y
 	; Compare with pure num / var optimization
 	cmp #$1;keep
-	bcc MainProgram_elsedoneblock176
-MainProgram_ConditionalTrueBlock174: ;Main true block ;keep 
+	bcc MainProgram_elsedoneblock180
+MainProgram_ConditionalTrueBlock178: ;Main true block ;keep 
 	; LineNumber: 215
 	; LineNumber: 216
 	dec frog_y
 	; LineNumber: 217
-MainProgram_elsedoneblock176
+MainProgram_elsedoneblock180
 	; LineNumber: 218
-MainProgram_elsedoneblock162
+MainProgram_elsedoneblock166
 	; LineNumber: 220
 	; Binary clause Simplified: EQUALS
 	lda KEYPRESS
 	; Compare with pure num / var optimization
 	cmp #$b6;keep
-	bne MainProgram_elsedoneblock184
-MainProgram_ConditionalTrueBlock182: ;Main true block ;keep 
+	bne MainProgram_elsedoneblock188
+MainProgram_ConditionalTrueBlock186: ;Main true block ;keep 
 	; LineNumber: 221
 	; LineNumber: 222
 	; Binary clause Simplified: LESS
 	lda frog_x
 	; Compare with pure num / var optimization
 	cmp #$27;keep
-	bcs MainProgram_elsedoneblock198
-MainProgram_ConditionalTrueBlock196: ;Main true block ;keep 
+	bcs MainProgram_elsedoneblock202
+MainProgram_ConditionalTrueBlock200: ;Main true block ;keep 
 	; LineNumber: 223
 	; LineNumber: 224
 	inc frog_x
 	; LineNumber: 225
-MainProgram_elsedoneblock198
+MainProgram_elsedoneblock202
 	; LineNumber: 226
-MainProgram_elsedoneblock184
+MainProgram_elsedoneblock188
 	; LineNumber: 228
 	; Binary clause Simplified: EQUALS
 	lda KEYPRESS
 	; Compare with pure num / var optimization
 	cmp #$b2;keep
-	bne MainProgram_localfailed216
-	jmp MainProgram_ConditionalTrueBlock204
-MainProgram_localfailed216: ;keep
+	bne MainProgram_localfailed220
+	jmp MainProgram_ConditionalTrueBlock208
+MainProgram_localfailed220: ;keep
 	; ; logical OR, second chance
 	; Binary clause Simplified: EQUALS
 	lda KEYPRESS
 	; Compare with pure num / var optimization
 	cmp #$b5;keep
-	bne MainProgram_elsedoneblock206
-MainProgram_ConditionalTrueBlock204: ;Main true block ;keep 
+	bne MainProgram_elsedoneblock210
+MainProgram_ConditionalTrueBlock208: ;Main true block ;keep 
 	; LineNumber: 229
 	; LineNumber: 230
 	; Binary clause Simplified: LESS
 	lda frog_y
 	; Compare with pure num / var optimization
 	cmp #$18;keep
-	bcs MainProgram_elsedoneblock221
-MainProgram_ConditionalTrueBlock219: ;Main true block ;keep 
+	bcs MainProgram_elsedoneblock225
+MainProgram_ConditionalTrueBlock223: ;Main true block ;keep 
 	; LineNumber: 231
 	; LineNumber: 232
 	inc frog_y
 	; LineNumber: 233
-MainProgram_elsedoneblock221
+MainProgram_elsedoneblock225
 	; LineNumber: 234
-MainProgram_elsedoneblock206
+MainProgram_elsedoneblock210
 	; LineNumber: 236
 	; Binary clause Simplified: EQUALS
 	lda KEYPRESS
 	; Compare with pure num / var optimization
 	cmp #$b4;keep
-	bne MainProgram_elsedoneblock229
-MainProgram_ConditionalTrueBlock227: ;Main true block ;keep 
+	bne MainProgram_elsedoneblock233
+MainProgram_ConditionalTrueBlock231: ;Main true block ;keep 
 	; LineNumber: 237
 	; LineNumber: 238
 	; Binary clause Simplified: GREATEREQUAL
 	lda frog_x
 	; Compare with pure num / var optimization
 	cmp #$1;keep
-	bcc MainProgram_elsedoneblock243
-MainProgram_ConditionalTrueBlock241: ;Main true block ;keep 
+	bcc MainProgram_elsedoneblock247
+MainProgram_ConditionalTrueBlock245: ;Main true block ;keep 
 	; LineNumber: 239
 	; LineNumber: 240
 	dec frog_x
 	; LineNumber: 241
-MainProgram_elsedoneblock243
+MainProgram_elsedoneblock247
 	; LineNumber: 242
-MainProgram_elsedoneblock229
+MainProgram_elsedoneblock233
 	; LineNumber: 244
 	; Assigning single variable : x
 	lda frog_old_x
@@ -829,9 +832,9 @@ MainProgram_elsedoneblock229
 	; Calling storevariable
 	sta y
 	; Assigning single variable : this_str
-	lda #<MainProgram_stringassignstr248
+	lda #<MainProgram_stringassignstr252
 	sta this_str
-	lda #>MainProgram_stringassignstr248
+	lda #>MainProgram_stringassignstr252
 	sta this_str+1
 	; Assigning single variable : str_len
 	lda #$1
@@ -871,18 +874,19 @@ MainProgram_elsedoneblock229
 	sta ipd_div_lo
 	sty ipd_div_hi
 	ldy #$3 ; optimized, look out for bugs
-MainProgram_printdecimal250
+MainProgram_printdecimal254
 	jsr init_printdecimal_div10 
 	ora #$30
 	sta (screenmemory),y
 	dey
-	bpl MainProgram_printdecimal250
+	bpl MainProgram_printdecimal254
 	; LineNumber: 253
 	jsr shit_delay
-	jmp MainProgram_while58
-MainProgram_elsedoneblock61
+	jmp MainProgram_while60
+MainProgram_elsedoneblock63
+MainProgram_loopend65
 	; LineNumber: 276
 	; End of program
 	; Ending memory block
 EndBlock410
-MainProgram_stringassignstr248	.dc "X",0
+MainProgram_stringassignstr252	.dc "X",0

@@ -2,8 +2,16 @@
 	org $400
 	; Starting new memory block at $400
 StartBlock400
+	.byte    $0, $0E, $08, $0A, $00, $9E, $20
+	.byte   $31,$30,$34,$30
+	.byte     $00
+	; Ending memory block
+EndBlock400
+	org $410
+	; Starting new memory block at $410
+StartBlock410
 MyProgram
-	; LineNumber: 907
+	; LineNumber: 1019
 	jmp block1
 	; LineNumber: 3
 oldti = $8f
@@ -12,12 +20,12 @@ ti = $90
 	; LineNumber: 17
 PLAY_SOUND	dc.b	$00
 	; LineNumber: 18
-GAME_SPEED	dc.b	$05
-	; LineNumber: 147
+GAME_SPEED	dc.b	$0a
+	; LineNumber: 202
 petscii_pointer	= $02
-	; LineNumber: 210
-i	dc.b	0
-	; LineNumber: 240
+	; LineNumber: 265
+sleepx	dc.b	0
+	; LineNumber: 295
 petscii2	dc.b $020, $020, $020, $020, $020, $020, $020, $020
 	dc.b $020, $020, $020, $020, $020, $020, $020, $020
 	dc.b $020, $020, $020, $020, $020, $020, $020, $020
@@ -143,7 +151,7 @@ petscii2	dc.b $020, $020, $020, $020, $020, $020, $020, $020
 	dc.b $020, $020, $020, $020, $020, $020, $020, $020
 	dc.b $020, $020, $020, $020, $020, $020, $020, $020
 	dc.b $020, $020, $020, $020, $020, $020, $020, $020
-	; LineNumber: 268
+	; LineNumber: 323
 petscii3	dc.b $020, $020, $020, $020, $020, $020, $020, $020
 	dc.b $020, $020, $020, $020, $020, $020, $020, $020
 	dc.b $020, $020, $020, $020, $020, $020, $020, $020
@@ -269,7 +277,7 @@ petscii3	dc.b $020, $020, $020, $020, $020, $020, $020, $020
 	dc.b $020, $020, $020, $020, $020, $020, $020, $020
 	dc.b $020, $020, $020, $020, $020, $020, $020, $020
 	dc.b $020, $020, $020, $020, $020, $020, $020, $020
-	; LineNumber: 296
+	; LineNumber: 351
 petscii4	dc.b $020, $020, $020, $020, $020, $020, $020, $020
 	dc.b $020, $020, $020, $020, $020, $020, $020, $020
 	dc.b $020, $020, $020, $020, $020, $020, $020, $020
@@ -395,7 +403,7 @@ petscii4	dc.b $020, $020, $020, $020, $020, $020, $020, $020
 	dc.b $020, $020, $020, $020, $020, $020, $020, $020
 	dc.b $020, $020, $020, $020, $020, $020, $020, $020
 	dc.b $020, $020, $020, $020, $020, $020, $020, $020
-	; LineNumber: 324
+	; LineNumber: 379
 petscii5	dc.b $020, $020, $020, $020, $020, $020, $020, $020
 	dc.b $020, $020, $020, $020, $020, $020, $020, $020
 	dc.b $020, $020, $020, $020, $020, $020, $020, $020
@@ -521,7 +529,7 @@ petscii5	dc.b $020, $020, $020, $020, $020, $020, $020, $020
 	dc.b $020, $020, $020, $020, $020, $020, $020, $020
 	dc.b $020, $020, $020, $020, $020, $020, $020, $020
 	dc.b $020, $020, $020, $020, $020, $020, $020, $020
-	; LineNumber: 352
+	; LineNumber: 407
 petscii6	dc.b $020, $020, $020, $020, $020, $020, $020, $020
 	dc.b $020, $020, $020, $020, $020, $020, $020, $020
 	dc.b $020, $020, $020, $020, $020, $020, $020, $020
@@ -647,7 +655,7 @@ petscii6	dc.b $020, $020, $020, $020, $020, $020, $020, $020
 	dc.b $020, $020, $020, $020, $020, $020, $020, $020
 	dc.b $020, $020, $020, $020, $020, $020, $020, $020
 	dc.b $020, $020, $020, $020, $020, $020, $020, $020
-	; LineNumber: 381
+	; LineNumber: 436
 petscii7	dc.b $020, $020, $020, $020, $020, $020, $020, $020
 	dc.b $020, $020, $020, $020, $020, $020, $020, $020
 	dc.b $020, $020, $020, $020, $020, $020, $020, $020
@@ -773,35 +781,132 @@ petscii7	dc.b $020, $020, $020, $020, $020, $020, $020, $020
 	dc.b $020, $020, $020, $020, $020, $020, $020, $020
 	dc.b $020, $020, $020, $020, $020, $020, $020, $020
 	dc.b $020, $020, $020, $020, $020, $020, $020, $020
-	; NodeProcedureDecl -1
-	; ***********  Defining procedure : init16x8div
-	;    Procedure type : Built-in function
-	;    Requires initialization : no
-initdiv16x8_divisor = $4c     ;$59 used for hi-byte
-initdiv16x8_dividend = $4e	  ;$fc used for hi-byte
-initdiv16x8_remainder = $50	  ;$fe used for hi-byte
-initdiv16x8_result = $4e ;save memory by reusing divident to store the result
-divide16x8	lda #0	        ;preset remainder to 0
-	sta initdiv16x8_remainder
-	sta initdiv16x8_remainder+1
-	ldx #16	        ;repeat for each bit: ...
-divloop16	asl initdiv16x8_dividend	;dividend lb & hb*2, msb -> Carry
-	rol initdiv16x8_dividend+1
-	rol initdiv16x8_remainder	;remainder lb & hb * 2 + msb from carry
-	rol initdiv16x8_remainder+1
-	lda initdiv16x8_remainder
-	sec
-	sbc initdiv16x8_divisor	;substract divisor to see if it fits in
-	tay	        ;lb result -> Y, for we may need it later
-	lda initdiv16x8_remainder+1
-	sbc initdiv16x8_divisor+1
-	bcc skip16	;if carry=0 then divisor didn't fit in yet
-	sta initdiv16x8_remainder+1	;else save substraction result as new remainder,
-	sty initdiv16x8_remainder
-	inc initdiv16x8_result	;and INCrement result cause divisor fit in 1 times
-skip16	dex
-	bne divloop16
-	rts
+	; LineNumber: 464
+test	dc.b $020, $020, $020, $020, $020, $020, $020, $020
+	dc.b $020, $020, $020, $020, $020, $020, $020, $020
+	dc.b $020, $020, $020, $020, $020, $020, $020, $020
+	dc.b $020, $020, $020, $020, $020, $020, $020, $020
+	dc.b $020, $020, $020, $020, $020, $020, $020, $020
+	dc.b $020, $020, $020, $020, $020, $020, $020, $020
+	dc.b $020, $020, $020, $020, $020, $020, $020, $020
+	dc.b $020, $020, $020, $020, $020, $020, $020, $020
+	dc.b $020, $020, $020, $020, $020, $020, $020, $020
+	dc.b $020, $020, $020, $020, $020, $020, $020, $020
+	dc.b $020, $020, $020, $020, $020, $020, $020, $020
+	dc.b $020, $020, $020, $020, $020, $020, $020, $020
+	dc.b $020, $020, $020, $020, $020, $020, $020, $020
+	dc.b $020, $020, $020, $020, $020, $020, $020, $020
+	dc.b $020, $020, $020, $020, $020, $020, $020, $020
+	dc.b $020, $020, $020, $020, $020, $020, $020, $020
+	dc.b $020, $020, $020, $020, $020, $020, $020, $020
+	dc.b $020, $020, $020, $020, $020, $020, $020, $020
+	dc.b $020, $020, $020, $020, $020, $020, $020, $020
+	dc.b $020, $020, $020, $020, $020, $020, $020, $020
+	dc.b $020, $020, $020, $020, $020, $020, $020, $020
+	dc.b $020, $020, $020, $020, $020, $07b, $06c, $020
+	dc.b $07b, $07b, $07b, $07b, $07b, $07b, $07b, $062
+	dc.b $06c, $062, $06c, $062, $062, $062, $062, $062
+	dc.b $062, $062, $062, $062, $062, $07b, $020, $020
+	dc.b $020, $020, $020, $020, $020, $020, $020, $07b
+	dc.b $07e, $07c, $07c, $07c, $07c, $07b, $07e, $07f
+	dc.b $07c, $07b, $061, $061, $061, $0ec, $0fe, $0ff
+	dc.b $0fc, $07f, $0a0, $0fe, $0fe, $0fe, $0fc, $0a0
+	dc.b $0fb, $0a0, $0a0, $0a0, $0a0, $0a0, $0fc, $020
+	dc.b $020, $020, $020, $020, $020, $020, $07e, $020
+	dc.b $07b, $07e, $0ff, $07c, $07c, $07b, $07f, $07e
+	dc.b $061, $061, $061, $061, $061, $0fc, $07f, $07f
+	dc.b $0fc, $0fb, $0fe, $0fe, $0fe, $07f, $0a0, $0fe
+	dc.b $0a0, $0a0, $0a0, $0a0, $0a0, $0a0, $0a0, $061
+	dc.b $020, $020, $020, $020, $020, $020, $020, $020
+	dc.b $020, $020, $020, $020, $020, $020, $020, $020
+	dc.b $020, $020, $020, $020, $020, $020, $020, $020
+	dc.b $020, $020, $020, $020, $020, $020, $020, $020
+	dc.b $020, $020, $020, $020, $07c, $0a0, $0a0, $0a0
+	dc.b $020, $020, $020, $020, $020, $020, $020, $020
+	dc.b $06c, $020, $020, $020, $020, $020, $020, $020
+	dc.b $020, $020, $020, $020, $020, $020, $020, $020
+	dc.b $020, $020, $020, $020, $020, $0fe, $020, $020
+	dc.b $020, $020, $020, $0fc, $020, $0a0, $0a0, $0a0
+	dc.b $020, $020, $020, $020, $020, $020, $020, $020
+	dc.b $0ff, $020, $020, $061, $020, $020, $020, $020
+	dc.b $020, $020, $020, $020, $020, $020, $020, $062
+	dc.b $07b, $020, $020, $020, $020, $0a0, $020, $020
+	dc.b $0a0, $020, $020, $0a0, $020, $0a0, $0a0, $0a0
+	dc.b $020, $020, $020, $020, $020, $020, $020, $020
+	dc.b $0fb, $07b, $0fe, $061, $020, $020, $020, $020
+	dc.b $0fe, $0a0, $0fc, $020, $020, $020, $0fe, $0e2
+	dc.b $0fb, $020, $020, $020, $020, $0a0, $07b, $06c
+	dc.b $0a0, $062, $06c, $0a0, $020, $0e1, $0a0, $0a0
+	dc.b $020, $020, $020, $020, $020, $020, $020, $020
+	dc.b $020, $0e2, $0e1, $07e, $020, $020, $020, $0e1
+	dc.b $0ec, $020, $07c, $061, $020, $0e1, $07e, $062
+	dc.b $07c, $061, $020, $020, $020, $0a0, $0a0, $0ec
+	dc.b $020, $0fb, $0a0, $0a0, $020, $0e1, $0a0, $0a0
+	dc.b $020, $020, $020, $020, $020, $020, $020, $020
+	dc.b $07f, $062, $0ec, $020, $020, $020, $020, $0e1
+	dc.b $061, $0e1, $020, $061, $020, $0e1, $020, $0fb
+	dc.b $020, $0fc, $020, $020, $020, $07c, $07e, $020
+	dc.b $062, $020, $07c, $07e, $020, $0e1, $0a0, $0a0
+	dc.b $020, $020, $020, $020, $020, $020, $020, $020
+	dc.b $062, $062, $07b, $020, $020, $06c, $062, $07b
+	dc.b $0fc, $020, $06c, $0a0, $0a0, $0a0, $0fc, $020
+	dc.b $0fe, $0ec, $07e, $020, $020, $020, $020, $06c
+	dc.b $062, $07b, $020, $020, $020, $0e1, $0a0, $0a0
+	dc.b $020, $020, $020, $020, $020, $020, $020, $0e1
+	dc.b $07e, $020, $0fb, $020, $020, $0a0, $0ec, $0a0
+	dc.b $0a0, $0a0, $0a0, $0a0, $0a0, $0a0, $0a0, $0a0
+	dc.b $0a0, $0fe, $0a0, $07b, $020, $020, $020, $0fb
+	dc.b $0a0, $07e, $020, $020, $020, $0e1, $0a0, $0a0
+	dc.b $020, $020, $020, $020, $020, $020, $020, $0e1
+	dc.b $07b, $020, $0fe, $020, $020, $0a0, $020, $07c
+	dc.b $0a0, $0a0, $0a0, $0a0, $0a0, $0a0, $0a0, $0a0
+	dc.b $0e2, $07f, $0a0, $061, $020, $020, $020, $0fe
+	dc.b $0a0, $062, $020, $020, $020, $0e1, $0a0, $0a0
+	dc.b $020, $020, $020, $020, $020, $020, $020, $020
+	dc.b $0fb, $0a0, $07e, $020, $020, $0fe, $020, $020
+	dc.b $020, $020, $020, $020, $020, $020, $020, $020
+	dc.b $07c, $0fb, $0a0, $061, $020, $020, $07c, $0e2
+	dc.b $0e2, $07e, $020, $020, $020, $0e1, $0a0, $0a0
+	dc.b $020, $020, $020, $020, $020, $020, $020, $020
+	dc.b $07b, $020, $06c, $020, $020, $0fb, $07b, $020
+	dc.b $020, $020, $06c, $0a0, $0ff, $0fc, $020, $020
+	dc.b $020, $020, $0fe, $07e, $020, $020, $062, $062
+	dc.b $07b, $020, $020, $06c, $020, $0e1, $0a0, $0a0
+	dc.b $020, $020, $020, $020, $020, $020, $020, $0e1
+	dc.b $020, $020, $0a0, $020, $020, $020, $0fb, $0a0
+	dc.b $0fc, $062, $062, $062, $062, $062, $062, $062
+	dc.b $0a0, $0a0, $07e, $020, $020, $0fe, $0a0, $0a0
+	dc.b $0a0, $020, $020, $0a0, $020, $0fe, $0a0, $0a0
+	dc.b $020, $020, $020, $020, $020, $020, $020, $07c
+	dc.b $062, $0ff, $07c, $07b, $020, $020, $020, $07c
+	dc.b $0e2, $0fb, $0a0, $0a0, $0a0, $0a0, $0a0, $0e2
+	dc.b $0e2, $020, $020, $020, $020, $0a0, $07e, $0fb
+	dc.b $0a0, $061, $06c, $0a0, $020, $0a0, $0a0, $0a0
+	dc.b $020, $020, $020, $020, $020, $020, $020, $020
+	dc.b $020, $020, $020, $020, $020, $020, $020, $020
+	dc.b $020, $020, $020, $020, $020, $020, $020, $020
+	dc.b $020, $020, $020, $020, $020, $0ec, $020, $07c
+	dc.b $0a0, $0a0, $0a0, $0e2, $020, $0a0, $0a0, $061
+	dc.b $020, $020, $020, $020, $020, $020, $020, $020
+	dc.b $020, $020, $020, $07b, $06c, $020, $07b, $07b
+	dc.b $07b, $07b, $07b, $07b, $07b, $062, $06c, $07b
+	dc.b $062, $062, $062, $062, $062, $062, $062, $062
+	dc.b $062, $062, $062, $062, $0fe, $0a0, $0a0, $07e
+	dc.b $020, $020, $020, $020, $06c, $020, $07e, $07c
+	dc.b $07c, $07c, $07c, $06c, $07e, $0ff, $07b, $07f
+	dc.b $0e1, $0e1, $0e1, $0e1, $07f, $061, $0fc, $0fb
+	dc.b $07f, $0fc, $0fc, $0fc, $0a0, $0fe, $0a0, $0fb
+	dc.b $0a0, $0a0, $0a0, $0a0, $0a0, $0a0, $0ec, $020
+	dc.b $020, $020, $020, $020, $020, $020, $07c, $020
+	dc.b $07e, $07e, $07e, $07e, $07c, $020, $07c, $07c
+	dc.b $07c, $07c, $07c, $07c, $07e, $0e2, $07c, $0e2
+	dc.b $07e, $07e, $07e, $0e2, $07c, $0e2, $07c, $0e2
+	dc.b $0e2, $0e2, $0e2, $0e2, $0e2, $07e, $020, $020
+	dc.b $020, $020, $020, $020, $020, $020, $020, $020
+	dc.b $020, $020, $020, $020, $020, $020, $020, $020
+	dc.b $020, $020, $020, $020, $020, $020, $020, $020
+	dc.b $020, $020, $020, $020, $020, $020, $020, $020
+	dc.b $020, $020, $020, $020, $020, $020, $020, $020
 	; NodeProcedureDecl -1
 	; ***********  Defining procedure : init16x8mul
 	;    Procedure type : Built-in function
@@ -828,29 +933,6 @@ mul16x8_enterLoop  ; accumulating multiply entry point (enter with .A=lo, .Y=hi)
 	lsr mul16x8_num2
 	bcs mul16x8_doAdd
 	bne mul16x8_loop
-	rts
-	; NodeProcedureDecl -1
-	; ***********  Defining procedure : init8x8div
-	;    Procedure type : Built-in function
-	;    Requires initialization : no
-div8x8_c = $4c
-div8x8_d = $4e
-div8x8_e = $50
-	; Normal 8x8 bin div
-div8x8_procedure
-	lda #$00
-	ldx #$07
-	clc
-div8x8_loop1 rol div8x8_d
-	rol
-	cmp div8x8_c
-	bcc div8x8_loop2
-	sbc div8x8_c
-div8x8_loop2 dex
-	bpl div8x8_loop1
-	rol div8x8_d
-	lda div8x8_d
-div8x8_def_end
 	rts
 	; NodeProcedureDecl -1
 	; ***********  Defining procedure : initeightbitmul
@@ -919,36 +1001,128 @@ sxdone
 initmoveto_moveto3
 	rts
 	; NodeProcedureDecl -1
+	; ***********  Defining procedure : initprintdecimal
+	;    Procedure type : Built-in function
+	;    Requires initialization : no
+ipd_div_hi dc.b 0
+ipd_div_lo dc.b 0
+init_printdecimal_div10
+	ldx #$11
+	lda #$00
+	clc
+init_printdecimal_loop
+	rol
+	cmp #$0A
+	bcc init_printdecimal_skip
+	sbc #$0A
+init_printdecimal_skip
+	rol ipd_div_lo
+	rol ipd_div_hi
+	dex
+	bne init_printdecimal_loop
+	rts
+	; NodeProcedureDecl -1
+	; ***********  Defining procedure : initprintstring
+	;    Procedure type : User-defined procedure
+print_text = $4c
+print_number_text .dc "    ",0
+printstring
+	ldy #0
+printstringloop
+	lda (print_text),y
+	cmp #0 ;keep
+	beq printstring_done
+	cmp #64
+	bcc printstring_skip
+	sec
+	sbc #64
+printstring_skip
+	sta (screenmemory),y
+	iny
+	dex
+	cpx #0
+	beq printstring_done
+	jmp printstringloop
+printstring_done
+	rts
+	; NodeProcedureDecl -1
+	; ***********  Defining procedure : sleep_delay
+	;    Procedure type : User-defined procedure
+	; LineNumber: 524
+	; LineNumber: 523
+temp_delay	dc.b	0
+sleep_delay_block4
+sleep_delay
+	; LineNumber: 530
+	; Assigning single variable : temp_delay
+	lda #$1
+	; Calling storevariable
+	sta temp_delay
+sleep_delay_forloop5
+	; LineNumber: 526
+	; LineNumber: 527
+sleep_delay_while20
+sleep_delay_loopstart24
+	; Binary clause Simplified: EQUALS
+	lda ti
+	; Compare with pure num / var optimization
+	cmp oldti;keep
+	bne sleep_delay_elsedoneblock23
+sleep_delay_ConditionalTrueBlock21: ;Main true block ;keep 
+	; LineNumber: 526
+	; LineNumber: 527
+	jmp sleep_delay_while20
+sleep_delay_elsedoneblock23
+sleep_delay_loopend25
+	; LineNumber: 528
+	; Assigning single variable : oldti
+	lda ti
+	; Calling storevariable
+	sta oldti
+	; LineNumber: 529
+sleep_delay_forloopcounter7
+sleep_delay_loopstart8
+	; Compare is onpage
+	inc temp_delay
+	lda GAME_SPEED
+	cmp temp_delay ;keep
+	bcs sleep_delay_forloop5
+sleep_delay_loopdone28: ;keep
+sleep_delay_forloopend6
+sleep_delay_loopend9
+	; LineNumber: 530
+	rts
+	; NodeProcedureDecl -1
 	; ***********  Defining procedure : textat
 	;    Procedure type : User-defined procedure
-	; LineNumber: 451
-	; LineNumber: 449
+	; LineNumber: 545
+	; LineNumber: 543
 zp	= $04
-	; LineNumber: 447
+	; LineNumber: 541
 x	dc.b	0
-	; LineNumber: 447
+	; LineNumber: 541
 y	dc.b	0
-	; LineNumber: 447
+	; LineNumber: 541
 this_str	= $08
-	; LineNumber: 447
+	; LineNumber: 541
 str_len	dc.b	0
-textat_block4
+textat_block29
 textat
-	; LineNumber: 452
+	; LineNumber: 546
 	; Assigning single variable : zp
 	; Generic 16 bit op
 	ldy #0
 	lda x
-textat_rightvarInteger_var7 = $54
-	sta textat_rightvarInteger_var7
-	sty textat_rightvarInteger_var7+1
+textat_rightvarInteger_var32 = $54
+	sta textat_rightvarInteger_var32
+	sty textat_rightvarInteger_var32+1
 	; Generic 16 bit op
 	; Integer constant assigning
 	ldy #$80
 	lda #$00
-textat_rightvarInteger_var10 = $56
-	sta textat_rightvarInteger_var10
-	sty textat_rightvarInteger_var10+1
+textat_rightvarInteger_var35 = $56
+	sta textat_rightvarInteger_var35
+	sty textat_rightvarInteger_var35+1
 	; Right is PURE NUMERIC : Is word =1
 	; 16 bit mul or div
 	; Mul 16x8 setup
@@ -961,36 +1135,36 @@ textat_rightvarInteger_var10 = $56
 	jsr mul16x8_procedure
 	; Low bit binop:
 	clc
-	adc textat_rightvarInteger_var10
-textat_wordAdd8
-	sta textat_rightvarInteger_var10
+	adc textat_rightvarInteger_var35
+textat_wordAdd33
+	sta textat_rightvarInteger_var35
 	; High-bit binop
 	tya
-	adc textat_rightvarInteger_var10+1
+	adc textat_rightvarInteger_var35+1
 	tay
-	lda textat_rightvarInteger_var10
+	lda textat_rightvarInteger_var35
 	; Low bit binop:
 	clc
-	adc textat_rightvarInteger_var7
-textat_wordAdd5
-	sta textat_rightvarInteger_var7
+	adc textat_rightvarInteger_var32
+textat_wordAdd30
+	sta textat_rightvarInteger_var32
 	; High-bit binop
 	tya
-	adc textat_rightvarInteger_var7+1
+	adc textat_rightvarInteger_var32+1
 	tay
-	lda textat_rightvarInteger_var7
+	lda textat_rightvarInteger_var32
 	sta zp
 	sty zp+1
-	; LineNumber: 452
+	; LineNumber: 546
 	; memcpyfast
 	ldy str_len
 	dey
-textat_memcpy11
+textat_memcpy36
 	lda (this_str),y
 	sta (zp),y
 	dey
-	bpl textat_memcpy11
-	; LineNumber: 454
+	bpl textat_memcpy36
+	; LineNumber: 548
 	rts
 	
 ; // =========================================
@@ -998,72 +1172,72 @@ textat_memcpy11
 	; NodeProcedureDecl -1
 	; ***********  Defining procedure : PlayNote
 	;    Procedure type : User-defined procedure
-	; LineNumber: 490
-	; LineNumber: 489
+	; LineNumber: 567
+	; LineNumber: 566
 note_duration	dc.b	0
-	; LineNumber: 487
+	; LineNumber: 564
 note	dc.b	0
-	; LineNumber: 487
+	; LineNumber: 564
 note_len	dc.b	0
-PlayNote_block12
+PlayNote_block37
 PlayNote
-	; LineNumber: 491
+	; LineNumber: 568
 	; Binary clause Simplified: EQUALS
 	lda PLAY_SOUND
 	; Compare with pure num / var optimization
 	cmp #$1;keep
-	bne PlayNote_elsedoneblock16
-PlayNote_ConditionalTrueBlock14: ;Main true block ;keep 
-	; LineNumber: 492
-	; LineNumber: 493
+	bne PlayNote_elsedoneblock41
+PlayNote_ConditionalTrueBlock39: ;Main true block ;keep 
+	; LineNumber: 569
+	; LineNumber: 570
 	; Assigning memory location
 	; Assigning single variable : $e848
 	lda note
 	; Calling storevariable
 	sta $e848
-	; LineNumber: 495
+	; LineNumber: 572
 	; Assigning single variable : note_duration
 	lda #$0
 	; Calling storevariable
 	sta note_duration
-PlayNote_forloop27
-	; LineNumber: 493
+PlayNote_forloop52
+	; LineNumber: 570
 	; Wait
 	ldx #$c8 ; optimized, look out for bugs
 	dex
 	bne *-1
-PlayNote_forloopcounter29
-PlayNote_loopstart30
+PlayNote_forloopcounter54
+PlayNote_loopstart55
 	; Compare is onpage
 	inc note_duration
 	lda note_len
 	cmp note_duration ;keep
-	bne PlayNote_forloop27
-PlayNote_loopdone34: ;keep
-PlayNote_forloopend28
-PlayNote_loopend31
-	; LineNumber: 495
-PlayNote_elsedoneblock16
-	; LineNumber: 496
+	bne PlayNote_forloop52
+PlayNote_loopdone59: ;keep
+PlayNote_forloopend53
+PlayNote_loopend56
+	; LineNumber: 572
+PlayNote_elsedoneblock41
+	; LineNumber: 573
 	rts
 	; NodeProcedureDecl -1
 	; ***********  Defining procedure : burp
 	;    Procedure type : User-defined procedure
-	; LineNumber: 499
+	; LineNumber: 576
 burp
-	; LineNumber: 500
+	; LineNumber: 577
 	; Assigning memory location
 	; Assigning single variable : $e84a
 	lda #$f
 	; Calling storevariable
 	sta $e84a
-	; LineNumber: 501
+	; LineNumber: 578
 	; Assigning memory location
 	; Assigning single variable : $e84b
 	lda #$10
 	; Calling storevariable
 	sta $e84b
-	; LineNumber: 502
+	; LineNumber: 579
 	; Assigning single variable : note
 	lda #$ee
 	; Calling storevariable
@@ -1073,64 +1247,17 @@ burp
 	; Calling storevariable
 	sta note_len
 	jsr PlayNote
-	; LineNumber: 503
+	; LineNumber: 580
 	; Assigning memory location
 	; Assigning single variable : $e84b
 	lda #$0
 	; Calling storevariable
 	sta $e84b
-	; LineNumber: 504
-	rts
-	; NodeProcedureDecl -1
-	; ***********  Defining procedure : shit_delay
-	;    Procedure type : User-defined procedure
-	; LineNumber: 668
-	; LineNumber: 667
-temp_delay	dc.b	0
-shit_delay_block36
-shit_delay
-	; LineNumber: 674
-	; Assigning single variable : temp_delay
-	lda #$1
-	; Calling storevariable
-	sta temp_delay
-shit_delay_forloop37
-	; LineNumber: 670
-	; LineNumber: 671
-shit_delay_while52
-shit_delay_loopstart56
-	; Binary clause Simplified: EQUALS
-	lda ti
-	; Compare with pure num / var optimization
-	cmp oldti;keep
-	bne shit_delay_elsedoneblock55
-shit_delay_ConditionalTrueBlock53: ;Main true block ;keep 
-	; LineNumber: 670
-	; LineNumber: 671
-	jmp shit_delay_while52
-shit_delay_elsedoneblock55
-shit_delay_loopend57
-	; LineNumber: 672
-	; Assigning single variable : oldti
-	lda ti
-	; Calling storevariable
-	sta oldti
-	; LineNumber: 673
-shit_delay_forloopcounter39
-shit_delay_loopstart40
-	; Compare is onpage
-	inc temp_delay
-	lda GAME_SPEED
-	cmp temp_delay ;keep
-	bcs shit_delay_forloop37
-shit_delay_loopdone60: ;keep
-shit_delay_forloopend38
-shit_delay_loopend41
-	; LineNumber: 674
+	; LineNumber: 581
 	rts
 block1
-	; LineNumber: 907
-	; LineNumber: 911
+	; LineNumber: 1019
+	; LineNumber: 1023
 	; Assigning memory location
 	; Assigning single variable : $8000
 	; Integer constant assigning
@@ -1138,31 +1265,86 @@ block1
 	lda #$00
 	; Calling storevariable
 	sta $8000
-	; LineNumber: 912
+	; LineNumber: 1024
 	; Assigning single variable : screenmemory
 	ldx #$80
 	sta screenmemory
 	stx screenmemory+1
-	; LineNumber: 914
-MainProgram_while61
-MainProgram_loopstart65
+	; LineNumber: 1026
+	; Assigning single variable : petscii_pointer
+	lda #<test
+	ldx #>test
+	sta petscii_pointer
+	stx petscii_pointer+1
+	; LineNumber: 1027
+	; Copy full screen
+	sta $4c
+	lda petscii_pointer+1
+	sta $4c+1
+	lda #$00
+	sta $4e
+	lda #$80
+	sta $4e+1
+	; CopyFullscreen with pointers
+	ldx #3
+MainProgram_outer61
+	ldy #0
+MainProgram_inner62
+	lda ($4c),y
+	sta ($4e),y
+	dey
+	bne MainProgram_inner62
+	inc $4c+1
+	inc $4e+1
+	dex
+	bne MainProgram_outer61
+	ldy #0
+MainProgram_final63
+	lda ($4c),y
+	sta ($4e),y
+	iny
+	cpy #232
+	bne MainProgram_final63
+	; LineNumber: 1033
+	; Assigning single variable : sleepx
+	lda #$1
+	; Calling storevariable
+	sta sleepx
+MainProgram_forloop64
+	; LineNumber: 1030
+	; LineNumber: 1031
+	jsr sleep_delay
+	; LineNumber: 1032
+MainProgram_forloopcounter66
+MainProgram_loopstart67
+	; Compare is onpage
+	inc sleepx
+	lda #$a
+	cmp sleepx ;keep
+	bcs MainProgram_forloop64
+MainProgram_loopdone71: ;keep
+MainProgram_forloopend65
+MainProgram_loopend68
+	; LineNumber: 1034
+MainProgram_while72
+MainProgram_loopstart76
 	; Binary clause Simplified: NOTEQUALS
 	lda #$1
 	; Compare with pure num / var optimization
 	cmp #$0;keep
-	beq MainProgram_localfailed101
-	jmp MainProgram_ConditionalTrueBlock62
-MainProgram_localfailed101
-	jmp MainProgram_elsedoneblock64
-MainProgram_ConditionalTrueBlock62: ;Main true block ;keep 
-	; LineNumber: 914
-	; LineNumber: 916
+	beq MainProgram_localfailed112
+	jmp MainProgram_ConditionalTrueBlock73
+MainProgram_localfailed112
+	jmp MainProgram_elsedoneblock75
+MainProgram_ConditionalTrueBlock73: ;Main true block ;keep 
+	; LineNumber: 1034
+	; LineNumber: 1036
 	; Assigning single variable : petscii_pointer
 	lda #<petscii2
 	ldx #>petscii2
 	sta petscii_pointer
 	stx petscii_pointer+1
-	; LineNumber: 917
+	; LineNumber: 1037
 	; Copy full screen
 	sta $4c
 	lda petscii_pointer+1
@@ -1173,35 +1355,35 @@ MainProgram_ConditionalTrueBlock62: ;Main true block ;keep
 	sta $4e+1
 	; CopyFullscreen with pointers
 	ldx #3
-MainProgram_outer103
+MainProgram_outer114
 	ldy #0
-MainProgram_inner104
+MainProgram_inner115
 	lda ($4c),y
 	sta ($4e),y
 	dey
-	bne MainProgram_inner104
+	bne MainProgram_inner115
 	inc $4c+1
 	inc $4e+1
 	dex
-	bne MainProgram_outer103
+	bne MainProgram_outer114
 	ldy #0
-MainProgram_final105
+MainProgram_final116
 	lda ($4c),y
 	sta ($4e),y
 	iny
 	cpy #232
-	bne MainProgram_final105
-	; LineNumber: 919
+	bne MainProgram_final116
+	; LineNumber: 1039
 	
 ; // Crappy delay
-	jsr shit_delay
-	; LineNumber: 920
+	jsr sleep_delay
+	; LineNumber: 1040
 	; Assigning single variable : petscii_pointer
 	lda #<petscii3
 	ldx #>petscii3
 	sta petscii_pointer
 	stx petscii_pointer+1
-	; LineNumber: 920
+	; LineNumber: 1040
 	; Copy full screen
 	sta $4c
 	lda petscii_pointer+1
@@ -1212,33 +1394,33 @@ MainProgram_final105
 	sta $4e+1
 	; CopyFullscreen with pointers
 	ldx #3
-MainProgram_outer106
+MainProgram_outer117
 	ldy #0
-MainProgram_inner107
+MainProgram_inner118
 	lda ($4c),y
 	sta ($4e),y
 	dey
-	bne MainProgram_inner107
+	bne MainProgram_inner118
 	inc $4c+1
 	inc $4e+1
 	dex
-	bne MainProgram_outer106
+	bne MainProgram_outer117
 	ldy #0
-MainProgram_final108
+MainProgram_final119
 	lda ($4c),y
 	sta ($4e),y
 	iny
 	cpy #232
-	bne MainProgram_final108
-	; LineNumber: 922
-	jsr shit_delay
-	; LineNumber: 923
+	bne MainProgram_final119
+	; LineNumber: 1042
+	jsr sleep_delay
+	; LineNumber: 1043
 	; Assigning single variable : petscii_pointer
 	lda #<petscii4
 	ldx #>petscii4
 	sta petscii_pointer
 	stx petscii_pointer+1
-	; LineNumber: 923
+	; LineNumber: 1043
 	; Copy full screen
 	sta $4c
 	lda petscii_pointer+1
@@ -1249,33 +1431,33 @@ MainProgram_final108
 	sta $4e+1
 	; CopyFullscreen with pointers
 	ldx #3
-MainProgram_outer109
+MainProgram_outer120
 	ldy #0
-MainProgram_inner110
+MainProgram_inner121
 	lda ($4c),y
 	sta ($4e),y
 	dey
-	bne MainProgram_inner110
+	bne MainProgram_inner121
 	inc $4c+1
 	inc $4e+1
 	dex
-	bne MainProgram_outer109
+	bne MainProgram_outer120
 	ldy #0
-MainProgram_final111
+MainProgram_final122
 	lda ($4c),y
 	sta ($4e),y
 	iny
 	cpy #232
-	bne MainProgram_final111
-	; LineNumber: 925
-	jsr shit_delay
-	; LineNumber: 926
+	bne MainProgram_final122
+	; LineNumber: 1045
+	jsr sleep_delay
+	; LineNumber: 1046
 	; Assigning single variable : petscii_pointer
 	lda #<petscii5
 	ldx #>petscii5
 	sta petscii_pointer
 	stx petscii_pointer+1
-	; LineNumber: 926
+	; LineNumber: 1046
 	; Copy full screen
 	sta $4c
 	lda petscii_pointer+1
@@ -1286,33 +1468,33 @@ MainProgram_final111
 	sta $4e+1
 	; CopyFullscreen with pointers
 	ldx #3
-MainProgram_outer112
+MainProgram_outer123
 	ldy #0
-MainProgram_inner113
+MainProgram_inner124
 	lda ($4c),y
 	sta ($4e),y
 	dey
-	bne MainProgram_inner113
+	bne MainProgram_inner124
 	inc $4c+1
 	inc $4e+1
 	dex
-	bne MainProgram_outer112
+	bne MainProgram_outer123
 	ldy #0
-MainProgram_final114
+MainProgram_final125
 	lda ($4c),y
 	sta ($4e),y
 	iny
 	cpy #232
-	bne MainProgram_final114
-	; LineNumber: 928
-	jsr shit_delay
-	; LineNumber: 929
+	bne MainProgram_final125
+	; LineNumber: 1048
+	jsr sleep_delay
+	; LineNumber: 1049
 	; Assigning single variable : petscii_pointer
 	lda #<petscii6
 	ldx #>petscii6
 	sta petscii_pointer
 	stx petscii_pointer+1
-	; LineNumber: 929
+	; LineNumber: 1049
 	; Copy full screen
 	sta $4c
 	lda petscii_pointer+1
@@ -1323,33 +1505,33 @@ MainProgram_final114
 	sta $4e+1
 	; CopyFullscreen with pointers
 	ldx #3
-MainProgram_outer115
+MainProgram_outer126
 	ldy #0
-MainProgram_inner116
+MainProgram_inner127
 	lda ($4c),y
 	sta ($4e),y
 	dey
-	bne MainProgram_inner116
+	bne MainProgram_inner127
 	inc $4c+1
 	inc $4e+1
 	dex
-	bne MainProgram_outer115
+	bne MainProgram_outer126
 	ldy #0
-MainProgram_final117
+MainProgram_final128
 	lda ($4c),y
 	sta ($4e),y
 	iny
 	cpy #232
-	bne MainProgram_final117
-	; LineNumber: 931
-	jsr shit_delay
-	; LineNumber: 932
+	bne MainProgram_final128
+	; LineNumber: 1051
+	jsr sleep_delay
+	; LineNumber: 1052
 	; Assigning single variable : petscii_pointer
 	lda #<petscii7
 	ldx #>petscii7
 	sta petscii_pointer
 	stx petscii_pointer+1
-	; LineNumber: 932
+	; LineNumber: 1052
 	; Copy full screen
 	sta $4c
 	lda petscii_pointer+1
@@ -1360,33 +1542,33 @@ MainProgram_final117
 	sta $4e+1
 	; CopyFullscreen with pointers
 	ldx #3
-MainProgram_outer118
+MainProgram_outer129
 	ldy #0
-MainProgram_inner119
+MainProgram_inner130
 	lda ($4c),y
 	sta ($4e),y
 	dey
-	bne MainProgram_inner119
+	bne MainProgram_inner130
 	inc $4c+1
 	inc $4e+1
 	dex
-	bne MainProgram_outer118
+	bne MainProgram_outer129
 	ldy #0
-MainProgram_final120
+MainProgram_final131
 	lda ($4c),y
 	sta ($4e),y
 	iny
 	cpy #232
-	bne MainProgram_final120
-	; LineNumber: 934
-	jsr shit_delay
-	; LineNumber: 935
+	bne MainProgram_final131
+	; LineNumber: 1054
+	jsr sleep_delay
+	; LineNumber: 1055
 	; Assigning single variable : petscii_pointer
 	lda #<petscii7
 	ldx #>petscii7
 	sta petscii_pointer
 	stx petscii_pointer+1
-	; LineNumber: 935
+	; LineNumber: 1055
 	; Copy full screen
 	sta $4c
 	lda petscii_pointer+1
@@ -1397,33 +1579,33 @@ MainProgram_final120
 	sta $4e+1
 	; CopyFullscreen with pointers
 	ldx #3
-MainProgram_outer121
+MainProgram_outer132
 	ldy #0
-MainProgram_inner122
+MainProgram_inner133
 	lda ($4c),y
 	sta ($4e),y
 	dey
-	bne MainProgram_inner122
+	bne MainProgram_inner133
 	inc $4c+1
 	inc $4e+1
 	dex
-	bne MainProgram_outer121
+	bne MainProgram_outer132
 	ldy #0
-MainProgram_final123
+MainProgram_final134
 	lda ($4c),y
 	sta ($4e),y
 	iny
 	cpy #232
-	bne MainProgram_final123
-	; LineNumber: 937
-	jsr shit_delay
-	; LineNumber: 938
+	bne MainProgram_final134
+	; LineNumber: 1057
+	jsr sleep_delay
+	; LineNumber: 1058
 	; Assigning single variable : petscii_pointer
 	lda #<petscii6
 	ldx #>petscii6
 	sta petscii_pointer
 	stx petscii_pointer+1
-	; LineNumber: 938
+	; LineNumber: 1058
 	; Copy full screen
 	sta $4c
 	lda petscii_pointer+1
@@ -1434,33 +1616,33 @@ MainProgram_final123
 	sta $4e+1
 	; CopyFullscreen with pointers
 	ldx #3
-MainProgram_outer124
+MainProgram_outer135
 	ldy #0
-MainProgram_inner125
+MainProgram_inner136
 	lda ($4c),y
 	sta ($4e),y
 	dey
-	bne MainProgram_inner125
+	bne MainProgram_inner136
 	inc $4c+1
 	inc $4e+1
 	dex
-	bne MainProgram_outer124
+	bne MainProgram_outer135
 	ldy #0
-MainProgram_final126
+MainProgram_final137
 	lda ($4c),y
 	sta ($4e),y
 	iny
 	cpy #232
-	bne MainProgram_final126
-	; LineNumber: 940
-	jsr shit_delay
-	; LineNumber: 941
+	bne MainProgram_final137
+	; LineNumber: 1060
+	jsr sleep_delay
+	; LineNumber: 1061
 	; Assigning single variable : petscii_pointer
 	lda #<petscii5
 	ldx #>petscii5
 	sta petscii_pointer
 	stx petscii_pointer+1
-	; LineNumber: 941
+	; LineNumber: 1061
 	; Copy full screen
 	sta $4c
 	lda petscii_pointer+1
@@ -1471,33 +1653,33 @@ MainProgram_final126
 	sta $4e+1
 	; CopyFullscreen with pointers
 	ldx #3
-MainProgram_outer127
+MainProgram_outer138
 	ldy #0
-MainProgram_inner128
+MainProgram_inner139
 	lda ($4c),y
 	sta ($4e),y
 	dey
-	bne MainProgram_inner128
+	bne MainProgram_inner139
 	inc $4c+1
 	inc $4e+1
 	dex
-	bne MainProgram_outer127
+	bne MainProgram_outer138
 	ldy #0
-MainProgram_final129
+MainProgram_final140
 	lda ($4c),y
 	sta ($4e),y
 	iny
 	cpy #232
-	bne MainProgram_final129
-	; LineNumber: 943
-	jsr shit_delay
-	; LineNumber: 944
+	bne MainProgram_final140
+	; LineNumber: 1063
+	jsr sleep_delay
+	; LineNumber: 1064
 	; Assigning single variable : petscii_pointer
 	lda #<petscii4
 	ldx #>petscii4
 	sta petscii_pointer
 	stx petscii_pointer+1
-	; LineNumber: 944
+	; LineNumber: 1064
 	; Copy full screen
 	sta $4c
 	lda petscii_pointer+1
@@ -1508,33 +1690,33 @@ MainProgram_final129
 	sta $4e+1
 	; CopyFullscreen with pointers
 	ldx #3
-MainProgram_outer130
+MainProgram_outer141
 	ldy #0
-MainProgram_inner131
+MainProgram_inner142
 	lda ($4c),y
 	sta ($4e),y
 	dey
-	bne MainProgram_inner131
+	bne MainProgram_inner142
 	inc $4c+1
 	inc $4e+1
 	dex
-	bne MainProgram_outer130
+	bne MainProgram_outer141
 	ldy #0
-MainProgram_final132
+MainProgram_final143
 	lda ($4c),y
 	sta ($4e),y
 	iny
 	cpy #232
-	bne MainProgram_final132
-	; LineNumber: 946
-	jsr shit_delay
-	; LineNumber: 947
+	bne MainProgram_final143
+	; LineNumber: 1066
+	jsr sleep_delay
+	; LineNumber: 1067
 	; Assigning single variable : petscii_pointer
 	lda #<petscii3
 	ldx #>petscii3
 	sta petscii_pointer
 	stx petscii_pointer+1
-	; LineNumber: 947
+	; LineNumber: 1067
 	; Copy full screen
 	sta $4c
 	lda petscii_pointer+1
@@ -1545,29 +1727,29 @@ MainProgram_final132
 	sta $4e+1
 	; CopyFullscreen with pointers
 	ldx #3
-MainProgram_outer133
+MainProgram_outer144
 	ldy #0
-MainProgram_inner134
+MainProgram_inner145
 	lda ($4c),y
 	sta ($4e),y
 	dey
-	bne MainProgram_inner134
+	bne MainProgram_inner145
 	inc $4c+1
 	inc $4e+1
 	dex
-	bne MainProgram_outer133
+	bne MainProgram_outer144
 	ldy #0
-MainProgram_final135
+MainProgram_final146
 	lda ($4c),y
 	sta ($4e),y
 	iny
 	cpy #232
-	bne MainProgram_final135
-	; LineNumber: 949
-	jmp MainProgram_while61
-MainProgram_elsedoneblock64
-MainProgram_loopend66
-	; LineNumber: 950
+	bne MainProgram_final146
+	; LineNumber: 1069
+	jmp MainProgram_while72
+MainProgram_elsedoneblock75
+MainProgram_loopend77
+	; LineNumber: 1071
 	; End of program
 	; Ending memory block
-EndBlock400
+EndBlock410

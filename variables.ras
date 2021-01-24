@@ -13,7 +13,7 @@ const	KEYBUF:	address = 158;	// Keyboard buffer
 //KEYD        0270-027A        624-633        Keyboard Buffer Queue (FIFO) $026f-$0278 on newer
 
 	PLAY_SOUND: byte=0;
-	GAME_SPEED: byte=5;
+	GAME_SPEED: byte=10;
 
 KEYPRESS: byte = $FF;
 		  				// 123456789012345678901234567890

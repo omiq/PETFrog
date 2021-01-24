@@ -32,7 +32,7 @@ procedure sleep_delay();
 var 
 	temp_delay: byte;
 begin
-		fori temp_delay := 1 to GAME_SPEED do
+
 		begin
 	        while ( ti = oldti ) do begin end;
 	        oldti := ti;
@@ -413,9 +413,9 @@ begin
 					end;
 	           end;
 
-			220: // Crock bod right
+			220: // Crock body 
 	        	  begin
-	        	  		if(frog_x<38) then
+	        	  		if(frog_x<38 and frog_y>4) then
 					begin
 						inc(frog_x);
 					end;
@@ -428,7 +428,7 @@ begin
 
 
 
-		// Truck!
+		// Traffic!
 	        $F0: 
 	        	  begin
 				kill_frog();
@@ -469,6 +469,12 @@ begin
 	           end;
 	        
 	        235: 
+	        	  begin
+				kill_frog();
+
+	           end;	
+	                   
+	        240: 
 	        	  begin
 				kill_frog();
 
