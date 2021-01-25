@@ -1,0 +1,34 @@
+program MyProgram;
+var
+	a:byte;
+    oldti,ti:integer;
+	t:integer;
+
+begin
+	DefineScreen();	
+	screen_char_loc:=$8000;
+	screenmemory:=$8000;
+
+
+    oldti :=0;
+    oldti := oldti + (peek(#$8D,0)*256*256);
+	oldti := oldti + (peek(#$8D,1)*256);
+ 	oldti := oldti +  peek(#$8D,2);
+
+	a:=peek(#$E840,0);
+	while(a=223) do
+	begin
+		a:=peek(#$E840,0);
+		moveto(0,0,hi(screen_char_loc));
+		//if(a<>255) then 
+		printdecimal(a,3);
+	end;
+
+	moveto(0,1,hi(screen_char_loc));
+	printstring("DONE",0,4);
+	moveto(0,2,hi(screen_char_loc));
+	printdecimal(oldti,2);
+	moveto(0,3,hi(screen_char_loc));
+	printdecimal(peek(#$008D,0),2);
+loop();
+end.
