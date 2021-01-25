@@ -20,11 +20,16 @@ begin
 
 	while (ALIVE=1 and WON_GAME=0) do
 	begin
-
+		// delay
+		sleep_delay();
+		
 		frog_old_x:=frog_x;
 		frog_old_y:=frog_y;
 		KEYPRESS := getkey();
-		
+		sleep_delay();
+		KEYPRESS := getkey();
+		sleep_delay();	
+
 		// Uncomment to show key that was pressed
 		// textat(30,20, #KEYPRESS,1);
 		
@@ -104,8 +109,7 @@ begin
 		moveto(36,0,hi(#$8000));
 		printdecimal(player_lives,1);		
 
-		// delay
-		sleep_delay();
+
 	end;
 
 end;

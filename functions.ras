@@ -165,6 +165,25 @@ begin
 		textat(4,24,#space,23);
 		frame_delay();
 		THIS_KEY:=getkey();
+		textat(4,24,#space,23);
+		frame_delay();
+		THIS_KEY:=getkey();
+		textat(4,24,#space,23);
+		frame_delay();
+		THIS_KEY:=getkey();
+		textat(4,24,#space,23);
+		frame_delay();
+		
+		THIS_KEY:=getkey();
+		textat(4,24,"                       ",23);		
+		frame_delay();
+		THIS_KEY:=getkey();
+		textat(4,24,"                       ",23);		
+		frame_delay();
+		THIS_KEY:=getkey();
+		textat(4,24,"                       ",23);		
+		frame_delay();
+		THIS_KEY:=getkey();
 		textat(4,24,"                       ",23);		
 		frame_delay();
 	end;
@@ -204,6 +223,12 @@ begin
 	begin
 		THIS_KEY:=getkey();
 		textat(14,24,#space,23);
+		frame_delay();
+		THIS_KEY:=getkey();
+		textat(14,24,#space,23);
+		frame_delay();
+		THIS_KEY:=getkey();
+		textat(14,24,"                       ",23);		
 		frame_delay();
 		THIS_KEY:=getkey();
 		textat(14,24,"                       ",23);		
