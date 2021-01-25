@@ -62,7 +62,7 @@ begin
 	_itk:=0;
 	_this_k:=255;
  	_this_k:=peek(KEYB,0);
-	wait(200);
+	wait(500);
 	getkey:=_this_k;
 end;
 

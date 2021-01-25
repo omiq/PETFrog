@@ -62,7 +62,7 @@ begin
 	_itk:=0;
 	_this_k:=255;
  	_this_k:=peek(KEYB,0);
-	wait(200);
+	wait(500);
 	getkey:=_this_k;
 end;
 
@@ -81,9 +81,10 @@ begin
 	poke(^158,0,0);
 	poke(^158,0,0);
 	poke(^158,0,0);
-	while(peek(^151,0)=255) do
+	while(peek(^151,0)=0) do
 	begin
-
+		wait(100);
+		printdecimal(peek(^151,0),3);
 	end;
 end;
 
@@ -171,7 +172,7 @@ begin
 	textat(2,22, #by,28);	
 	textat(2,23,#url,28);	
 
-
+/*
 	THIS_KEY:=getkey();	
 	while (THIS_KEY<>$20) do
 	begin
@@ -201,9 +202,8 @@ begin
 		textat(4,24,"                       ",23);		
 		frame_delay();
 	end;
-	
-	
-
+	*/
+	waitkey();
 end;
 
 procedure score_screen();

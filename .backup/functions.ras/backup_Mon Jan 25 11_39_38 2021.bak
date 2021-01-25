@@ -62,7 +62,7 @@ begin
 	_itk:=0;
 	_this_k:=255;
  	_this_k:=peek(KEYB,0);
-	wait(200);
+	wait(100);
 	getkey:=_this_k;
 end;
 
@@ -72,18 +72,9 @@ var
 	
 begin
 	poke(^158,0,0);
-	poke(^158,0,0);
-	poke(^158,0,0);
-	poke(^158,0,0);
-	poke(^158,0,0);
-	poke(^158,0,0);
-	poke(^158,0,0);
-	poke(^158,0,0);
-	poke(^158,0,0);
-	poke(^158,0,0);
-	while(peek(^151,0)=255) do
+	while(peek(^151,0)=0) do
 	begin
-
+		
 	end;
 end;
 
@@ -202,8 +193,6 @@ begin
 		frame_delay();
 	end;
 	
-	
-
 end;
 
 procedure score_screen();
