@@ -11,7 +11,7 @@ EndBlock400
 	; Starting new memory block at $410
 StartBlock410
 PETFrog
-	; LineNumber: 1091
+	; LineNumber: 1089
 	jmp block1
 	; LineNumber: 20
 KEYPRESS	dc.b	$ff
@@ -2475,7 +2475,7 @@ init_vars
 	sta FROGS_SAVED
 	; LineNumber: 542
 	; Assigning single variable : GAME_SPEED
-	lda #$4
+	lda #$8
 	; Calling storevariable
 	sta GAME_SPEED
 	; LineNumber: 545
@@ -4368,63 +4368,53 @@ game_loop_ConditionalTrueBlock479: ;Main true block ;keep
 	jsr getkey
 	; Calling storevariable
 	sta KEYPRESS
-	; LineNumber: 1003
-	jsr sleep_delay
-	; LineNumber: 1004
-	; Assigning single variable : KEYPRESS
-	jsr getkey
-	; Calling storevariable
-	sta KEYPRESS
-	; LineNumber: 1005
-	jsr sleep_delay
-	; LineNumber: 1010
+	; LineNumber: 1008
 	; Binary clause Simplified: EQUALS
-	lda KEYPRESS
 	; Compare with pure num / var optimization
 	cmp #$b8;keep
 	bne game_loop_elsedoneblock605
 game_loop_ConditionalTrueBlock603: ;Main true block ;keep 
-	; LineNumber: 1011
-	; LineNumber: 1012
+	; LineNumber: 1009
+	; LineNumber: 1010
 	; Binary clause Simplified: GREATEREQUAL
 	lda frog_y
 	; Compare with pure num / var optimization
 	cmp #$2;keep
 	bcc game_loop_elsedoneblock619
 game_loop_ConditionalTrueBlock617: ;Main true block ;keep 
-	; LineNumber: 1013
-	; LineNumber: 1014
+	; LineNumber: 1011
+	; LineNumber: 1012
 	
 ; // Uncomment to show key that was pressed
 ; // textat(30,20, #KEYPRESS,1);
 	dec frog_y
-	; LineNumber: 1015
+	; LineNumber: 1013
 game_loop_elsedoneblock619
-	; LineNumber: 1016
+	; LineNumber: 1014
 game_loop_elsedoneblock605
-	; LineNumber: 1018
+	; LineNumber: 1016
 	; Binary clause Simplified: EQUALS
 	lda KEYPRESS
 	; Compare with pure num / var optimization
 	cmp #$b6;keep
 	bne game_loop_elsedoneblock627
 game_loop_ConditionalTrueBlock625: ;Main true block ;keep 
-	; LineNumber: 1019
-	; LineNumber: 1020
+	; LineNumber: 1017
+	; LineNumber: 1018
 	; Binary clause Simplified: LESS
 	lda frog_x
 	; Compare with pure num / var optimization
 	cmp #$27;keep
 	bcs game_loop_elsedoneblock641
 game_loop_ConditionalTrueBlock639: ;Main true block ;keep 
-	; LineNumber: 1021
-	; LineNumber: 1022
+	; LineNumber: 1019
+	; LineNumber: 1020
 	inc frog_x
-	; LineNumber: 1023
+	; LineNumber: 1021
 game_loop_elsedoneblock641
-	; LineNumber: 1024
+	; LineNumber: 1022
 game_loop_elsedoneblock627
-	; LineNumber: 1026
+	; LineNumber: 1024
 	; Binary clause Simplified: EQUALS
 	lda KEYPRESS
 	; Compare with pure num / var optimization
@@ -4439,44 +4429,44 @@ game_loop_localfailed659: ;keep
 	cmp #$b5;keep
 	bne game_loop_elsedoneblock649
 game_loop_ConditionalTrueBlock647: ;Main true block ;keep 
-	; LineNumber: 1027
-	; LineNumber: 1028
+	; LineNumber: 1025
+	; LineNumber: 1026
 	; Binary clause Simplified: LESS
 	lda frog_y
 	; Compare with pure num / var optimization
 	cmp #$18;keep
 	bcs game_loop_elsedoneblock664
 game_loop_ConditionalTrueBlock662: ;Main true block ;keep 
-	; LineNumber: 1029
-	; LineNumber: 1030
+	; LineNumber: 1027
+	; LineNumber: 1028
 	inc frog_y
-	; LineNumber: 1031
+	; LineNumber: 1029
 game_loop_elsedoneblock664
-	; LineNumber: 1032
+	; LineNumber: 1030
 game_loop_elsedoneblock649
-	; LineNumber: 1034
+	; LineNumber: 1032
 	; Binary clause Simplified: EQUALS
 	lda KEYPRESS
 	; Compare with pure num / var optimization
 	cmp #$b4;keep
 	bne game_loop_elsedoneblock672
 game_loop_ConditionalTrueBlock670: ;Main true block ;keep 
-	; LineNumber: 1035
-	; LineNumber: 1036
+	; LineNumber: 1033
+	; LineNumber: 1034
 	; Binary clause Simplified: GREATEREQUAL
 	lda frog_x
 	; Compare with pure num / var optimization
 	cmp #$1;keep
 	bcc game_loop_elsedoneblock686
 game_loop_ConditionalTrueBlock684: ;Main true block ;keep 
-	; LineNumber: 1037
-	; LineNumber: 1038
+	; LineNumber: 1035
+	; LineNumber: 1036
 	dec frog_x
-	; LineNumber: 1039
+	; LineNumber: 1037
 game_loop_elsedoneblock686
-	; LineNumber: 1040
+	; LineNumber: 1038
 game_loop_elsedoneblock672
-	; LineNumber: 1043
+	; LineNumber: 1041
 	
 ; // So different things can move at own speeds
 	inc GAME_TICKS
@@ -4486,23 +4476,23 @@ game_loop_elsedoneblock672
 	lda #$1
 	sta GAME_TICKS
 game_loop_incmax692
-	; LineNumber: 1046
+	; LineNumber: 1044
 	
 ; // Show the obstacles in new positions
 	jsr show_obstacles
-	; LineNumber: 1049
+	; LineNumber: 1047
 	
 ; // "Collision detection"
 	jsr check_collisions
-	; LineNumber: 1052
+	; LineNumber: 1050
 	; Binary clause Simplified: LESS
 	lda player_lives
 	; Compare with pure num / var optimization
 	cmp #$1;keep
 	bcs game_loop_elsedoneblock696
 game_loop_ConditionalTrueBlock694: ;Main true block ;keep 
+	; LineNumber: 1051
 	; LineNumber: 1053
-	; LineNumber: 1055
 	
 ; // Still alive?
 ; // Dead and didn't win :(
@@ -4510,9 +4500,9 @@ game_loop_ConditionalTrueBlock694: ;Main true block ;keep
 	lda #$0
 	; Calling storevariable
 	sta ALIVE
-	; LineNumber: 1057
+	; LineNumber: 1055
 game_loop_elsedoneblock696
-	; LineNumber: 1062
+	; LineNumber: 1060
 	; Binary clause Simplified: NOTEQUALS
 	lda frog_x
 	; Compare with pure num / var optimization
@@ -4527,8 +4517,8 @@ game_loop_localfailed704: ;keep
 	cmp frog_old_y;keep
 	beq game_loop_elsedoneblock702
 game_loop_ConditionalTrueBlock700: ;Main true block ;keep 
-	; LineNumber: 1063
-	; LineNumber: 1064
+	; LineNumber: 1061
+	; LineNumber: 1062
 	
 ; // only undraw if different
 	; Assigning single variable : x
@@ -4549,7 +4539,7 @@ game_loop_ConditionalTrueBlock700: ;Main true block ;keep
 	; Calling storevariable
 	sta str_len
 	jsr textat
-	; LineNumber: 1065
+	; LineNumber: 1063
 	; Assigning single variable : previous_tile
 	; Assigning single variable : sx
 	lda frog_x
@@ -4562,17 +4552,17 @@ game_loop_ConditionalTrueBlock700: ;Main true block ;keep
 	jsr getat
 	; Calling storevariable
 	sta previous_tile
-	; LineNumber: 1066
+	; LineNumber: 1064
 game_loop_elsedoneblock702
-	; LineNumber: 1069
+	; LineNumber: 1067
 	; Binary clause Simplified: GREATEREQUAL
 	lda frog_y
 	; Compare with pure num / var optimization
 	cmp #$b;keep
 	bcc game_loop_elseblock708
 game_loop_ConditionalTrueBlock707: ;Main true block ;keep 
-	; LineNumber: 1070
-	; LineNumber: 1071
+	; LineNumber: 1068
+	; LineNumber: 1069
 	
 ; // draw the frog because things might have changed onscreen
 	; Assigning single variable : x
@@ -4593,11 +4583,11 @@ game_loop_ConditionalTrueBlock707: ;Main true block ;keep
 	; Calling storevariable
 	sta str_len
 	jsr textat
-	; LineNumber: 1073
+	; LineNumber: 1071
 	jmp game_loop_elsedoneblock709
 game_loop_elseblock708
-	; LineNumber: 1074
-	; LineNumber: 1075
+	; LineNumber: 1072
+	; LineNumber: 1073
 	; Assigning single variable : x
 	lda frog_x
 	; Calling storevariable
@@ -4616,9 +4606,9 @@ game_loop_elseblock708
 	; Calling storevariable
 	sta str_len
 	jsr textat
-	; LineNumber: 1076
+	; LineNumber: 1074
 game_loop_elsedoneblock709
-	; LineNumber: 1081
+	; LineNumber: 1079
 	
 ; // Score and lives
 	; MoveTo optimization
@@ -4628,7 +4618,7 @@ game_loop_elsedoneblock709
 	clc
 	adc #$00
 	sta screenmemory+1
-	; LineNumber: 1081
+	; LineNumber: 1079
 	; integer assignment NodeVar
 	ldy player_score+1 ; Next one
 	lda player_score
@@ -4641,7 +4631,7 @@ game_loop_printdecimal714
 	sta (screenmemory),y
 	dey
 	bpl game_loop_printdecimal714
-	; LineNumber: 1083
+	; LineNumber: 1081
 	; MoveTo optimization
 	lda #$24
 	sta screenmemory
@@ -4649,7 +4639,7 @@ game_loop_printdecimal714
 	clc
 	adc #$00
 	sta screenmemory+1
-	; LineNumber: 1083
+	; LineNumber: 1081
 	ldy #0
 	lda player_lives
 	sta ipd_div_lo
@@ -4661,15 +4651,15 @@ game_loop_printdecimal715
 	sta (screenmemory),y
 	dey
 	bpl game_loop_printdecimal715
-	; LineNumber: 1087
+	; LineNumber: 1085
 	jmp game_loop_while478
 game_loop_elsedoneblock481
 game_loop_loopend483
-	; LineNumber: 1089
+	; LineNumber: 1087
 	rts
 block1
-	; LineNumber: 1091
-	; LineNumber: 1094
+	; LineNumber: 1089
+	; LineNumber: 1092
 MainProgram_while716
 MainProgram_loopstart720
 	; Binary clause Simplified: NOTEQUALS
@@ -4678,20 +4668,20 @@ MainProgram_loopstart720
 	cmp #$0;keep
 	beq MainProgram_elsedoneblock719
 MainProgram_ConditionalTrueBlock717: ;Main true block ;keep 
-	; LineNumber: 1095
-	; LineNumber: 1096
+	; LineNumber: 1093
+	; LineNumber: 1094
 	jsr title_screen
-	; LineNumber: 1097
+	; LineNumber: 1095
 	jsr init_vars
-	; LineNumber: 1098
+	; LineNumber: 1096
 	jsr game_loop
-	; LineNumber: 1099
+	; LineNumber: 1097
 	jsr score_screen
-	; LineNumber: 1100
+	; LineNumber: 1098
 	jmp MainProgram_while716
 MainProgram_elsedoneblock719
 MainProgram_loopend721
-	; LineNumber: 1104
+	; LineNumber: 1102
 	; End of program
 	; Ending memory block
 EndBlock410

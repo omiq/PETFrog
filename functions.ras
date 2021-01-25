@@ -257,7 +257,7 @@ var
 begin
 	cls();
 	FROGS_SAVED:=0;	
-	GAME_SPEED:=4;
+	GAME_SPEED:=8;
 	
 	// Init the playfield
 	screenmemory := $8000;
