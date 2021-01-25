@@ -46,7 +46,7 @@ procedure frame_delay();
 var
 	sleepx:byte;
 begin
-	fori sleepx:=1 to 5 do
+	fori sleepx:=1 to 2 do
 	begin
 		sleep_delay();
 	end;
@@ -58,16 +58,15 @@ var
 	_it,tk:byte;
 	
 begin
-	sleep_delay();
  	getkey:=peek(KEYB,0); 	
 end;
 
 
 procedure waitkey();
 var
-		this_key: byte =$FF;
+	this_key: byte =$FF;
 begin
-
+	this_key:=getkey();
 	while(this_key<>$20) do
 	begin
 		this_key:=getkey();
@@ -166,6 +165,25 @@ begin
 		textat(4,24,#space,23);
 		frame_delay();
 		THIS_KEY:=getkey();
+		textat(4,24,#space,23);
+		frame_delay();
+		THIS_KEY:=getkey();
+		textat(4,24,#space,23);
+		frame_delay();
+		THIS_KEY:=getkey();
+		textat(4,24,#space,23);
+		frame_delay();
+		
+		THIS_KEY:=getkey();
+		textat(4,24,"                       ",23);		
+		frame_delay();
+		THIS_KEY:=getkey();
+		textat(4,24,"                       ",23);		
+		frame_delay();
+		THIS_KEY:=getkey();
+		textat(4,24,"                       ",23);		
+		frame_delay();
+		THIS_KEY:=getkey();
 		textat(4,24,"                       ",23);		
 		frame_delay();
 	end;
@@ -207,6 +225,12 @@ begin
 		textat(14,24,#space,23);
 		frame_delay();
 		THIS_KEY:=getkey();
+		textat(14,24,#space,23);
+		frame_delay();
+		THIS_KEY:=getkey();
+		textat(14,24,"                       ",23);		
+		frame_delay();
+		THIS_KEY:=getkey();
 		textat(14,24,"                       ",23);		
 		frame_delay();
 	end;
@@ -220,7 +244,7 @@ var
 begin
 	spr_p:= #level_strips + spr_y*80 + spr_x;
 	MemCpyFast( source_str, 0, spr_p, spr_len ); 
-	spr_p:= #level_strips + spr_y*80 + spr_x+40;
+	spr_p:= #level_strips + spr_y*80 + spr_x+39;
 	MemCpyFast( source_str, 0, spr_p, spr_len ); 
 end;
 
@@ -233,7 +257,7 @@ var
 begin
 	cls();
 	FROGS_SAVED:=0;	
-	GAME_SPEED:=8;
+	GAME_SPEED:=4;
 	
 	// Init the playfield
 	screenmemory := $8000;
@@ -271,7 +295,7 @@ begin
 	MemCpy(#arr_carr, 0, #str_carb, 4 ); 
 
 	// Sprite start positions
-	
+/*	
 	sprite_xy(0,obstacles_y[0],#str_crockr,9);
 	sprite_xy(10,obstacles_y[0],#str_logr,5);
 		
@@ -298,7 +322,7 @@ begin
 	sprite_xy(0,obstacles_y[12],#str_truckb_r,8);
 
 	
-/*
+*/
 	sprite_xy(10,obstacles_y[0],#str_crockr,9);
 	sprite_xy(24,obstacles_y[0],#str_logr,5);
 		
@@ -323,7 +347,7 @@ begin
 	sprite_xy(10,obstacles_y[10],#str_truckb_r,8);
 	sprite_xy(19,obstacles_y[11],#str_truckt_r,8);
 	sprite_xy(19,obstacles_y[12],#str_truckb_r,8);
-*/
+
 
 	frog_x:= 20;
 	frog_y:= 24;
@@ -349,10 +373,19 @@ procedure move_obstacles();
 begin
 	// TRSE way of incrementing 
 	// counter with loop back to 0
-	incRange(obstacles_x_rl, 0, 40);
-	obstacles_x_lr:=40-obstacles_x_rl;
-
+	incRange(obstacles_x_rl, 0, 39);
+	obstacles_x_lr:=39-obstacles_x_rl;
 end;
+
+procedure move_traffic();
+
+begin
+	// TRSE way of incrementing 
+	// counter with loop back to 0
+	incRange(traffic_x_rl, 0, 39);
+	traffic_x_lr:=39-traffic_x_rl;
+end;
+
 
 procedure frog_ride();
 var
@@ -411,6 +444,12 @@ var
 begin
 
 	// Sets traffic speed
+	if(mod(GAME_TICKS,GAME_SPEED/2)=0) then
+	begin
+		move_traffic();
+	end;	
+	
+	// Update obstacles positions
 	if(mod(GAME_TICKS,GAME_SPEED)=0) then
 	begin
 		// Update obstacles positions
@@ -423,7 +462,7 @@ begin
 	end;
 
 	// "Scroll" each line of obstacle according to direction
-	for strip_num := 0 to 13 do
+	for strip_num := 0 to 5 do
 	begin
 		this_strip:=obstacles_y[strip_num];
 		screenmemory:=$8000+(this_strip*40);
@@ -437,6 +476,26 @@ begin
 		else
 		begin
 			this_source_offset:=this_source_offset+obstacles_x_lr;
+		end;
+		
+		MemCpyFast(this_source_offset, 0, screenmemory, 40); 
+
+
+	end;
+	
+	for strip_num := 5 to 13 do
+	begin
+		this_strip:=obstacles_y[strip_num];
+		screenmemory:=$8000+(this_strip*40);
+		this_source_offset:=#level_strips+(this_strip*80);
+		
+		if(strip_direction[strip_num]=1) then
+		begin
+			this_source_offset:=this_source_offset+traffic_x_rl;
+		end
+		else
+		begin
+			this_source_offset:=this_source_offset+traffic_x_lr;
 		end;
 		
 		MemCpyFast(this_source_offset, 0, screenmemory, 40); 
