@@ -25,12 +25,11 @@ begin
 	
 	Key::SetupScreenCodes();
 
-	// Unit constants don't work on my emulator
-	// for some reason so use these and GetHeld	
-		key_up:=1064;
-		key_down:=1815;
-		key_left:=1818;
-		key_right:=1793;
+	// Unit constants
+		key_up:=Key::KW;
+        key_down:=Key::KS;
+        key_left:=Key::KA;
+        key_right:=Key::KD;
 
 
 	while (ALIVE=1 and WON_GAME=0) do
