@@ -4,7 +4,7 @@ var
 @use "input/key"  
 @use "crt"
 
-key_up,key_down,key_left,key_right,kk:integer;
+n_key_up,n_key_down,n_key_left,n_key_right,key_up,key_down,key_left,key_right:integer;
 
 
 /* === variables ============================================================================================ */
@@ -26,6 +26,14 @@ begin
 	Key::SetupScreenCodes();
 
 	// Unit constants
+	
+		// Numeric Keypad
+		n_key_up:=Key::K8;
+        n_key_down:=Key::K5;
+        n_key_left:=Key::K4;
+        n_key_right:=Key::K6;
+
+		// Regular keys        
 		key_up:=Key::KW;
         key_down:=Key::KS;
         key_left:=Key::KA;
@@ -39,34 +47,38 @@ begin
 
         frog_old_x:=frog_x;
         frog_old_y:=frog_y;
-        if(Key::Pressed(key_up)) then
+        if(Key::Pressed(key_up) or Key::Pressed(n_key_up)) then
         begin
             if(frog_y>1) then
             begin
                 dec(frog_y);
+                inc(player_score);
             end;
         end;
         
-        if(Key::Pressed(key_right)) then
+        if(Key::Pressed(key_right) or Key::Pressed(n_key_right)) then
         begin
             if(frog_x<39) then
             begin
                 inc(frog_x);
+                inc(player_score);
             end;
         end;
         
-        if(Key::Pressed(key_down)) then
+        if(Key::Pressed(key_down) or Key::Pressed(n_key_down)) then
         begin
             if(frog_y<24) then
             begin
                 inc(frog_y);
+                inc(player_score);
             end;
         end;
-        if(Key::Pressed(key_left)) then
+        if(Key::Pressed(key_left) or Key::Pressed(n_key_left)) then
         begin
             if(frog_x>0) then
             begin
                 dec(frog_x);
+                inc(player_score);
             end;
         end;
 		
@@ -84,7 +96,7 @@ begin
 		begin
 			// Dead and didn't win :(
 			ALIVE:=0;
-				
+			
 		end;	
 
 
