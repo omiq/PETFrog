@@ -26,10 +26,10 @@ begin
 	Key::SetupScreenCodes();
 
 	// Unit constants
-		key_up:=Key::KW;
-        key_down:=Key::KS;
-        key_left:=Key::KA;
-        key_right:=Key::KD;
+		key_up:=Key::K8;
+        key_down:=Key::K5;
+        key_left:=Key::K4;
+        key_right:=Key::K6;
 
 
 	while (ALIVE=1 and WON_GAME=0) do
@@ -44,6 +44,7 @@ begin
             if(frog_y>1) then
             begin
                 dec(frog_y);
+                inc(player_score);
             end;
         end;
         
@@ -52,6 +53,7 @@ begin
             if(frog_x<39) then
             begin
                 inc(frog_x);
+                inc(player_score);
             end;
         end;
         
@@ -60,6 +62,7 @@ begin
             if(frog_y<24) then
             begin
                 inc(frog_y);
+                inc(player_score);
             end;
         end;
         if(Key::Pressed(key_left)) then
@@ -67,6 +70,7 @@ begin
             if(frog_x>0) then
             begin
                 dec(frog_x);
+                inc(player_score);
             end;
         end;
 		
@@ -84,7 +88,7 @@ begin
 		begin
 			// Dead and didn't win :(
 			ALIVE:=0;
-				
+			
 		end;	
 
 

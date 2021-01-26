@@ -701,11 +701,8 @@ begin
 
 	    else
 	    begin
-	       // None of the cases were valid so go ahead
-	      if(kk<>2303) then
-			begin
-				inc(player_score);
-			end;
+
+
 	    end;
 end;
 

@@ -44,6 +44,7 @@ begin
             if(frog_y>1) then
             begin
                 dec(frog_y);
+                inc(player_score);
             end;
         end;
         
@@ -52,6 +53,7 @@ begin
             if(frog_x<39) then
             begin
                 inc(frog_x);
+                inc(player_score);
             end;
         end;
         
@@ -60,6 +62,7 @@ begin
             if(frog_y<24) then
             begin
                 inc(frog_y);
+                inc(player_score);
             end;
         end;
         if(Key::Pressed(key_left)) then
@@ -67,6 +70,7 @@ begin
             if(frog_x>0) then
             begin
                 dec(frog_x);
+                inc(player_score);
             end;
         end;
 		
@@ -84,7 +88,7 @@ begin
 		begin
 			// Dead and didn't win :(
 			ALIVE:=0;
-				
+			
 		end;	
 
 

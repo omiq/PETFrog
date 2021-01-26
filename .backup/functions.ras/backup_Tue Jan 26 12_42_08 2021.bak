@@ -151,13 +151,12 @@ begin
 	c_row:=p_row+40;
 	    fori scroll:=1 to 25 do 
 	    begin
-	        MemCpy( c_row, 0, p_row, 40 ); 
-	    		frame_delay();	       
+	        MemCpyFast( c_row, 0, p_row, 40 ); 	       
 	    		p_row:=p_row+40;
     	    		c_row:=p_row+40; 
 	    end;
-	    fillfast(c_row,$30,40);
-    		sleep_delay();	
+	    fillfast(c_row,$20,40);
+    		Crt::WaitVblStart();	
 	end;
 
 end;
@@ -262,7 +261,7 @@ begin
 		textat(14,24,"                       ",23);		
 		frame_delay();
 	end;
-	
+	ScrollY();
 end;
 
 procedure sprite_xy(spr_x: byte; spr_y: byte; source_str: pointer; spr_len: byte );
@@ -702,8 +701,9 @@ begin
 
 	    else
 	    begin
+
 	       // None of the cases were valid so go ahead
-	      if(kk<>2303) then
+	      if(Key::Pressed(Key::NOKEY)) then
 			begin
 				inc(player_score);
 			end;
