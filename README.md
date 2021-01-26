@@ -13,6 +13,7 @@ ASD
  8
 456
 ```
+(Requires *Graphic* keyboard)
 
 ## Aim of the game
 
