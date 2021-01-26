@@ -173,13 +173,13 @@ begin
 		incrange(ctr,1,100);
 		ks:=Key::keyState;
 		
-		if( ctr<50 ) then
+		if( mod(ctr,10)=0 ) then
 		begin
-			textat(4,24,#space2,25);	
+			textat(4,24,#space,23);
 		end
 		else
-		begin	
-			textat(4,24,#space,25);
+		begin
+			textat(4,24,"                       ",23);		
 		end;
 		sleep_delay();
 
@@ -697,7 +697,7 @@ begin
 	    else
 	    begin
 	       // None of the cases were valid so go ahead
-	      if(kk<>2303) then
+	       if(KEYPRESS<>255) then
 			begin
 				inc(player_score);
 			end;

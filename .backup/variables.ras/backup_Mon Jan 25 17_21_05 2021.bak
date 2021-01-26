@@ -37,7 +37,7 @@
 		url: 	cstring = " @MAKERHACKS MAKERHACKS.COM "; 
 		over: 	cstring = " GAME OVER  ";    
 		score: 	cstring = " YOU SCORED:"; 
-		space: 	cstring = " PRESS SPACE TO CONTINUE "; 
+		space: 	cstring = "PRESS SPACE TO CONTINUE"; 
 		space2: 	cstring = (160,144,146,133,147,147,160,147,144,129,131,133,160,148,143,160,131,143,142,148,137,142,149,133,160);  
 				
 

@@ -142,7 +142,7 @@ end;
 
 procedure title_screen();
 var
-	ks,ctr:byte;
+	ks:byte;
 begin
 	
 	// Set up pointer to array:
@@ -170,16 +170,15 @@ begin
 	begin
 
 		Key::Read();
-		incrange(ctr,1,100);
 		ks:=Key::keyState;
 		
-		if( ctr<50 ) then
+		if( mod(_ti(),2) ) then
 		begin
-			textat(4,24,#space2,25);	
+			textat(4,24,#space,23);
 		end
 		else
-		begin	
-			textat(4,24,#space,25);
+		begin
+			textat(4,24,"                       ",23);		
 		end;
 		sleep_delay();
 
@@ -697,7 +696,7 @@ begin
 	    else
 	    begin
 	       // None of the cases were valid so go ahead
-	      if(kk<>2303) then
+	       if(KEYPRESS<>255) then
 			begin
 				inc(player_score);
 			end;
