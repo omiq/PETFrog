@@ -299,35 +299,7 @@ begin
 	MemCpy(#arr_carl, 0, #str_cart, 4 ); 
 	MemCpy(#arr_carr, 0, #str_carb, 4 ); 
 
-	// Sprite start positions
-/*	
-	sprite_xy(0,obstacles_y[0],#str_crockr,9);
-	sprite_xy(10,obstacles_y[0],#str_logr,5);
-		
-	sprite_xy(0,obstacles_y[1],#str_crockl,9);
-	sprite_xy(10,obstacles_y[1],#str_logl,5);
-		
-	sprite_xy(0,obstacles_y[2],#str_logr,5);
-	sprite_xy(6,obstacles_y[2],#str_logr,5);
-	
-	sprite_xy(0,obstacles_y[3],#str_logl,5);
-	sprite_xy(6,obstacles_y[3],#str_logl,5);
-	
-	sprite_xy(0,obstacles_y[4],#str_turtles,5);	
-	sprite_xy(6,obstacles_y[4],#str_turtles,5);	
-	sprite_xy(12,obstacles_y[4],#str_turtles,5);	
-
-	sprite_xy(0,obstacles_y[5],#str_cart,4);
-	sprite_xy(0,obstacles_y[6],#str_carb,4);
-	sprite_xy(0,obstacles_y[7],#str_cart,4);
-	sprite_xy(0,obstacles_y[8],#str_carb,4);
-	sprite_xy(0,obstacles_y[9],#str_truckt_r,8);
-	sprite_xy(0,obstacles_y[10],#str_truckb_r,8);
-	sprite_xy(0,obstacles_y[11],#str_truckt_r,8);
-	sprite_xy(0,obstacles_y[12],#str_truckb_r,8);
-
-	
-*/
+	// "Sprite" start positions
 	sprite_xy(10,obstacles_y[0],#str_crockr,9);
 	sprite_xy(24,obstacles_y[0],#str_logr,5);
 		
@@ -344,15 +316,25 @@ begin
 	sprite_xy(20,obstacles_y[4],#str_turtles,5);	
 	sprite_xy(30,obstacles_y[4],#str_turtles,5);	
 
+	sprite_xy(8,obstacles_y[5],#str_cart,4);
+	sprite_xy(8,obstacles_y[6],#str_carb,4);
+
 	sprite_xy(34,obstacles_y[5],#str_cart,4);
 	sprite_xy(34,obstacles_y[6],#str_carb,4);
+	
 	sprite_xy(19,obstacles_y[7],#str_cart,4);
 	sprite_xy(19,obstacles_y[8],#str_carb,4);
+	sprite_xy(29,obstacles_y[7],#str_cart,4);
+	sprite_xy(29,obstacles_y[8],#str_carb,4);
+
+	
 	sprite_xy(10,obstacles_y[9],#str_truckt_r,8);
 	sprite_xy(10,obstacles_y[10],#str_truckb_r,8);
+
 	sprite_xy(19,obstacles_y[11],#str_truckt_r,8);
 	sprite_xy(19,obstacles_y[12],#str_truckb_r,8);
-
+	sprite_xy(32,obstacles_y[11],#str_truckt_r,8);
+	sprite_xy(32,obstacles_y[12],#str_truckb_r,8);
 
 	frog_x:= 20;
 	frog_y:= 24;
