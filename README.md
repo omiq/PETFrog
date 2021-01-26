@@ -16,6 +16,8 @@ ASD
 
 ## Aim of the game
 
+
+
 Bring your froggies home, by avoiding traffic, riding river obstacles, until you can boop the little 💗 heart symbols.
 
 Get six frogs home and you win.
@@ -26,3 +28,4 @@ River is deadly in the flow of the obstacles, but banks are safe. You can ride l
 
 Good luck!
 
+![https://github.com/omiq/PETFrog/blob/main/Screen%20Shot%202021-01-26%20at%201.38.29%20PM.png](https://github.com/omiq/PETFrog/blob/main/Screen%20Shot%202021-01-26%20at%201.38.29%20PM.png)
