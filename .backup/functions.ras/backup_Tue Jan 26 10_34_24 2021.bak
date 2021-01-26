@@ -151,12 +151,13 @@ begin
 	c_row:=p_row+40;
 	    fori scroll:=1 to 25 do 
 	    begin
-	        MemCpyFast( c_row, 0, p_row, 40 ); 	       
+	        MemCpy( c_row, 0, p_row, 40 ); 
+	    		frame_delay();	       
 	    		p_row:=p_row+40;
     	    		c_row:=p_row+40; 
 	    end;
-	    fillfast(c_row,$20,40);
-    		Crt::WaitVblStart();	
+	    fillfast(c_row,0,40);
+    		sleep_delay();	
 	end;
 
 end;
@@ -261,7 +262,7 @@ begin
 		textat(14,24,"                       ",23);		
 		frame_delay();
 	end;
-	ScrollY();
+	
 end;
 
 procedure sprite_xy(spr_x: byte; spr_y: byte; source_str: pointer; spr_len: byte );

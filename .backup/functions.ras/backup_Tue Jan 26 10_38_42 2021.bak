@@ -261,7 +261,7 @@ begin
 		textat(14,24,"                       ",23);		
 		frame_delay();
 	end;
-	ScrollY();
+	
 end;
 
 procedure sprite_xy(spr_x: byte; spr_y: byte; source_str: pointer; spr_len: byte );
