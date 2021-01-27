@@ -279,36 +279,6 @@ begin
 	end;
 	
 	ScrollY()
-	help_screen()
-
-end;
-
-procedure help_screen();
-var
-	ks,ctr,slide:byte;
-	  
-begin
-	
-	// Set up pointer to array:
-	help_screen_pointer:=#help_screen_array;
-	ks:=0;
-	cls();
-
-	// Draw the frog
-	CopyFullScreen(title_screen_frog_pointer, #$8000);
-	
- 
-	Key::SetupScreenCodes();
-	Key::Read();
-	ks:=Key::keyState;
-	while(ks=0) do
-	begin
-		
-		ks:=Key::keyState;
-	
-	end;
-	
-	ScrollY()
 
 end;
 

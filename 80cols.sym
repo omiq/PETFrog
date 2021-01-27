@@ -1,0 +1,37 @@
+; labels
+al  $400 .StartBlock400
+al  $410 .StartBlock410
+al  $40c .EndBlock400
+al  $413 .eighty
+al  $41e .forty
+al  $429 .rom_4
+al  $432 .SetScreenPosition
+al  $43c .syloop
+al  $443 .sskip
+al  $446 .sydone
+al  $451 .sxdone
+al  $454 .initmoveto_moveto2
+al  $455 .print_number_text
+al  $45a .printstring
+al  $45c .printstringloop
+al  $469 .printstring_skip
+al  $474 .printstring_done
+al  $475 .is_rom_4
+al  $47d .is_rom_4_ConditionalTrueBlock5
+al  $484 .is_rom_4_ConditionalTrueBlock11
+al  $485 .char
+al  $486 .test_string
+al  $48a .is_80_columns_block16
+al  $48f .is_80_columns_forloop17
+al  $498 .is_80_columns_forloopcounter19
+al  $4a2 .is_80_columns_loopdone24
+al  $4ab .is_80_columns_ConditionalTrueBlock26
+al  $4ae .is_80_columns_elseblock27
+al  $4af .block1
+al  $4c3 .MainProgram_ConditionalTrueBlock34
+al  $4d6 .MainProgram_elseblock35
+al  $4e6 .MainProgram_elsedoneblock36
+al  $4ed .MainProgram_ConditionalTrueBlock50
+al  $508 .MainProgram_elsedoneblock52
+al  $50b .EndBlock410
+; breakpoints

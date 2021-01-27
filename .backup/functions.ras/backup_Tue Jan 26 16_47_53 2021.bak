@@ -210,56 +210,32 @@ begin
 	begin
 		
 		Key::Read();
-		for slide:=1 to 100 do
-		begin
-			incrange(ctr,1,100);
-			ks:=Key::keyState;
-
-			if( ctr<50 ) then
-			begin
-				textat(4,24,#space2,25);	
-			end
-			else
-			begin	
-				textat(4,24,#space,25);
-			end;
-			sleep_delay();
-		end;
-			ctr:=0;
-			sleep_delay();
-			textat(4,24,#blk,25);
-			sleep_delay();	
-			textat(4,24,#blk,25);
-			sleep_delay();		
-			
-		for slide:=1 to 100 do
-		begin
-			incrange(ctr,1,100);
-			ks:=Key::keyState;
-
-			if( ctr<50 ) then
-			begin
-				textat(4,24,#space2,25);	
-			end
-			else
-			begin	
-				textat(4,24,#space,25);
-			end;
-			sleep_delay();
-		end;
-			ctr:=0;
-			sleep_delay();
-			textat(4,24,#blk,25);
-			sleep_delay();	
-			textat(4,24,#blk,25);
-			sleep_delay();
-			
-		for slide:=1 to 100 do
+		fori slide:=1 to 200 do
 		begin
 			incrange(ctr,1,200);
 			ks:=Key::keyState;
 
-			if( ctr<50 ) then
+			if( ctr<100 ) then
+			begin
+				textat(4,24,#space2,25);	
+			end
+			else
+			begin	
+				textat(4,24,#space,25);
+			end;
+			sleep_delay();
+		end;
+		
+			sleep_delay();
+			textat(4,24,#space,25);
+			sleep_delay();
+			
+		fori slide:=1 to 200 do
+		begin
+			incrange(ctr,1,200);
+			ks:=Key::keyState;
+
+			if( ctr<100 ) then
 			begin
 				textat(4,24,#help2,25);	
 			end
@@ -269,42 +245,10 @@ begin
 			end;
 			sleep_delay();
 		end;
-			ctr:=0;
-			sleep_delay();
-			textat(4,24,#blk,25);
-			sleep_delay();	
-			textat(4,24,#blk,25);
-			sleep_delay();
-	
-	end;
-	
-	ScrollY()
-	help_screen()
-
-end;
-
-procedure help_screen();
-var
-	ks,ctr,slide:byte;
-	  
-begin
-	
-	// Set up pointer to array:
-	help_screen_pointer:=#help_screen_array;
-	ks:=0;
-	cls();
-
-	// Draw the frog
-	CopyFullScreen(title_screen_frog_pointer, #$8000);
-	
- 
-	Key::SetupScreenCodes();
-	Key::Read();
-	ks:=Key::keyState;
-	while(ks=0) do
-	begin
 		
-		ks:=Key::keyState;
+			sleep_delay();
+			textat(4,24,#space,25);
+			sleep_delay();
 	
 	end;
 	
