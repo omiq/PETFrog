@@ -132,7 +132,10 @@ begin
 end;
 
 begin
-
+	DefineScreen();	
+	screen_char_loc:=$8000;
+	screenmemory:=$8000;
+	cls();
 	
 	is_80:=false;
 	is_80:=is_80_columns();	
@@ -141,17 +144,12 @@ begin
     if(is_80=true) then
 	begin
 		cursor_down();
-		cursor_return();
-		uppercase();
-		cursor_graphic();
+	cursor_return();
+	uppercase();
+	cursor_graphic();
 		basic_print(#sorry_80);
 		loop();
 	end;
-
-	DefineScreen();	
-	screen_char_loc:=$8000;
-	screenmemory:=$8000;
-	cls();
 
 	while(1) do
 	begin

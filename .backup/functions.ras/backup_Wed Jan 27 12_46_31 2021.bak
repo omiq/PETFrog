@@ -292,9 +292,9 @@ begin
 	hks:=Key::keyState;
 	while(hks=0) do
 	begin
-		Key::Read();
+		
 		hks:=Key::keyState;
-		sleep_delay();
+	
 	end;
 	
 	ScrollY();
@@ -350,43 +350,91 @@ begin
 	begin
 		Key::Read();
 		ks:=Key::keyState;
-
-
+		for slide:=1 to 100 do
+		begin
+			incrange(ctr,1,100);
 			Key::Read();
 			ks:=Key::keyState;
-			textat(4,24,#space2,25);	
-			frame_delay();
-
-
+	
+			if( ctr<50 ) then
+			begin
+				textat(4,24,#space2,25);	
+			end
+			else
+			begin	
+				textat(4,24,#space,25);
+			end;
 			Key::Read();
 			ks:=Key::keyState;
-			textat(4,24,#space,25);
-			frame_delay();
+			sleep_delay();
 
-
+		end;
+			ctr:=0;
 			Key::Read();
 			ks:=Key::keyState;
+			sleep_delay();
 			textat(4,24,#blk,25);
-			frame_delay();
-
-			Key::Read();
+			sleep_delay();	
+			textat(4,24,#blk,25);
+			sleep_delay();	
+			Key::Read();	
 			ks:=Key::keyState;
-			textat(4,24,#help,25);	
-			frame_delay();
-
 			
-
+		for slide:=1 to 100 do
+		begin
+			incrange(ctr,1,100);
 			Key::Read();
 			ks:=Key::keyState;
-			textat(4,24,#help2,25);	
-			frame_delay();
-
-
+			if( ctr<50 ) then
+			begin
+				textat(4,24,#space2,25);	
+			end
+			else
+			begin	
+				textat(4,24,#space,25);
+			end;
+			sleep_delay();
 			Key::Read();
 			ks:=Key::keyState;
+		end;
+			ctr:=0;
+			Key::Read();
+			ks:=Key::keyState;
+			sleep_delay();
 			textat(4,24,#blk,25);
-			frame_delay();
-
+			sleep_delay();	
+			textat(4,24,#blk,25);
+			sleep_delay();
+			Key::Read();
+			ks:=Key::keyState;
+			
+		for slide:=1 to 100 do
+		begin
+			incrange(ctr,1,200);
+			Key::Read();
+			ks:=Key::keyState;
+			if( ctr<50 ) then
+			begin
+				textat(4,24,#help2,25);	
+			end
+			else
+			begin	
+				textat(4,24,#help,25);	
+			end;
+			sleep_delay();
+			Key::Read();
+			ks:=Key::keyState;
+		end;
+			ctr:=0;
+			Key::Read();
+			ks:=Key::keyState;
+			sleep_delay();
+			textat(4,24,#blk,25);
+			sleep_delay();	
+			textat(4,24,#blk,25);
+			sleep_delay();
+			Key::Read();
+			ks:=Key::keyState;
 	end;
 	
 	ScrollY();

@@ -292,9 +292,9 @@ begin
 	hks:=Key::keyState;
 	while(hks=0) do
 	begin
-		Key::Read();
+		
 		hks:=Key::keyState;
-		sleep_delay();
+	
 	end;
 	
 	ScrollY();
@@ -344,49 +344,81 @@ begin
 
 	Key::SetupScreenCodes();
 	Key::Read();
-	ks:=Key::keyState;
 
-	while(ks=0) do
+
+	while(Key::keyState=0) do
 	begin
 		Key::Read();
-		ks:=Key::keyState;
+
+		for slide:=1 to 100 do
+		begin
+			incrange(ctr,1,100);
 
 
+			if( ctr<50 ) then
+			begin
+				textat(4,24,#space2,25);	
+			end
+			else
+			begin	
+				textat(4,24,#space,25);
+			end;
+			sleep_delay();
 			Key::Read();
-			ks:=Key::keyState;
-			textat(4,24,#space2,25);	
-			frame_delay();
-
-
-			Key::Read();
-			ks:=Key::keyState;
-			textat(4,24,#space,25);
-			frame_delay();
-
-
-			Key::Read();
-			ks:=Key::keyState;
+		end;
+			ctr:=0;
+			sleep_delay();
 			textat(4,24,#blk,25);
-			frame_delay();
-
-			Key::Read();
-			ks:=Key::keyState;
-			textat(4,24,#help,25);	
-			frame_delay();
-
+			sleep_delay();	
+			textat(4,24,#blk,25);
+			sleep_delay();	
+			Key::Read();	
 			
+		for slide:=1 to 100 do
+		begin
+			incrange(ctr,1,100);
 
+			if( ctr<50 ) then
+			begin
+				textat(4,24,#space2,25);	
+			end
+			else
+			begin	
+				textat(4,24,#space,25);
+			end;
+			sleep_delay();
 			Key::Read();
-			ks:=Key::keyState;
-			textat(4,24,#help2,25);	
-			frame_delay();
-
-
-			Key::Read();
-			ks:=Key::keyState;
+		end;
+			ctr:=0;
+			sleep_delay();
 			textat(4,24,#blk,25);
-			frame_delay();
+			sleep_delay();	
+			textat(4,24,#blk,25);
+			sleep_delay();
+			Key::Read();
+			
+		for slide:=1 to 100 do
+		begin
+			incrange(ctr,1,200);
 
+			if( ctr<50 ) then
+			begin
+				textat(4,24,#help2,25);	
+			end
+			else
+			begin	
+				textat(4,24,#help,25);	
+			end;
+			sleep_delay();
+			Key::Read();
+		end;
+			ctr:=0;
+			sleep_delay();
+			textat(4,24,#blk,25);
+			sleep_delay();	
+			textat(4,24,#blk,25);
+			sleep_delay();
+			Key::Read();
 	end;
 	
 	ScrollY();

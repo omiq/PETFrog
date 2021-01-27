@@ -132,7 +132,10 @@ begin
 end;
 
 begin
-
+	DefineScreen();	
+	screen_char_loc:=$8000;
+	screenmemory:=$8000;
+	cls();
 	
 	is_80:=false;
 	is_80:=is_80_columns();	
@@ -147,11 +150,6 @@ begin
 		basic_print(#sorry_80);
 		loop();
 	end;
-
-	DefineScreen();	
-	screen_char_loc:=$8000;
-	screenmemory:=$8000;
-	cls();
 
 	while(1) do
 	begin

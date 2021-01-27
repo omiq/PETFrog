@@ -382,6 +382,8 @@ begin
 			frame_delay();
 
 
+
+
 			Key::Read();
 			ks:=Key::keyState;
 			textat(4,24,#blk,25);

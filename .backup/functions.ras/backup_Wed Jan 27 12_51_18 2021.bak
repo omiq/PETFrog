@@ -355,37 +355,32 @@ begin
 			Key::Read();
 			ks:=Key::keyState;
 			textat(4,24,#space2,25);	
-			frame_delay();
+			sleep_delay();
 
 
 			Key::Read();
 			ks:=Key::keyState;
 			textat(4,24,#space,25);
-			frame_delay();
+			sleep_delay();
 
 
 			Key::Read();
 			ks:=Key::keyState;
 			textat(4,24,#blk,25);
-			frame_delay();
-
-			Key::Read();
-			ks:=Key::keyState;
-			textat(4,24,#help,25);	
-			frame_delay();
-
+			sleep_delay();
 			
 
 			Key::Read();
 			ks:=Key::keyState;
 			textat(4,24,#help2,25);	
-			frame_delay();
+			sleep_delay();
+
 
 
 			Key::Read();
 			ks:=Key::keyState;
 			textat(4,24,#blk,25);
-			frame_delay();
+			sleep_delay();
 
 	end;
 	

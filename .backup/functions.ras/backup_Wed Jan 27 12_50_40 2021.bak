@@ -350,42 +350,38 @@ begin
 	begin
 		Key::Read();
 		ks:=Key::keyState;
-
-
+		for slide:=1 to 100 do
+		begin
+			incrange(ctr,1,100);
 			Key::Read();
 			ks:=Key::keyState;
 			textat(4,24,#space2,25);	
-			frame_delay();
+			sleep_delay();
 
-
+			incrange(ctr,1,100);
 			Key::Read();
 			ks:=Key::keyState;
 			textat(4,24,#space,25);
-			frame_delay();
+			sleep_delay();
 
-
+			ctr:=0;
 			Key::Read();
 			ks:=Key::keyState;
 			textat(4,24,#blk,25);
-			frame_delay();
-
-			Key::Read();
-			ks:=Key::keyState;
-			textat(4,24,#help,25);	
-			frame_delay();
-
+			sleep_delay();
 			
-
+			incrange(ctr,1,200);
 			Key::Read();
 			ks:=Key::keyState;
 			textat(4,24,#help2,25);	
-			frame_delay();
+			sleep_delay();
 
 
+			ctr:=0;
 			Key::Read();
 			ks:=Key::keyState;
 			textat(4,24,#blk,25);
-			frame_delay();
+			sleep_delay();
 
 	end;
 	

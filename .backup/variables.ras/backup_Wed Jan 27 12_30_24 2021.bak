@@ -16,8 +16,7 @@
 	const	KEYHIT: 	address = $E812; //  59410
 
 	KEYPRESS: integer = $FF;	
-	THIS_KEY: byte = $FF;	
-		  ks: byte = 0;		 // keystate	
+	THIS_KEY: byte = $FF;		
 	
 	n_key_up,n_key_down,n_key_left,n_key_right,key_up,key_down,key_left,key_right:integer;
 
