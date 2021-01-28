@@ -131,16 +131,6 @@ begin
 
 end;
 
-procedure intro_loop();
-begin
-
-	while(READY_TO_PLAY=false) do
-	begin
-		title_screen();	
-		if(READY_TO_PLAY=false) then begin help_screen(); end;
-	end;	
-end;
-
 begin
 
 	
@@ -167,8 +157,7 @@ begin
 
 	while(1) do
 	begin
-	
-		intro_loop();	
+		title_screen();
 		init_vars();
 		game_loop();
 		score_screen();

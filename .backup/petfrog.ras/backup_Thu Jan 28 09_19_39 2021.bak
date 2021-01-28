@@ -137,7 +137,7 @@ begin
 	while(READY_TO_PLAY=false) do
 	begin
 		title_screen();	
-		if(READY_TO_PLAY=false) then begin help_screen(); end;
+		help_screen();
 	end;	
 end;
 

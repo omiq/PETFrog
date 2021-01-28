@@ -290,7 +290,6 @@ begin
 	help_screen_pointer:=#help_screen_array;
 	hks:=0;
 	cls();
-	cursor_home();
 
 	// Draw the frog
 	CopyFullScreen(help_screen_pointer, #$8000);

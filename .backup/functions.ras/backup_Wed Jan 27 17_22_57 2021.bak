@@ -290,7 +290,6 @@ begin
 	help_screen_pointer:=#help_screen_array;
 	hks:=0;
 	cls();
-	cursor_home();
 
 	// Draw the frog
 	CopyFullScreen(help_screen_pointer, #$8000);
@@ -299,20 +298,26 @@ begin
 		cursor_down();
 		cursor_right();
 	end; 
-	basic_print("SPACE TO CONTINUE");
+	basic_print("PLAY NOW (YN)?");
 
 	Key::SetupScreenCodes();
 	Key::Read();
 	
-	while(Key::Pressed(Key::KSPACE)=false) do
+	while(Key::Pressed(Key::KY)=false and Key::Pressed(Key::KN)=false) do
 	begin
 		Key::Read();
 		sleep_delay();
 	end;
 	
-	ScrollY();
-	return;
-
+	if(Key::Pressed(Key::KY)) then
+	begin
+		
+	end
+	else
+	begin
+		ScrollY();
+		return;
+	end;
 
 end;
 
@@ -395,17 +400,15 @@ begin
 
 	end;
 
-		if(Key::Pressed(Key::KSPACE)) then
+		if(Key::Pressed(Key::KH)) then
 		begin	
-			READY_TO_PLAY:=true;
+			ScrollY();
+			help_screen();
 		end
 		else
 		begin
-			READY_TO_PLAY:=false;
-		end;
 			
-		ScrollY();
-
+		end;
 
 
 end;
@@ -445,13 +448,20 @@ begin
 	while (ks=0) do
 	begin
 		Key::Read();
-		ks:=Key::keyState;
+		ks=Key::Keystate();
 		
-		textat(14,24,#space,25);
+		textat(14,24,#space,24);
 		frame_delay();
+
+		
+		textat(14,24,#space,24);
 		frame_delay();
-		textat(14,24,#space2,25);
-		frame_delay();	
+	
+		textat(14,24,"                       ",24);		
+		frame_delay();
+
+		
+		textat(14,24,"                       ",24);		
 		frame_delay();
 	end;
 	ScrollY();
@@ -478,7 +488,6 @@ begin
 	cls();
 	FROGS_SAVED:=0;	
 	GAME_SPEED:=8;
-	READY_TO_PLAY:=false;
 	Key::SetupScreenCodes();
 	
 	// Init the playfield
