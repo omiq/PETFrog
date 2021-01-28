@@ -1448,7 +1448,7 @@ Key_SetupScreenCodes
 	; LineNumber: 344
 	; Assigning memory location
 	; Assigning single variable : $5e
-	; Load Unknown type array
+	; Load Byte array
 	ldx #$0
 	lda Key_screencodes,x
 	; Calling storevariable

@@ -283,9 +283,9 @@ procedure help_screen();
 var
 	hks,_ctr:byte;
 	help_screen_pointer, str_pointer:pointer;
-	
-   					     //1234567890123456789012345678901234567890	
-	thanks_string:cstring=(" THANKS TRSE COMM");	  
+						 //        10		20			30		40		  50		  60		<	
+  					     //123456789_123456789_123456789_123456789_1234567890123456789_12345678901234567890	
+	thanks_string:cstring=("THANKS @LEUAT & THE TRSE COMMUNITY   PRESS ANY KEY TO CONTINUE  THANKS @LEUAT & THE TRSE COMMUNITY   PRESS ANY KEY TO CONTINUE  ");	  
 	
 begin
 	
@@ -301,10 +301,10 @@ begin
 	Key::SetupScreenCodes();
 	Key::Read();
 	
-	while(Key::Pressed(Key::KSPACE)=false) do
+	while(Key::keyState = 0) do
 	begin
 		Key::Read();
-		_ctr:=abs(ti/8);
+		_ctr:=abs(ti/4);
 		textat(12,2,#thanks_string[_ctr],17);
 	end;
 	
@@ -411,12 +411,12 @@ begin
 	Key::Read();
 	
 
-	while (ks=0) do
+	while (Key::keyState=0) do
 	begin
 		Key::Read();
-		ks:=Key::keyState;
+
 		
-		if(ti>127) then
+		if(abs(ti/64)>=2) then
 		begin
 			textat(14,24,#space,25);
 		end
