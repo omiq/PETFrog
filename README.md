@@ -2,7 +2,9 @@
 Commodore PET game built using TRSE 
 
 
-Download https://github.com/omiq/PETFrog/blob/main/petfrog.prg
+* [Download](https://github.com/omiq/PETFrog/blob/main/petfrog.prg) 
+
+![](https://github.com/omiq/PETFrog/blob/main/Screen%20Shot%202021-01-28%20at%201.11.43%20PM.png)
 
 ## Controls
 ```
