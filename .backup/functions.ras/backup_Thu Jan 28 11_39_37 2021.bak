@@ -281,9 +281,12 @@ end;
 
 procedure help_screen();
 var
-	hks:byte;
-	help_screen_pointer:pointer;
-	  
+	hks,_ctr:byte;
+	help_screen_pointer, str_pointer:pointer;
+						 //        10		20			30		40		  50		  60		<	
+  					     //123456789_123456789_123456789_123456789_1234567890123456789_12345678901234567890	
+	thanks_string:cstring=("THANKS @LEUAT & THE TRSE COMMUNITY   PRESS ANY KEY TO CONTINUE  THANKS @LEUAT & THE TRSE COMMUNITY   PRESS ANY KEY TO CONTINUE  ");	  
+	
 begin
 	
 	// Set up pointer to array:
@@ -294,20 +297,15 @@ begin
 
 	// Draw the frog
 	CopyFullScreen(help_screen_pointer, #$8000);
-	fori hks:=1 to 22 do
-	begin
-		cursor_down();
-		cursor_right();
-	end; 
-	basic_print("SPACE TO CONTINUE");
 
 	Key::SetupScreenCodes();
 	Key::Read();
 	
-	while(Key::Pressed(Key::KSPACE)=false) do
+	while(Key::Pressed(Key::NOKEY)=true) do
 	begin
 		Key::Read();
-		sleep_delay();
+		_ctr:=abs(ti/4);
+		textat(12,2,#thanks_string[_ctr],17);
 	end;
 	
 	ScrollY();
@@ -319,15 +317,7 @@ end;
 procedure title_screen();
 var
 	ctr,slide:byte;
-	              //12345678901234567890
-    	inst0:cstring=(98,98,98,98,98,98,32);
-	inst1:cstring=(220,139,133,153,147,186,98,98,98,32);
-	inst2:cstring=(220,160,160,160,160,151,160,221,160,32);
-	inst3:cstring=(220,160,160,160,129,147,132,221,160,32);
-	inst4:cstring=(220,160,160,160,192,192,192,253,160,32);	
-	inst5:cstring=(220,160,160,160,160,184,160,221,160,32);
-	inst6:cstring=(220,160,160,160,180,181,182,221,160,32);
-	inst7:cstring=(32,32,32,124,226,226,226,226,32,32);	
+
 begin
 	
 	// Set up pointer to array:
@@ -342,15 +332,6 @@ begin
     MemCpyFast(#logo, 13, ^32808, 13 );  
     MemCpyFast(#logo, 26, ^32848, 13 );  
     MemCpyFast(#logo, 39, ^32888, 13 );  
-
-	textat(0,13,#inst0,7);
-	textat(0,14,#inst1,10);
-	textat(0,15,#inst2,10);
-	textat(0,16,#inst3,10);
-	textat(0,17,#inst4,10);
-	textat(0,18,#inst5,10);
-	textat(0,19,#inst6,10);
-	textat(0,20,#inst7,10);
 	
 	textat(2,21,#blk,28);
 	textat(2,22, #by,28);	
@@ -363,29 +344,22 @@ begin
 
 	while(Key::Pressed(Key::KH)=false and Key::Pressed(Key::KSPACE)=false) do
 	begin
-		Key::Read();
-
 		
-			fori slide:=1 to 255 do
-			begin
-				ctr:=ti/32;
-    				case ctr of
-				1: textat(4,24,#space2,25);	
-				2: textat(4,24,#space,25);	
-				3: textat(4,24,#space2,25);	
-				4: textat(4,24,#space,25);	
-				5: textat(4,24,#help,25);	
-				6: textat(4,24,#help2,25);	
-				7: textat(4,24,#help,25);	
-				8: textat(4,24,#help2,25);	
-				end;
-
+			Key::Read();
+			ctr:=abs(ti/32);
+    			case ctr of
+			1: textat(4,24,#space2,25);	
+			2: textat(4,24,#space,25);	
+			3: textat(4,24,#space2,25);	
+			4: textat(4,24,#space,25);	
+			5: textat(4,24,#help,25);	
+			6: textat(4,24,#help2,25);	
+			7: textat(4,24,#help,25);	
+			8: textat(4,24,#help2,25);	
+			0: textat(4,24,#help2,25);	
 			end;
 
 
-
-			
-	
 	end;
 
 
@@ -406,6 +380,7 @@ end;
 
 
 procedure score_screen();
+
 begin
 	cls();
 
@@ -441,12 +416,14 @@ begin
 		Key::Read();
 		ks:=Key::keyState;
 		
-		textat(14,24,#space,25);
-		frame_delay();
-		frame_delay();
-		textat(14,24,#space2,25);
-		frame_delay();	
-		frame_delay();
+		if(ti>127) then
+		begin
+			textat(14,24,#space,25);
+		end
+		else
+		begin		
+			textat(14,24,#space2,25);
+		end;
 	end;
 	ScrollY();
 end;
