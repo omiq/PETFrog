@@ -363,21 +363,49 @@ begin
 
 	while(Key::Pressed(Key::KH)=false and Key::Pressed(Key::KSPACE)=false) do
 	begin
+		Key::Read();
+		fori ctr:=1 to 4 do
+		begin
 		
-			Key::Read();
-			ctr:=ti/32;
-    			case ctr of
-			1: textat(4,24,#space2,25);	
-			2: textat(4,24,#space,25);	
-			3: textat(4,24,#space2,25);	
-			4: textat(4,24,#space,25);	
-			5: textat(4,24,#help,25);	
-			6: textat(4,24,#help2,25);	
-			7: textat(4,24,#help,25);	
-			8: textat(4,24,#help2,25);	
+			fori slide:=1 to 127 do
+			begin
+				if(ti/64 >= 2) then
+				begin
+					textat(4,24,#space2,25);	
+				end
+				else
+				begin
+					textat(4,24,#space,25);
+				end;
 			end;
 
+		end;
+		
+			fori ctr:=1 to 2000 do
+			begin
+				textat(4,24,#blk,25);	
+			end;
+			
+		fori ctr:=1 to 4 do
+		begin
 
+			fori slide:=1 to 255 do
+			begin
+				if(ti > 127) then
+				begin
+					textat(4,24,#help,25);	
+				end
+				else
+				begin
+					textat(4,24,#help2,25);	
+				end;
+			end;
+
+		end;
+			fori ctr:=1 to 2000 do
+			begin
+				textat(4,24,#blk,25);	
+			end;
 	end;
 
 
