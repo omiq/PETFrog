@@ -416,7 +416,9 @@ begin
 		begin
 			textat(0,7,"3",1);
 		end;
-		
+	end;
+
+
 
 		if(Key::Pressed(Key::KSPACE)) then
 		begin	
@@ -429,8 +431,8 @@ begin
 			READY_TO_PLAY:=2;
 			ScrollY();
 		end;
-		
-	end;
+			
+
 
 
 end;

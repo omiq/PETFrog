@@ -354,7 +354,7 @@ begin
 	Key::Read();
 
 
-	while(READY_TO_PLAY=false) do
+	while(Key::keyState=0 and READY_TO_PLAY=false) do
 	begin
 		
 			Key::Read();
@@ -416,7 +416,9 @@ begin
 		begin
 			textat(0,7,"3",1);
 		end;
-		
+	end;
+
+
 
 		if(Key::Pressed(Key::KSPACE)) then
 		begin	
@@ -429,8 +431,8 @@ begin
 			READY_TO_PLAY:=2;
 			ScrollY();
 		end;
-		
-	end;
+			
+
 
 
 end;

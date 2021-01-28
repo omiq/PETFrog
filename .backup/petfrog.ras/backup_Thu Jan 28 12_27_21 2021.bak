@@ -134,10 +134,16 @@ end;
 procedure intro_loop();
 begin
 
-	while(READY_TO_PLAY<>true) do
+	GAME_SPEED:=4;
+	
+	// hard 	GAME_SPEED:=4;
+	// medium GAME_SPEED:=5;	
+	// easy GAME_SPEED:=8;
+
+	while(READY_TO_PLAY=false) do
 	begin
 		title_screen();	
-		if(READY_TO_PLAY=2) then begin help_screen(); end;
+		if(READY_TO_PLAY=false) then begin help_screen(); end;
 	end;	
 end;
 

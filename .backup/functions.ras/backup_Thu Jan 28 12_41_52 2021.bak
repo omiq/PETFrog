@@ -317,13 +317,6 @@ end;
 procedure title_screen();
 var
 	ctr,slide:byte;
-	DIFFICULTY :cstring=("DIFFICULTY");
-	DIFFICULTY1:cstring=("1 EASY    ");
-	DIFFICULTY2:cstring=("2 MEDIUM  ");
-	DIFFICULTY3:cstring=("3 HARD    ");
-	R1:byte=177;
-	R2:byte=178;
-	R3:byte=179;
 
 begin
 	
@@ -343,18 +336,13 @@ begin
 	textat(2,21,#blk,28);
 	textat(2,22, #by,28);	
 	textat(2,23,#url,28);	
-	textat(0,4,#DIFFICULTY,10);		
-	textat(0,5,#DIFFICULTY1,10);
-	textat(0,6,#DIFFICULTY2,10);
-	textat(0,7,#DIFFICULTY3,10);
-
 
 
 	Key::SetupScreenCodes();
 	Key::Read();
 
 
-	while(READY_TO_PLAY=false) do
+	while(Key::keyState=0 and READY_TO_PLAY=false) do
 	begin
 		
 			Key::Read();
@@ -370,7 +358,14 @@ begin
 			8: textat(4,24,#help2,25);	
 			0: textat(4,24,#help2,25);	
 			end;
-			
+
+		textat(0,4,#DIFFICULTY,10);		
+		textat(0,5,#DIFFICULTY1,10);
+		textat(0,6,#DIFFICULTY2,10);
+		textat(0,7,#DIFFICULTY3,10);
+
+	end;
+
 	// hard 	GAME_SPEED:=4;
 	// medium GAME_SPEED:=5;	
 	// easy GAME_SPEED:=8;
@@ -390,34 +385,6 @@ begin
 			GAME_SPEED:=4;
 		end;
 
-		if(GAME_SPEED=8) then 
-		begin
-			textat(0,5,#R1,1);
-		end
-		else
-		begin
-			textat(0,5,"1",1);
-		end;			
-
-		if(GAME_SPEED=5) then 
-		begin
-			textat(0,6,#R2,1);
-		end
-		else
-		begin
-			textat(0,6,"2",1);
-		end;
-		
-		if(GAME_SPEED=4) then 
-		begin
-			textat(0,7,#R3,1);
-		end
-		else
-		begin
-			textat(0,7,"3",1);
-		end;
-		
-
 		if(Key::Pressed(Key::KSPACE)) then
 		begin	
 			READY_TO_PLAY:=true;
@@ -429,8 +396,8 @@ begin
 			READY_TO_PLAY:=2;
 			ScrollY();
 		end;
-		
-	end;
+			
+
 
 
 end;

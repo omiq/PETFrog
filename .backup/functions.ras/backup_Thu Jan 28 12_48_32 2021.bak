@@ -354,7 +354,7 @@ begin
 	Key::Read();
 
 
-	while(READY_TO_PLAY=false) do
+	while(Key::keyState=0 and READY_TO_PLAY=false) do
 	begin
 		
 			Key::Read();
@@ -370,25 +370,6 @@ begin
 			8: textat(4,24,#help2,25);	
 			0: textat(4,24,#help2,25);	
 			end;
-			
-	// hard 	GAME_SPEED:=4;
-	// medium GAME_SPEED:=5;	
-	// easy GAME_SPEED:=8;
-
-		if(Key::Pressed(Key::K1)) then
-		begin	
-			GAME_SPEED:=8;
-		end;
-		
-		if(Key::Pressed(Key::K2)) then
-		begin	
-			GAME_SPEED:=5;
-		end;
-		
-		if(Key::Pressed(Key::K3)) then
-		begin	
-			GAME_SPEED:=4;
-		end;
 
 		if(GAME_SPEED=8) then 
 		begin
@@ -416,7 +397,26 @@ begin
 		begin
 			textat(0,7,"3",1);
 		end;
+	end;
+
+	// hard 	GAME_SPEED:=4;
+	// medium GAME_SPEED:=5;	
+	// easy GAME_SPEED:=8;
+
+		if(Key::Pressed(Key::K1)) then
+		begin	
+			GAME_SPEED:=8;
+		end;
 		
+		if(Key::Pressed(Key::K2)) then
+		begin	
+			GAME_SPEED:=5;
+		end;
+		
+		if(Key::Pressed(Key::K3)) then
+		begin	
+			GAME_SPEED:=4;
+		end;
 
 		if(Key::Pressed(Key::KSPACE)) then
 		begin	
@@ -429,8 +429,8 @@ begin
 			READY_TO_PLAY:=2;
 			ScrollY();
 		end;
-		
-	end;
+			
+
 
 
 end;
