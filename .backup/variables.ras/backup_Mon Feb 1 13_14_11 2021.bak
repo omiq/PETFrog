@@ -38,8 +38,7 @@
 	GAME_TICKS:		byte=0;
 	READY_TO_PLAY:	byte=false;
 						// 12345678901234567890	
-
-		spc80:	cstring = ("                                                                                ");  
+		80spc:	cstring = "                                                                                ";  
 
 
 		  				// 123456789012345678901234567890

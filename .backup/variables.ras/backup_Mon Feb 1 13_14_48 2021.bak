@@ -39,7 +39,7 @@
 	READY_TO_PLAY:	byte=false;
 						// 12345678901234567890	
 
-		spc80:	cstring = ("                                                                                ");  
+		spc80:	cstring = "                                                                                ";  
 
 
 		  				// 123456789012345678901234567890

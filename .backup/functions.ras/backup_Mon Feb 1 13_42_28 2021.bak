@@ -518,22 +518,10 @@ begin
 	end;
 	copy_8040_screen(petscii_pointer, #$8000);
 
-	if(DETECTED_SCREEN_WIDTH=40) then
-	begin
-	    MemCpyFast(#logo, 0, ^32768, 13 );  
-	    MemCpyFast(#logo, 13, ^32808, 13 );  
-	    MemCpyFast(#logo, 26, ^32848, 13 );  
-	    MemCpyFast(#logo, 39, ^32888, 13 );  
-	end
-    else
-    begin
-	    MemCpyFast(#logo, 0,  ^$8000, 13 );  
-	    MemCpyFast(#logo, 13, ^$8050, 13 );  
-	    MemCpyFast(#logo, 26, ^$80A0, 13 );  
-	    MemCpyFast(#logo, 39, ^$80F0, 13 );  
-  
-
-	end;
+    MemCpyFast(#logo, 0, ^32768, 13 );  
+    MemCpyFast(#logo, 13, ^32808, 13 );  
+    MemCpyFast(#logo, 26, ^32848, 13 );  
+    MemCpyFast(#logo, 39, ^32888, 13 );  
 
 	moveto(13,0,hi(#$8000));
 	printstring(#over,0,13);
@@ -600,13 +588,13 @@ begin
 	fori iteration:= 1 to 25 do
 	begin
 		// Copy the source twice
-		MemCpyFast(this_row, 0, #target_strip, 40);
-		target_strip:=target_strip+40;
-		MemCpyFast(this_row, 0, #target_strip, 40);
-		target_strip:=target_strip+40;
+		MemCpyFast(this_row, 0, #target_strip, DETECTED_SCREEN_WIDTH);
+		target_strip:=target_strip+DETECTED_SCREEN_WIDTH;
+		MemCpyFast(this_row, 0, #target_strip, DETECTED_SCREEN_WIDTH);
+		target_strip:=target_strip+DETECTED_SCREEN_WIDTH;
 		
 		// Next row
-		this_row:=this_row+40;
+		this_row:=this_row+DETECTED_SCREEN_WIDTH;
 	end;
 							
 
@@ -793,7 +781,7 @@ begin
 	for strip_num := 0 to 5 do
 	begin
 		this_strip:=obstacles_y[strip_num];
-		screenmemory:=$8000+(this_strip*DETECTED_SCREEN_WIDTH);
+		screenmemory:=$8000+(this_strip*40);
 
 		this_source_offset:=#level_strips+(this_strip*80);
 		
@@ -814,7 +802,7 @@ begin
 	for strip_num := 5 to 13 do
 	begin
 		this_strip:=obstacles_y[strip_num];
-		screenmemory:=$8000+(this_strip*DETECTED_SCREEN_WIDTH);
+		screenmemory:=$8000+(this_strip*40);
 		this_source_offset:=#level_strips+(this_strip*80);
 		
 		if(strip_direction[strip_num]=1) then
@@ -830,7 +818,6 @@ begin
 
 
 	end;
-	
 	
 	if(game_move=1) then
 	begin

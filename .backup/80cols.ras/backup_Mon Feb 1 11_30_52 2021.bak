@@ -17,9 +17,10 @@ begin
 end;
 
 procedure uppercase();
-
+var
+	UPPER_POKE_LOC:pointer;
 begin
-	_A:=142;
+		_A:=142;
     call(#$FFD2);
 end;
 

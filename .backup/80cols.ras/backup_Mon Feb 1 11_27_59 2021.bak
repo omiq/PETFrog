@@ -15,12 +15,12 @@ begin
     call(#$FFD2);
 
 end;
-
 procedure uppercase();
-
+var
+	UPPER_POKE_LOC:pointer;
 begin
-	_A:=142;
-    call(#$FFD2);
+	UPPER_POKE_LOC:=59468;
+	poke(#UPPER_POKE_LOC,0,12);
 end;
 
 procedure cursor_clear();

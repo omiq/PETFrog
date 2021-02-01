@@ -9,8 +9,8 @@
 		arrp:	pointer;	
 		p_SW:	pointer;
 		
-	// need to take into account 80 columns
-	DETECTED_SCREEN_WIDTH: byte = 40;
+// need to take into account 80 columns
+DETECTED_SCREEN_WIDTH: byte = 40;
 
 	// Keyboard locations
 	const	KEYB: 	address = 151;	// Keys being pressed
@@ -37,9 +37,6 @@
 	FROGS_SAVED:		byte=0;
 	GAME_TICKS:		byte=0;
 	READY_TO_PLAY:	byte=false;
-						// 12345678901234567890	
-
-		spc80:	cstring = ("                                                                                ");  
 
 
 		  				// 123456789012345678901234567890
