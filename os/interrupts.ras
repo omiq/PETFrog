@@ -1,0 +1,7 @@
+program MyProgram;
+var  
+   i: byte; 
+
+begin
+
+end.

@@ -1,0 +1,82 @@
+// Petscii Objects
+Unit Pob;
+var  
+	ScreenWidth: byte = 40;	// width of screen (40 or 80)
+
+	x, y: byte;				// internal index
+	w, h: byte;				// sprite size
+	i: byte;				// index
+
+	sp: pointer;			// sprite data pointer
+
+/**
+<p>Draw a sprite at the ScreenMemory address</p>
+<p>Provide the address of the start of PETSCII screen codes with 
+the width and height to draw.</p>
+<code>Pob::Draw( 3, 2, #spaceship );
+**/
+procedure Draw( w, h: global byte, _ax: integer );
+begin
+
+	asm("
+	
+	; store the address in a pointer
+	sta Pob_sp
+	stx Pob_sp+1
+
+	");
+	
+	i := 0;
+	
+	for y := 0 to h do
+	begin
+	
+		for x := 0 to w do
+		begin
+		
+			screenmemory[ x ] := sp[ i ];
+			inc( i );
+
+		end;
+		screenmemory := screenmemory + ScreenWidth;
+		
+	end;
+	
+end;
+
+/**
+<p>Copy a portion of ScreenMemory to a sprite area. Use to 
+save characters on the screen, or to build dynamic sprites.</p>
+<p>Provide the address of buffer with the width and height 
+to copy from the screen.</p>
+<code>Pob::Copy( 3, 2, #store );
+**/
+procedure Copy( w, h: global byte, _ax: integer );
+begin
+end;
+
+/**
+<p>Clear a portion os ScreenMemory with the given screen code.
+<code>Pob::Clear( 3, 2, 32 );
+**/
+procedure Clear( w, h, i: global byte );
+begin
+
+
+	for y := 0 to h do
+	begin
+	
+		for x := 0 to w do
+		begin
+		
+			screenmemory[ x ] := i;
+
+		end;
+		screenmemory := screenmemory + ScreenWidth;
+		
+	end;
+	
+end;
+
+
+end.
