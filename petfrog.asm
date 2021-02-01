@@ -594,7 +594,7 @@ logo	dc.b $072, $049, $070, $06e, $070, $072, $06e, $055
 	dc.b $078, $078, $078, $078, $078, $078, $078, $078
 	dc.b $078, $078, $04a, $04b
 	; LineNumber: 187
-title_screen_frog_pointer	=                $04
+title_screen_frog_pointer	=                  $04
 	; LineNumber: 188
 title_screen_frog	dc.b $020, $020, $020, $020, $020, $020, $020, $020
 	dc.b $020, $020, $020, $020, $020, $020, $020, $020
@@ -974,7 +974,7 @@ rip	dc.b $0e2, $0e2, $0e2, $0e2, $0e2, $0e2, $0e2, $0e2
 	dc.b $020, $020, $020, $020, $020, $020, $020, $020
 	dc.b $020, $020, $020, $020, $020, $020, $020, $020
 	; LineNumber: 273
-petscii_pointer	=                $08
+petscii_pointer	=                  $08
 	; LineNumber: 307
 level2	dc.b $0cc, $0ef, $0fa, $013, $03, $0f, $012, $05
 	dc.b $03a, $039, $039, $039, $0cc, $0ef, $0ef, $0ef
@@ -1481,7 +1481,7 @@ test_string		dc.b	147
 	dc.b	43
 	dc.b	0
 	; LineNumber: 465
-screen_pointer	=                $16
+screen_pointer	=                  $16
 is_80_columns_block22
 is_80_columns
 	; LineNumber: 468
@@ -1546,7 +1546,7 @@ is_80_columns_elsedoneblock34
 	;    Procedure type : User-defined procedure
 	; LineNumber: 542
 	; LineNumber: 540
-szp	=                $16
+szp	=                  $16
 	; LineNumber: 538
 sx	dc.b	0
 	; LineNumber: 538
@@ -1565,7 +1565,7 @@ getat_rightvarInteger_var42 = $54
 	; Integer constant assigning
 	ldy #$80
 	lda #$00
-getat_rightvarInteger_var45 =                $56
+getat_rightvarInteger_var45 =                  $56
 	sta getat_rightvarInteger_var45
 	sty getat_rightvarInteger_var45+1
 	; Mul 16x8 setup
@@ -1609,13 +1609,13 @@ getat_wordAdd40
 	;    Procedure type : User-defined procedure
 	; LineNumber: 551
 	; LineNumber: 549
-zp	=                $16
+zp	=                  $16
 	; LineNumber: 547
 x	dc.b	0
 	; LineNumber: 547
 y	dc.b	0
 	; LineNumber: 547
-this_str	=                $0B
+this_str	=                  $0B
 	; LineNumber: 547
 str_len	dc.b	0
 textat_block46
@@ -1632,7 +1632,7 @@ textat_rightvarInteger_var49 = $54
 	; Integer constant assigning
 	ldy #$80
 	lda #$00
-textat_rightvarInteger_var52 =                $56
+textat_rightvarInteger_var52 =                  $56
 	sta textat_rightvarInteger_var52
 	sty textat_rightvarInteger_var52+1
 	; Mul 16x8 setup
@@ -1839,13 +1839,13 @@ ping
 	; LineNumber: 604
 mc_row	dc.b	0
 	; LineNumber: 605
-src_row	=                $16
+src_row	=                  $16
 	; LineNumber: 605
-dest_row	=                $0B
+dest_row	=                  $0B
 	; LineNumber: 602
-source_p	=                $0D
+source_p	=                  $0D
 	; LineNumber: 602
-dest_p	=                $10
+dest_p	=                  $10
 copy_8040_screen_block79
 copy_8040_screen
 	; LineNumber: 613
@@ -1923,9 +1923,9 @@ copy_8040_screen_loopend84
 	;    Procedure type : User-defined procedure
 	; LineNumber: 619
 	; LineNumber: 617
-c_row	=                $16
+c_row	=                  $16
 	; LineNumber: 617
-p_row	=                $0B
+p_row	=                  $0B
 	; LineNumber: 618
 scroll	dc.b	0
 	; LineNumber: 618
@@ -2040,9 +2040,9 @@ hks	dc.b	0
 	; LineNumber: 640
 _ctr	dc.b	0
 	; LineNumber: 641
-help_screen_pointer	=                $16
+help_screen_pointer	=                  $16
 	; LineNumber: 641
-str_pointer	=                $0B
+str_pointer	=                  $0B
 	; LineNumber: 644
 thanks_string	
 	dc.b	$14, $08, $01, $0e, $0b, $13, $20, $00, $0c
@@ -3413,13 +3413,13 @@ score_screen_loopend420
 	;    Procedure type : User-defined procedure
 	; LineNumber: 909
 	; LineNumber: 907
-spr_p	=                $16
+spr_p	=                  $16
 	; LineNumber: 905
 spr_x	dc.b	0
 	; LineNumber: 905
 spr_y	dc.b	0
 	; LineNumber: 905
-source_str	=                $0B
+source_str	=                  $0B
 	; LineNumber: 905
 spr_len	dc.b	0
 sprite_xy_block441
@@ -3435,7 +3435,7 @@ sprite_xy_rightvarInteger_var444 = $54
 	; Generic 16 bit op
 	lda #<level_strips
 	ldy #>level_strips
-sprite_xy_rightvarInteger_var447 =                $56
+sprite_xy_rightvarInteger_var447 =                  $56
 	sta sprite_xy_rightvarInteger_var447
 	sty sprite_xy_rightvarInteger_var447+1
 	; Right is PURE NUMERIC : Is word =1
@@ -3490,13 +3490,13 @@ sprite_xy_rightvarInteger_var451 = $54
 	; Generic 16 bit op
 	ldy #0
 	lda spr_x
-sprite_xy_rightvarInteger_var454 =                $56
+sprite_xy_rightvarInteger_var454 =                  $56
 	sta sprite_xy_rightvarInteger_var454
 	sty sprite_xy_rightvarInteger_var454+1
 	; Generic 16 bit op
 	lda #<level_strips
 	ldy #>level_strips
-sprite_xy_rightvarInteger_var457 =                $58
+sprite_xy_rightvarInteger_var457 =                  $58
 	sta sprite_xy_rightvarInteger_var457
 	sty sprite_xy_rightvarInteger_var457+1
 	; Right is PURE NUMERIC : Is word =1
@@ -3557,9 +3557,9 @@ sprite_xy_memcpy458
 	;    Procedure type : User-defined procedure
 	; LineNumber: 922
 	; LineNumber: 918
-this_row	=                $16
+this_row	=                  $16
 	; LineNumber: 918
-target_strip	=                $0B
+target_strip	=                  $0B
 	; LineNumber: 919
 iteration	dc.b	0
 	; LineNumber: 920
@@ -4916,7 +4916,7 @@ strip_num	dc.b	0
 	; LineNumber: 1107
 this_strip	dc.b	0
 	; LineNumber: 1108
-this_source_offset	=                $16
+this_source_offset	=                  $16
 	; LineNumber: 1109
 game_move	dc.b	0
 show_obstacles_block590
