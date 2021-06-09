@@ -251,7 +251,7 @@ begin
 	screen_char_loc:=$8000;
 	screenmemory:=$8000;
 	
-	Key::SetupScreenCodes();
+	//Key::SetupScreenCodes();
 	Key::Read();
 
 	yu:=0;

@@ -1,17 +1,20 @@
  processor 6502
-	org $400
-	; Starting new memory block at $400
-StartBlock400
-	.byte    $0, $0E, $08, $0A, $00, $9E, $20
+	org $401
+	; Starting new memory block at $401
+StartBlock401
+	.byte $b ; lo byte of next line
+	.byte $4 ; hi byte of next line
+	.byte $0a, $00 ; line 10 (lo, hi)
+	.byte $9e, $20 ; SYS token and a space
 	.byte   $31,$30,$34,$30
-	.byte     $00
+	.byte $00, $00, $00 ; end of program
 	; Ending memory block
-EndBlock400
+EndBlock401
 	org $410
 	; Starting new memory block at $410
 StartBlock410
 PETFrog
-	; LineNumber: 1484
+	; LineNumber: 1497
 	jmp block1
 	; LineNumber: 7
 Key_keys	dc.b	 
@@ -594,7 +597,7 @@ logo	dc.b $072, $049, $070, $06e, $070, $072, $06e, $055
 	dc.b $078, $078, $078, $078, $078, $078, $078, $078
 	dc.b $078, $078, $04a, $04b
 	; LineNumber: 187
-title_screen_frog_pointer	=                  $04
+title_screen_frog_pointer	=   $04
 	; LineNumber: 188
 title_screen_frog	dc.b $020, $020, $020, $020, $020, $020, $020, $020
 	dc.b $020, $020, $020, $020, $020, $020, $020, $020
@@ -974,7 +977,7 @@ rip	dc.b $0e2, $0e2, $0e2, $0e2, $0e2, $0e2, $0e2, $0e2
 	dc.b $020, $020, $020, $020, $020, $020, $020, $020
 	dc.b $020, $020, $020, $020, $020, $020, $020, $020
 	; LineNumber: 273
-petscii_pointer	=                  $08
+petscii_pointer	=   $08
 	; LineNumber: 307
 level2	dc.b $0cc, $0ef, $0fa, $013, $03, $0f, $012, $05
 	dc.b $03a, $039, $039, $039, $0cc, $0ef, $0ef, $0ef
@@ -1294,27 +1297,24 @@ printstring_done
 	; NodeProcedureDecl -1
 	; ***********  Defining procedure : Key_Read
 	;    Procedure type : User-defined procedure
-	; LineNumber: 383
+	; LineNumber: 346
 Key_Read
-	; LineNumber: 385
-	; Assigning single variable : Key_keyState
+	; LineNumber: 348
 	lda #$0
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta Key_keyState
-	; LineNumber: 414
+	; LineNumber: 377
 	
 ; // row to test
-	; Assigning single variable : Key_temp
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta Key_temp
 Key_Read_forloop5
-	; LineNumber: 388
-	; LineNumber: 390
-	; Assigning single variable : Key_KeyRow
+	; LineNumber: 351
+	; LineNumber: 353
 	lda Key_temp
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta Key_KeyRow
-	; LineNumber: 392
+	; LineNumber: 355
 	; ****** Inline assembler section
 		lda Key_KeyRead ; get bits
 		eor #$ff ; invert so the below works
@@ -1332,10 +1332,11 @@ Key_Read_forloop5
 		sta Key_keyState
 		
 		
-	; LineNumber: 413
+	; LineNumber: 376
 Key_Read_forloopcounter7
 Key_Read_loopstart8
 	; Compare is onpage
+	; Test Inc dec D
 	inc Key_temp
 	lda #$a
 	cmp Key_temp ;keep
@@ -1343,23 +1344,23 @@ Key_Read_loopstart8
 Key_Read_loopdone12: ;keep
 Key_Read_forloopend6
 Key_Read_loopend9
-	; LineNumber: 415
+	; LineNumber: 378
 	rts
 	; NodeProcedureDecl -1
 	; ***********  Defining procedure : Key_Pressed
 	;    Procedure type : User-defined procedure
-	; LineNumber: 431
-	; LineNumber: 430
+	; LineNumber: 394
+	; LineNumber: 393
 Key_Pressed_block13
 Key_Pressed
-	; LineNumber: 433
+	; LineNumber: 396
 	; ****** Inline assembler section
 	
 	sty Key_temp
 	lda Key_keysPressed,x
 	and Key_temp 	; contains column 
 	
-	; LineNumber: 441
+	; LineNumber: 404
 	rts
 	; NodeProcedureDecl -1
 	; ***********  Defining procedure : Crt_WaitVblStart
@@ -1413,6 +1414,7 @@ cls_clearloop16
 	; LineNumber: 370
 uppercase
 	; LineNumber: 371
+	; Assigning to register
 	; Assigning register : _a
 	lda #$8e
 	; LineNumber: 372
@@ -1425,6 +1427,7 @@ uppercase
 	; LineNumber: 377
 cursor_home
 	; LineNumber: 379
+	; Assigning to register
 	; Assigning register : _a
 	lda #$13
 	; LineNumber: 380
@@ -1437,6 +1440,7 @@ cursor_home
 	; LineNumber: 393
 cursor_return
 	; LineNumber: 395
+	; Assigning to register
 	; Assigning register : _a
 	lda #$d
 	; LineNumber: 396
@@ -1449,6 +1453,7 @@ cursor_return
 	; LineNumber: 401
 cursor_down
 	; LineNumber: 403
+	; Assigning to register
 	; Assigning register : _a
 	lda #$11
 	; LineNumber: 404
@@ -1461,6 +1466,7 @@ cursor_down
 	; LineNumber: 417
 cursor_graphic
 	; LineNumber: 419
+	; Assigning to register
 	; Assigning register : _a
 	lda #$8e
 	; LineNumber: 420
@@ -1472,44 +1478,44 @@ cursor_graphic
 	; NodeProcedureDecl -1
 	; ***********  Defining procedure : is_80_columns
 	;    Procedure type : User-defined procedure
-	; LineNumber: 466
-	; LineNumber: 463
+	; LineNumber: 479
+	; LineNumber: 476
 char	dc.b	0
-	; LineNumber: 464
+	; LineNumber: 477
 test_string		dc.b	147
 	dc.b	17
 	dc.b	43
 	dc.b	0
-	; LineNumber: 465
-screen_pointer	=                  $16
+	; LineNumber: 478
+screen_pointer	=   $16
 is_80_columns_block22
 is_80_columns
-	; LineNumber: 468
-	; Assigning single variable : screen_pointer
+	; LineNumber: 481
 	lda #$00
 	ldx #$80
 	sta screen_pointer
 	stx screen_pointer+1
-	; LineNumber: 469
+	; LineNumber: 482
 	jsr uppercase
-	; LineNumber: 476
-	; Assigning single variable : char
+	; LineNumber: 489
 	lda #$0
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta char
 is_80_columns_forloop23
-	; LineNumber: 472
-	; LineNumber: 473
+	; LineNumber: 485
+	; LineNumber: 486
+	; Assigning to register
 	; Assigning register : _a
-	; Load Unknown type array
+	; Load Unknown type array, assuming BYTE
 	ldx char
 	lda test_string,x
-	; LineNumber: 474
+	; LineNumber: 487
 	jsr $FFD2
-	; LineNumber: 475
+	; LineNumber: 488
 is_80_columns_forloopcounter25
 is_80_columns_loopstart26
 	; Compare is onpage
+	; Test Inc dec D
 	inc char
 	lda #$3
 	cmp char ;keep
@@ -1517,7 +1523,7 @@ is_80_columns_loopstart26
 is_80_columns_loopdone30: ;keep
 is_80_columns_forloopend24
 is_80_columns_loopend27
-	; LineNumber: 477
+	; LineNumber: 490
 	; Binary clause Simplified: EQUALS
 	; Load pointer array
 	ldy #$50
@@ -1526,35 +1532,34 @@ is_80_columns_loopend27
 	cmp #$2b;keep
 	bne is_80_columns_elseblock33
 is_80_columns_ConditionalTrueBlock32: ;Main true block ;keep 
-	; LineNumber: 478
-	; LineNumber: 479
+	; LineNumber: 491
+	; LineNumber: 492
 	lda #$1
 	rts
-	; LineNumber: 481
+	; LineNumber: 494
 	jmp is_80_columns_elsedoneblock34
 is_80_columns_elseblock33
-	; LineNumber: 482
-	; LineNumber: 483
+	; LineNumber: 495
+	; LineNumber: 496
 	lda #$0
 	rts
-	; LineNumber: 484
+	; LineNumber: 497
 is_80_columns_elsedoneblock34
-	; LineNumber: 486
+	; LineNumber: 499
 	rts
 	; NodeProcedureDecl -1
 	; ***********  Defining procedure : getat
 	;    Procedure type : User-defined procedure
-	; LineNumber: 542
-	; LineNumber: 540
-szp	=                  $16
-	; LineNumber: 538
+	; LineNumber: 555
+	; LineNumber: 553
+szp	=   $16
+	; LineNumber: 551
 sx	dc.b	0
-	; LineNumber: 538
+	; LineNumber: 551
 sy	dc.b	0
 getat_block39
 getat
-	; LineNumber: 543
-	; Assigning single variable : szp
+	; LineNumber: 556
 	; Generic 16 bit op
 	ldy #0
 	lda sx
@@ -1565,7 +1570,7 @@ getat_rightvarInteger_var42 = $54
 	; Integer constant assigning
 	ldy #$80
 	lda #$00
-getat_rightvarInteger_var45 =                  $56
+getat_rightvarInteger_var45 =   $56
 	sta getat_rightvarInteger_var45
 	sty getat_rightvarInteger_var45+1
 	; Mul 16x8 setup
@@ -1598,8 +1603,8 @@ getat_wordAdd40
 	lda getat_rightvarInteger_var42
 	sta szp
 	sty szp+1
-	; LineNumber: 544
-	; LineNumber: 545
+	; LineNumber: 557
+	; LineNumber: 558
 	; Load pointer array
 	ldy #$0
 	lda (szp),y
@@ -1607,21 +1612,20 @@ getat_wordAdd40
 	; NodeProcedureDecl -1
 	; ***********  Defining procedure : textat
 	;    Procedure type : User-defined procedure
-	; LineNumber: 551
-	; LineNumber: 549
-zp	=                  $16
-	; LineNumber: 547
+	; LineNumber: 564
+	; LineNumber: 562
+zp	=   $16
+	; LineNumber: 560
 x	dc.b	0
-	; LineNumber: 547
+	; LineNumber: 560
 y	dc.b	0
-	; LineNumber: 547
-this_str	=                  $0B
-	; LineNumber: 547
+	; LineNumber: 560
+this_str	=   $0B
+	; LineNumber: 560
 str_len	dc.b	0
 textat_block46
 textat
-	; LineNumber: 552
-	; Assigning single variable : zp
+	; LineNumber: 565
 	; Generic 16 bit op
 	ldy #0
 	lda x
@@ -1632,7 +1636,7 @@ textat_rightvarInteger_var49 = $54
 	; Integer constant assigning
 	ldy #$80
 	lda #$00
-textat_rightvarInteger_var52 =                  $56
+textat_rightvarInteger_var52 =   $56
 	sta textat_rightvarInteger_var52
 	sty textat_rightvarInteger_var52+1
 	; Mul 16x8 setup
@@ -1665,7 +1669,7 @@ textat_wordAdd47
 	lda textat_rightvarInteger_var49
 	sta zp
 	sty zp+1
-	; LineNumber: 552
+	; LineNumber: 565
 	; memcpyfast
 	ldy str_len
 	dey
@@ -1674,7 +1678,7 @@ textat_memcpy53
 	sta (zp),y
 	dey
 	bpl textat_memcpy53
-	; LineNumber: 554
+	; LineNumber: 567
 	rts
 	
 ; // =========================================
@@ -1682,36 +1686,33 @@ textat_memcpy53
 	; NodeProcedureDecl -1
 	; ***********  Defining procedure : PlayNote
 	;    Procedure type : User-defined procedure
-	; LineNumber: 573
-	; LineNumber: 572
+	; LineNumber: 586
+	; LineNumber: 585
 note_duration	dc.b	0
-	; LineNumber: 570
+	; LineNumber: 583
 note	dc.b	0
-	; LineNumber: 570
+	; LineNumber: 583
 note_len	dc.b	0
 PlayNote_block54
 PlayNote
-	; LineNumber: 574
+	; LineNumber: 587
 	; Binary clause Simplified: EQUALS
 	lda PLAY_SOUND
 	; Compare with pure num / var optimization
 	cmp #$1;keep
 	bne PlayNote_elsedoneblock58
 PlayNote_ConditionalTrueBlock56: ;Main true block ;keep 
-	; LineNumber: 575
-	; LineNumber: 576
-	; Assigning memory location
-	; Assigning single variable : $e848
+	; LineNumber: 588
+	; LineNumber: 589
 	lda note
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta $e848
-	; LineNumber: 578
-	; Assigning single variable : note_duration
+	; LineNumber: 591
 	lda #$0
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta note_duration
 PlayNote_forloop69
-	; LineNumber: 576
+	; LineNumber: 589
 	; Wait
 	ldx #$c8 ; optimized, look out for bugs
 	dex
@@ -1719,6 +1720,7 @@ PlayNote_forloop69
 PlayNote_forloopcounter71
 PlayNote_loopstart72
 	; Compare is onpage
+	; Test Inc dec D
 	inc note_duration
 	lda note_len
 	cmp note_duration ;keep
@@ -1726,140 +1728,122 @@ PlayNote_loopstart72
 PlayNote_loopdone76: ;keep
 PlayNote_forloopend70
 PlayNote_loopend73
-	; LineNumber: 578
+	; LineNumber: 591
 PlayNote_elsedoneblock58
-	; LineNumber: 579
+	; LineNumber: 592
 	rts
 	; NodeProcedureDecl -1
 	; ***********  Defining procedure : burp
 	;    Procedure type : User-defined procedure
-	; LineNumber: 582
+	; LineNumber: 595
 burp
-	; LineNumber: 583
+	; LineNumber: 596
 	; Assigning memory location
-	; Assigning single variable : $e84a
 	lda #$f
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta $e84a
-	; LineNumber: 584
+	; LineNumber: 597
 	; Assigning memory location
-	; Assigning single variable : $e84b
 	lda #$10
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta $e84b
-	; LineNumber: 585
-	; Assigning single variable : note
+	; LineNumber: 598
 	lda #$ee
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta note
-	; Assigning single variable : note_len
 	lda #$ff
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta note_len
 	jsr PlayNote
-	; LineNumber: 586
+	; LineNumber: 599
 	; Assigning memory location
-	; Assigning single variable : $e84b
 	lda #$0
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta $e84b
-	; LineNumber: 587
+	; LineNumber: 600
 	rts
 	; NodeProcedureDecl -1
 	; ***********  Defining procedure : ping
 	;    Procedure type : User-defined procedure
-	; LineNumber: 590
+	; LineNumber: 603
 ping
-	; LineNumber: 591
+	; LineNumber: 604
 	; Assigning memory location
-	; Assigning single variable : $e84a
 	lda #$55
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta $e84a
-	; LineNumber: 592
+	; LineNumber: 605
 	; Assigning memory location
-	; Assigning single variable : $e84b
 	lda #$10
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta $e84b
-	; LineNumber: 593
-	; Assigning single variable : note
+	; LineNumber: 606
 	lda #$ee
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta note
-	; Assigning single variable : note_len
 	lda #$c8
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta note_len
 	jsr PlayNote
-	; LineNumber: 594
-	; Assigning single variable : note
+	; LineNumber: 607
 	lda #$fb
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta note
-	; Assigning single variable : note_len
 	lda #$c8
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta note_len
 	jsr PlayNote
-	; LineNumber: 595
-	; Assigning single variable : note
+	; LineNumber: 608
 	lda #$d2
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta note
-	; Assigning single variable : note_len
 	lda #$ff
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta note_len
 	jsr PlayNote
-	; LineNumber: 596
-	; Assigning single variable : note
+	; LineNumber: 609
 	lda #$d2
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta note
-	; Assigning single variable : note_len
 	lda #$ff
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta note_len
 	jsr PlayNote
-	; LineNumber: 597
+	; LineNumber: 610
 	; Assigning memory location
-	; Assigning single variable : $e84b
 	lda #$0
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta $e84b
-	; LineNumber: 598
+	; LineNumber: 611
 	rts
 	
 ; // =========================================
 	; NodeProcedureDecl -1
 	; ***********  Defining procedure : copy_8040_screen
 	;    Procedure type : User-defined procedure
-	; LineNumber: 606
-	; LineNumber: 604
+	; LineNumber: 619
+	; LineNumber: 617
 mc_row	dc.b	0
-	; LineNumber: 605
-src_row	=                  $16
-	; LineNumber: 605
-dest_row	=                  $0B
-	; LineNumber: 602
-source_p	=                  $0D
-	; LineNumber: 602
-dest_p	=                  $10
+	; LineNumber: 618
+src_row	=   $16
+	; LineNumber: 618
+dest_row	=   $0B
+	; LineNumber: 615
+source_p	=   $0D
+	; LineNumber: 615
+dest_p	=   $10
 copy_8040_screen_block79
 copy_8040_screen
-	; LineNumber: 613
-	; Assigning single variable : mc_row
+	; LineNumber: 626
 	lda #$0
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta mc_row
 copy_8040_screen_forloop80
-	; LineNumber: 609
-	; LineNumber: 610
-	; Assigning single variable : src_row
+	; LineNumber: 622
+	; LineNumber: 623
 	; Generic 16 bit op
 	; integer assignment NodeVar
-	ldy source_p+1 ; Next one
+	ldy source_p+1 ; keep
 	lda source_p
 copy_8040_screen_rightvarInteger_var92 = $54
 	sta copy_8040_screen_rightvarInteger_var92
@@ -1886,29 +1870,26 @@ copy_8040_screen_wordAdd90
 	lda copy_8040_screen_rightvarInteger_var92
 	sta src_row
 	sty src_row+1
-	; LineNumber: 611
-	; Assigning single variable : x
+	; LineNumber: 624
 	lda #$0
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta x
-	; Assigning single variable : y
 	lda mc_row
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta y
-	; Assigning single variable : this_str
 	lda src_row
 	ldx src_row+1
 	sta this_str
 	stx this_str+1
-	; Assigning single variable : str_len
 	lda #$28
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta str_len
 	jsr textat
-	; LineNumber: 612
+	; LineNumber: 625
 copy_8040_screen_forloopcounter82
 copy_8040_screen_loopstart83
 	; Compare is onpage
+	; Test Inc dec D
 	inc mc_row
 	lda #$18
 	cmp mc_row ;keep
@@ -1916,37 +1897,34 @@ copy_8040_screen_loopstart83
 copy_8040_screen_loopdone93: ;keep
 copy_8040_screen_forloopend81
 copy_8040_screen_loopend84
-	; LineNumber: 613
+	; LineNumber: 626
 	rts
 	; NodeProcedureDecl -1
 	; ***********  Defining procedure : ScrollY
 	;    Procedure type : User-defined procedure
-	; LineNumber: 619
-	; LineNumber: 617
-c_row	=                  $16
-	; LineNumber: 617
-p_row	=                  $0B
-	; LineNumber: 618
+	; LineNumber: 632
+	; LineNumber: 630
+c_row	=   $16
+	; LineNumber: 630
+p_row	=   $0B
+	; LineNumber: 631
 scroll	dc.b	0
-	; LineNumber: 618
+	; LineNumber: 631
 scrolls	dc.b	0
 ScrollY_block94
 ScrollY
-	; LineNumber: 634
-	; Assigning single variable : scrolls
+	; LineNumber: 647
 	lda #$1
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta scrolls
 ScrollY_forloop95
-	; LineNumber: 620
-	; LineNumber: 622
-	; Assigning single variable : p_row
+	; LineNumber: 633
+	; LineNumber: 635
 	lda #<$8000
 	ldx #>$8000
 	sta p_row
 	stx p_row+1
-	; LineNumber: 623
-	; Assigning single variable : c_row
+	; LineNumber: 636
 	; INTEGER optimization: a=b+c 
 	clc
 	adc DETECTED_SCREEN_WIDTH
@@ -1954,14 +1932,13 @@ ScrollY_forloop95
 	lda p_row+1
 	adc #0
 	sta c_row+1
-	; LineNumber: 630
-	; Assigning single variable : scroll
+	; LineNumber: 643
 	lda #$1
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta scroll
 ScrollY_forloop120
-	; LineNumber: 625
-	; LineNumber: 625
+	; LineNumber: 638
+	; LineNumber: 638
 	; memcpyfast
 	ldy DETECTED_SCREEN_WIDTH
 	dey
@@ -1970,8 +1947,7 @@ ScrollY_memcpy130
 	sta (p_row),y
 	dey
 	bpl ScrollY_memcpy130
-	; LineNumber: 627
-	; Assigning single variable : p_row
+	; LineNumber: 640
 	lda p_row
 	clc
 	adc DETECTED_SCREEN_WIDTH
@@ -1980,8 +1956,7 @@ ScrollY_memcpy130
 	bcc ScrollY_WordAdd131
 	inc p_row+1
 ScrollY_WordAdd131
-	; LineNumber: 628
-	; Assigning single variable : c_row
+	; LineNumber: 641
 	; INTEGER optimization: a=b+c 
 	lda p_row
 	clc
@@ -1990,10 +1965,11 @@ ScrollY_WordAdd131
 	lda p_row+1
 	adc #0
 	sta c_row+1
-	; LineNumber: 629
+	; LineNumber: 642
 ScrollY_forloopcounter122
 ScrollY_loopstart123
 	; Compare is onpage
+	; Test Inc dec D
 	inc scroll
 	lda #$18
 	cmp scroll ;keep
@@ -2001,25 +1977,26 @@ ScrollY_loopstart123
 ScrollY_loopdone133: ;keep
 ScrollY_forloopend121
 ScrollY_loopend124
-	; LineNumber: 630
+	; LineNumber: 643
 	ldy DETECTED_SCREEN_WIDTH ; optimized, look out for bugs
 	lda #$20
 ScrollY_fill134
 	sta (p_row),y
 	dey
 	bpl ScrollY_fill134
-	; LineNumber: 631
+	; LineNumber: 644
 	ldy DETECTED_SCREEN_WIDTH ; optimized, look out for bugs
 	lda #$20
 ScrollY_fill135
 	sta (c_row),y
 	dey
 	bpl ScrollY_fill135
-	; LineNumber: 632
+	; LineNumber: 645
 	jsr Crt_WaitVblStart
-	; LineNumber: 633
+	; LineNumber: 646
 ScrollY_forloopcounter97
 ScrollY_loopstart98
+	; Test Inc dec D
 	inc scrolls
 	lda #$19
 	cmp scrolls ;keep
@@ -2029,21 +2006,21 @@ ScrollY_loopnotdone137
 ScrollY_loopdone136
 ScrollY_forloopend96
 ScrollY_loopend99
-	; LineNumber: 635
+	; LineNumber: 648
 	rts
 	; NodeProcedureDecl -1
 	; ***********  Defining procedure : help_screen
 	;    Procedure type : User-defined procedure
-	; LineNumber: 646
-	; LineNumber: 640
+	; LineNumber: 659
+	; LineNumber: 653
 hks	dc.b	0
-	; LineNumber: 640
+	; LineNumber: 653
 _ctr	dc.b	0
-	; LineNumber: 641
-help_screen_pointer	=                  $16
-	; LineNumber: 641
-str_pointer	=                  $0B
-	; LineNumber: 644
+	; LineNumber: 654
+help_screen_pointer	=   $16
+	; LineNumber: 654
+str_pointer	=   $0B
+	; LineNumber: 657
 thanks_string	
 	dc.b	$14, $08, $01, $0e, $0b, $13, $20, $00, $0c
 	dc.b	$05, $15, $01, $14, $20, $26, $20, $14, $08
@@ -2062,44 +2039,40 @@ thanks_string
 	dc.b	$20, $20, 0
 help_screen_block138
 help_screen
-	; LineNumber: 649
+	; LineNumber: 662
 	
 ; //        10		20			30		DETECTED_SCREEN_WIDTH		  50		  60		<	
 ; //123456789_123456789_123456789_123456789_1234567890123456789_12345678901234567890	
 ; // Set up pointer to array:
-	; Assigning single variable : help_screen_pointer
 	lda #<help_screen_array
 	ldx #>help_screen_array
 	sta help_screen_pointer
 	stx help_screen_pointer+1
-	; LineNumber: 650
-	; Assigning single variable : hks
+	; LineNumber: 663
 	lda #$0
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta hks
-	; LineNumber: 651
+	; LineNumber: 664
 	jsr cls
-	; LineNumber: 652
+	; LineNumber: 665
 	jsr cursor_home
-	; LineNumber: 655
+	; LineNumber: 668
 	
 ; // Draw the frog
-	; Assigning single variable : source_p
 	lda help_screen_pointer
 	ldx help_screen_pointer+1
 	sta source_p
 	stx source_p+1
-	; Assigning single variable : dest_p
 	lda #<$8000
 	ldx #>$8000
 	sta dest_p
 	stx dest_p+1
 	jsr copy_8040_screen
-	; LineNumber: 658
+	; LineNumber: 671
 	
 ; //	Key::SetupScreenCodes();
 	jsr Key_Read
-	; LineNumber: 660
+	; LineNumber: 673
 help_screen_while139
 help_screen_loopstart143
 	; Binary clause Simplified: EQUALS
@@ -2108,11 +2081,10 @@ help_screen_loopstart143
 	cmp #$0;keep
 	bne help_screen_elsedoneblock142
 help_screen_ConditionalTrueBlock140: ;Main true block ;keep 
-	; LineNumber: 661
-	; LineNumber: 662
+	; LineNumber: 674
+	; LineNumber: 675
 	jsr Key_Read
-	; LineNumber: 663
-	; Assigning single variable : _ctr
+	; LineNumber: 676
 	; abs(x) byte
 	; Right is PURE NUMERIC : Is word =0
 	; 8 bit mul of power 2
@@ -2124,18 +2096,15 @@ help_screen_ConditionalTrueBlock140: ;Main true block ;keep
 	eor #$ff
 	adc #$00
 help_screen_abslabel149
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta _ctr
-	; LineNumber: 664
-	; Assigning single variable : x
+	; LineNumber: 677
 	lda #$c
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta x
-	; Assigning single variable : y
 	lda #$2
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta y
-	; Assigning single variable : this_str
 	; INTEGER optimization: a=b+c 
 	lda #<thanks_string
 	clc
@@ -2144,96 +2113,90 @@ help_screen_abslabel149
 	lda #>thanks_string
 	adc #0
 	sta this_str+1
-	; Assigning single variable : str_len
 	lda #$11
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta str_len
 	jsr textat
-	; LineNumber: 665
+	; LineNumber: 678
 	jmp help_screen_while139
 help_screen_elsedoneblock142
 help_screen_loopend144
-	; LineNumber: 666
-	; Assigning single variable : READY_TO_PLAY
+	; LineNumber: 679
 	lda #$0
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta READY_TO_PLAY
-	; LineNumber: 667
+	; LineNumber: 680
 	jsr ScrollY
-	; LineNumber: 668
+	; LineNumber: 681
 	rts
-	; LineNumber: 671
+	; LineNumber: 684
 	rts
 	; NodeProcedureDecl -1
 	; ***********  Defining procedure : title_screen
 	;    Procedure type : User-defined procedure
-	; LineNumber: 684
-	; LineNumber: 675
+	; LineNumber: 697
+	; LineNumber: 688
 ctr	dc.b	0
-	; LineNumber: 675
+	; LineNumber: 688
 slide	dc.b	0
-	; LineNumber: 676
+	; LineNumber: 689
 DIFFICULTY	
 	dc.b	$04, $09, $06, $06, $09, $03, $15, $0c, $14
 	dc.b	$19, 0
-	; LineNumber: 677
+	; LineNumber: 690
 DIFFICULTY1	
 	dc.b	$31, $20, $05, $01, $13, $19, $20, $20, $20
 	dc.b	$20, 0
-	; LineNumber: 678
+	; LineNumber: 691
 DIFFICULTY2	
 	dc.b	$32, $20, $0d, $05, $04, $09, $15, $0d, $20
 	dc.b	$20, 0
-	; LineNumber: 679
+	; LineNumber: 692
 DIFFICULTY3	
 	dc.b	$33, $20, $08, $01, $12, $04, $20, $20, $20
 	dc.b	$20, 0
-	; LineNumber: 680
+	; LineNumber: 693
 R1	dc.b	$b1
-	; LineNumber: 681
+	; LineNumber: 694
 R2	dc.b	$b2
-	; LineNumber: 682
+	; LineNumber: 695
 R3	dc.b	$b3
 title_screen_block151
 title_screen
-	; LineNumber: 687
+	; LineNumber: 700
 	
 ; // Set up pointer to array:
-	; Assigning single variable : title_screen_frog_pointer
 	lda #<title_screen_frog
 	ldx #>title_screen_frog
 	sta title_screen_frog_pointer
 	stx title_screen_frog_pointer+1
-	; LineNumber: 688
-	; Assigning single variable : ks
+	; LineNumber: 701
 	lda #$0
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta ks
-	; LineNumber: 689
+	; LineNumber: 702
 	jsr cls
-	; LineNumber: 692
+	; LineNumber: 705
 	
 ; // Draw the frog
-	; Assigning single variable : source_p
 	lda title_screen_frog_pointer
 	ldx title_screen_frog_pointer+1
 	sta source_p
 	stx source_p+1
-	; Assigning single variable : dest_p
 	lda #<screenmemory
 	ldx #>screenmemory
 	sta dest_p
 	stx dest_p+1
 	jsr copy_8040_screen
-	; LineNumber: 694
+	; LineNumber: 707
 	; Binary clause Simplified: EQUALS
 	lda DETECTED_SCREEN_WIDTH
 	; Compare with pure num / var optimization
 	cmp #$28;keep
 	bne title_screen_elseblock154
 title_screen_ConditionalTrueBlock153: ;Main true block ;keep 
-	; LineNumber: 695
-	; LineNumber: 695
+	; LineNumber: 708
+	; LineNumber: 708
 	; memcpyfast
 	ldx #12
 title_screen_memcpy167
@@ -2241,7 +2204,7 @@ title_screen_memcpy167
 	sta $8000,x
 	dex
 	bpl title_screen_memcpy167
-	; LineNumber: 696
+	; LineNumber: 709
 	; memcpyfast
 	ldx #12
 title_screen_memcpy168
@@ -2249,7 +2212,7 @@ title_screen_memcpy168
 	sta $8028,x
 	dex
 	bpl title_screen_memcpy168
-	; LineNumber: 697
+	; LineNumber: 710
 	; memcpyfast
 	ldx #12
 title_screen_memcpy169
@@ -2257,7 +2220,7 @@ title_screen_memcpy169
 	sta $8050,x
 	dex
 	bpl title_screen_memcpy169
-	; LineNumber: 698
+	; LineNumber: 711
 	; memcpyfast
 	ldx #12
 title_screen_memcpy170
@@ -2265,11 +2228,11 @@ title_screen_memcpy170
 	sta $8078,x
 	dex
 	bpl title_screen_memcpy170
-	; LineNumber: 701
+	; LineNumber: 714
 	jmp title_screen_elsedoneblock155
 title_screen_elseblock154
-	; LineNumber: 702
-	; LineNumber: 702
+	; LineNumber: 715
+	; LineNumber: 715
 	; memcpyfast
 	ldx #12
 title_screen_memcpy172
@@ -2277,7 +2240,7 @@ title_screen_memcpy172
 	sta $8000,x
 	dex
 	bpl title_screen_memcpy172
-	; LineNumber: 703
+	; LineNumber: 716
 	; memcpyfast
 	ldx #12
 title_screen_memcpy173
@@ -2285,7 +2248,7 @@ title_screen_memcpy173
 	sta $8050,x
 	dex
 	bpl title_screen_memcpy173
-	; LineNumber: 704
+	; LineNumber: 717
 	; memcpyfast
 	ldx #12
 title_screen_memcpy174
@@ -2293,7 +2256,7 @@ title_screen_memcpy174
 	sta $80a0,x
 	dex
 	bpl title_screen_memcpy174
-	; LineNumber: 705
+	; LineNumber: 718
 	; memcpyfast
 	ldx #12
 title_screen_memcpy175
@@ -2301,146 +2264,118 @@ title_screen_memcpy175
 	sta $80f0,x
 	dex
 	bpl title_screen_memcpy175
-	; LineNumber: 709
+	; LineNumber: 722
 title_screen_elsedoneblock155
-	; LineNumber: 712
-	; Assigning single variable : x
+	; LineNumber: 725
 	lda #$2
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta x
-	; Assigning single variable : y
 	lda #$15
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta y
-	; Assigning single variable : this_str
 	lda #<blk
 	ldx #>blk
 	sta this_str
 	stx this_str+1
-	; Assigning single variable : str_len
 	lda #$1c
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta str_len
 	jsr textat
-	; LineNumber: 713
-	; Assigning single variable : x
+	; LineNumber: 726
 	lda #$2
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta x
-	; Assigning single variable : y
 	lda #$16
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta y
-	; Assigning single variable : this_str
 	lda #<by
 	ldx #>by
 	sta this_str
 	stx this_str+1
-	; Assigning single variable : str_len
 	lda #$1c
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta str_len
 	jsr textat
-	; LineNumber: 714
-	; Assigning single variable : x
+	; LineNumber: 727
 	lda #$2
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta x
-	; Assigning single variable : y
 	lda #$17
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta y
-	; Assigning single variable : this_str
 	lda #<url
 	ldx #>url
 	sta this_str
 	stx this_str+1
-	; Assigning single variable : str_len
 	lda #$1c
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta str_len
 	jsr textat
-	; LineNumber: 715
-	; Assigning single variable : x
+	; LineNumber: 728
 	lda #$0
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta x
-	; Assigning single variable : y
 	lda #$4
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta y
-	; Assigning single variable : this_str
 	lda #<DIFFICULTY
 	ldx #>DIFFICULTY
 	sta this_str
 	stx this_str+1
-	; Assigning single variable : str_len
 	lda #$a
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta str_len
 	jsr textat
-	; LineNumber: 716
-	; Assigning single variable : x
+	; LineNumber: 729
 	lda #$0
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta x
-	; Assigning single variable : y
 	lda #$5
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta y
-	; Assigning single variable : this_str
 	lda #<DIFFICULTY1
 	ldx #>DIFFICULTY1
 	sta this_str
 	stx this_str+1
-	; Assigning single variable : str_len
 	lda #$a
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta str_len
 	jsr textat
-	; LineNumber: 717
-	; Assigning single variable : x
+	; LineNumber: 730
 	lda #$0
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta x
-	; Assigning single variable : y
 	lda #$6
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta y
-	; Assigning single variable : this_str
 	lda #<DIFFICULTY2
 	ldx #>DIFFICULTY2
 	sta this_str
 	stx this_str+1
-	; Assigning single variable : str_len
 	lda #$a
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta str_len
 	jsr textat
-	; LineNumber: 718
-	; Assigning single variable : x
+	; LineNumber: 731
 	lda #$0
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta x
-	; Assigning single variable : y
 	lda #$7
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta y
-	; Assigning single variable : this_str
 	lda #<DIFFICULTY3
 	ldx #>DIFFICULTY3
 	sta this_str
 	stx this_str+1
-	; Assigning single variable : str_len
 	lda #$a
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta str_len
 	jsr textat
-	; LineNumber: 723
+	; LineNumber: 736
 	
 ; //	Key::SetupScreenCodes();
 	jsr Key_Read
-	; LineNumber: 726
+	; LineNumber: 739
 title_screen_while176
 title_screen_loopstart180
 	; Binary clause Simplified: EQUALS
@@ -2452,11 +2387,10 @@ title_screen_loopstart180
 title_screen_localfailed279
 	jmp title_screen_elsedoneblock179
 title_screen_ConditionalTrueBlock177: ;Main true block ;keep 
-	; LineNumber: 727
-	; LineNumber: 729
+	; LineNumber: 740
+	; LineNumber: 742
 	jsr Key_Read
-	; LineNumber: 730
-	; Assigning single variable : ctr
+	; LineNumber: 743
 	; abs(x) byte
 	; Right is PURE NUMERIC : Is word =0
 	; 8 bit mul of power 2
@@ -2471,227 +2405,192 @@ title_screen_ConditionalTrueBlock177: ;Main true block ;keep
 	eor #$ff
 	adc #$00
 title_screen_abslabel281
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta ctr
-	; LineNumber: 731
-	cmp #$1 ;keep
+	; LineNumber: 744
+	lda #$1
+	cmp ctr ;keep
 	bne title_screen_casenext283
-	; LineNumber: 731
-	; Assigning single variable : x
+	; LineNumber: 744
 	lda #$4
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta x
-	; Assigning single variable : y
 	lda #$18
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta y
-	; Assigning single variable : this_str
 	lda #<space2
 	ldx #>space2
 	sta this_str
 	stx this_str+1
-	; Assigning single variable : str_len
 	lda #$19
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta str_len
 	jsr textat
 	jmp title_screen_caseend282
 title_screen_casenext283
-	lda ctr
-	cmp #$2 ;keep
+	lda #$2
+	cmp ctr ;keep
 	bne title_screen_casenext285
-	; LineNumber: 732
-	; Assigning single variable : x
+	; LineNumber: 745
 	lda #$4
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta x
-	; Assigning single variable : y
 	lda #$18
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta y
-	; Assigning single variable : this_str
 	lda #<space
 	ldx #>space
 	sta this_str
 	stx this_str+1
-	; Assigning single variable : str_len
 	lda #$19
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta str_len
 	jsr textat
 	jmp title_screen_caseend282
 title_screen_casenext285
-	lda ctr
-	cmp #$3 ;keep
+	lda #$3
+	cmp ctr ;keep
 	bne title_screen_casenext287
-	; LineNumber: 733
-	; Assigning single variable : x
+	; LineNumber: 746
 	lda #$4
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta x
-	; Assigning single variable : y
 	lda #$18
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta y
-	; Assigning single variable : this_str
 	lda #<space2
 	ldx #>space2
 	sta this_str
 	stx this_str+1
-	; Assigning single variable : str_len
 	lda #$19
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta str_len
 	jsr textat
 	jmp title_screen_caseend282
 title_screen_casenext287
-	lda ctr
-	cmp #$4 ;keep
-	bne title_screen_casenext289
-	; LineNumber: 734
-	; Assigning single variable : x
 	lda #$4
-	; Calling storevariable
+	cmp ctr ;keep
+	bne title_screen_casenext289
+	; LineNumber: 747
+	lda #$4
+	; Calling storevariable on generic assign expression
 	sta x
-	; Assigning single variable : y
 	lda #$18
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta y
-	; Assigning single variable : this_str
 	lda #<space
 	ldx #>space
 	sta this_str
 	stx this_str+1
-	; Assigning single variable : str_len
 	lda #$19
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta str_len
 	jsr textat
 	jmp title_screen_caseend282
 title_screen_casenext289
-	lda ctr
-	cmp #$5 ;keep
+	lda #$5
+	cmp ctr ;keep
 	bne title_screen_casenext291
-	; LineNumber: 735
-	; Assigning single variable : x
+	; LineNumber: 748
 	lda #$4
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta x
-	; Assigning single variable : y
 	lda #$18
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta y
-	; Assigning single variable : this_str
 	lda #<help
 	ldx #>help
 	sta this_str
 	stx this_str+1
-	; Assigning single variable : str_len
 	lda #$19
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta str_len
 	jsr textat
 	jmp title_screen_caseend282
 title_screen_casenext291
-	lda ctr
-	cmp #$6 ;keep
+	lda #$6
+	cmp ctr ;keep
 	bne title_screen_casenext293
-	; LineNumber: 736
-	; Assigning single variable : x
+	; LineNumber: 749
 	lda #$4
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta x
-	; Assigning single variable : y
 	lda #$18
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta y
-	; Assigning single variable : this_str
 	lda #<help2
 	ldx #>help2
 	sta this_str
 	stx this_str+1
-	; Assigning single variable : str_len
 	lda #$19
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta str_len
 	jsr textat
 	jmp title_screen_caseend282
 title_screen_casenext293
-	lda ctr
-	cmp #$7 ;keep
+	lda #$7
+	cmp ctr ;keep
 	bne title_screen_casenext295
-	; LineNumber: 737
-	; Assigning single variable : x
+	; LineNumber: 750
 	lda #$4
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta x
-	; Assigning single variable : y
 	lda #$18
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta y
-	; Assigning single variable : this_str
 	lda #<help
 	ldx #>help
 	sta this_str
 	stx this_str+1
-	; Assigning single variable : str_len
 	lda #$19
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta str_len
 	jsr textat
 	jmp title_screen_caseend282
 title_screen_casenext295
-	lda ctr
-	cmp #$8 ;keep
+	lda #$8
+	cmp ctr ;keep
 	bne title_screen_casenext297
-	; LineNumber: 738
-	; Assigning single variable : x
+	; LineNumber: 751
 	lda #$4
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta x
-	; Assigning single variable : y
 	lda #$18
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta y
-	; Assigning single variable : this_str
 	lda #<help2
 	ldx #>help2
 	sta this_str
 	stx this_str+1
-	; Assigning single variable : str_len
 	lda #$19
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta str_len
 	jsr textat
 	jmp title_screen_caseend282
 title_screen_casenext297
-	lda ctr
-	cmp #$0 ;keep
+	lda #$0
+	cmp ctr ;keep
 	bne title_screen_casenext299
-	; LineNumber: 739
-	; Assigning single variable : x
+	; LineNumber: 752
 	lda #$4
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta x
-	; Assigning single variable : y
 	lda #$18
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta y
-	; Assigning single variable : this_str
 	lda #<help2
 	ldx #>help2
 	sta this_str
 	stx this_str+1
-	; Assigning single variable : str_len
 	lda #$19
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta str_len
 	jsr textat
-	jmp title_screen_caseend282
 title_screen_casenext299
 title_screen_caseend282
-	; LineNumber: 747
+	; LineNumber: 760
 	; Binary clause Simplified: NOTEQUALS
+	; Assigning to register
 	; Assigning register : _xy
 	ldx #$06
 	ldy #$40
@@ -2703,6 +2602,7 @@ title_screen_caseend282
 title_screen_localfailed306: ;keep
 	; ; logical OR, second chance
 	; Binary clause Simplified: NOTEQUALS
+	; Assigning to register
 	; Assigning register : _xy
 	ldx #$08
 	ldy #$80
@@ -2711,20 +2611,20 @@ title_screen_localfailed306: ;keep
 	cmp #$0;keep
 	beq title_screen_elsedoneblock304
 title_screen_ConditionalTrueBlock302: ;Main true block ;keep 
-	; LineNumber: 747
-	; LineNumber: 749
+	; LineNumber: 760
+	; LineNumber: 762
 	
 ; // hard 	GAME_SPEED:=4;
 ; // medium GAME_SPEED:=5;	
 ; // easy GAME_SPEED:=8;
-	; Assigning single variable : GAME_SPEED
 	lda #$8
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta GAME_SPEED
-	; LineNumber: 750
+	; LineNumber: 763
 title_screen_elsedoneblock304
-	; LineNumber: 752
+	; LineNumber: 765
 	; Binary clause Simplified: NOTEQUALS
+	; Assigning to register
 	; Assigning register : _xy
 	ldx #$07
 	ldy #$40
@@ -2736,6 +2636,7 @@ title_screen_elsedoneblock304
 title_screen_localfailed313: ;keep
 	; ; logical OR, second chance
 	; Binary clause Simplified: NOTEQUALS
+	; Assigning to register
 	; Assigning register : _xy
 	ldx #$07
 	ldy #$80
@@ -2744,16 +2645,16 @@ title_screen_localfailed313: ;keep
 	cmp #$0;keep
 	beq title_screen_elsedoneblock311
 title_screen_ConditionalTrueBlock309: ;Main true block ;keep 
-	; LineNumber: 752
-	; LineNumber: 754
-	; Assigning single variable : GAME_SPEED
+	; LineNumber: 765
+	; LineNumber: 767
 	lda #$5
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta GAME_SPEED
-	; LineNumber: 755
+	; LineNumber: 768
 title_screen_elsedoneblock311
-	; LineNumber: 757
+	; LineNumber: 770
 	; Binary clause Simplified: NOTEQUALS
+	; Assigning to register
 	; Assigning register : _xy
 	ldx #$06
 	ldy #$80
@@ -2765,6 +2666,7 @@ title_screen_elsedoneblock311
 title_screen_localfailed320: ;keep
 	; ; logical OR, second chance
 	; Binary clause Simplified: NOTEQUALS
+	; Assigning to register
 	; Assigning register : _xy
 	ldx #$06
 	ldy #$80
@@ -2773,172 +2675,151 @@ title_screen_localfailed320: ;keep
 	cmp #$0;keep
 	beq title_screen_elsedoneblock318
 title_screen_ConditionalTrueBlock316: ;Main true block ;keep 
-	; LineNumber: 757
-	; LineNumber: 759
-	; Assigning single variable : GAME_SPEED
+	; LineNumber: 770
+	; LineNumber: 772
 	lda #$4
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta GAME_SPEED
-	; LineNumber: 760
+	; LineNumber: 773
 title_screen_elsedoneblock318
-	; LineNumber: 762
+	; LineNumber: 775
 	; Binary clause Simplified: EQUALS
 	lda GAME_SPEED
 	; Compare with pure num / var optimization
 	cmp #$8;keep
 	bne title_screen_elseblock324
 title_screen_ConditionalTrueBlock323: ;Main true block ;keep 
-	; LineNumber: 763
-	; LineNumber: 764
-	; Assigning single variable : x
+	; LineNumber: 776
+	; LineNumber: 777
 	lda #$0
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta x
-	; Assigning single variable : y
 	lda #$5
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta y
-	; Assigning single variable : this_str
 	lda #<R1
 	ldx #>R1
 	sta this_str
 	stx this_str+1
-	; Assigning single variable : str_len
 	lda #$1
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta str_len
 	jsr textat
-	; LineNumber: 766
+	; LineNumber: 779
 	jmp title_screen_elsedoneblock325
 title_screen_elseblock324
-	; LineNumber: 767
-	; LineNumber: 768
-	; Assigning single variable : x
+	; LineNumber: 780
+	; LineNumber: 781
 	lda #$0
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta x
-	; Assigning single variable : y
 	lda #$5
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta y
-	; Assigning single variable : this_str
+	; Assigning a string : this_str
 	lda #<title_screen_stringassignstr332
 	sta this_str
 	lda #>title_screen_stringassignstr332
 	sta this_str+1
-	; Assigning single variable : str_len
 	lda #$1
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta str_len
 	jsr textat
-	; LineNumber: 769
+	; LineNumber: 782
 title_screen_elsedoneblock325
-	; LineNumber: 771
+	; LineNumber: 784
 	; Binary clause Simplified: EQUALS
 	lda GAME_SPEED
 	; Compare with pure num / var optimization
 	cmp #$5;keep
 	bne title_screen_elseblock336
 title_screen_ConditionalTrueBlock335: ;Main true block ;keep 
-	; LineNumber: 772
-	; LineNumber: 773
-	; Assigning single variable : x
+	; LineNumber: 785
+	; LineNumber: 786
 	lda #$0
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta x
-	; Assigning single variable : y
 	lda #$6
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta y
-	; Assigning single variable : this_str
 	lda #<R2
 	ldx #>R2
 	sta this_str
 	stx this_str+1
-	; Assigning single variable : str_len
 	lda #$1
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta str_len
 	jsr textat
-	; LineNumber: 775
+	; LineNumber: 788
 	jmp title_screen_elsedoneblock337
 title_screen_elseblock336
-	; LineNumber: 776
-	; LineNumber: 777
-	; Assigning single variable : x
+	; LineNumber: 789
+	; LineNumber: 790
 	lda #$0
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta x
-	; Assigning single variable : y
 	lda #$6
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta y
-	; Assigning single variable : this_str
+	; Assigning a string : this_str
 	lda #<title_screen_stringassignstr344
 	sta this_str
 	lda #>title_screen_stringassignstr344
 	sta this_str+1
-	; Assigning single variable : str_len
 	lda #$1
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta str_len
 	jsr textat
-	; LineNumber: 778
+	; LineNumber: 791
 title_screen_elsedoneblock337
-	; LineNumber: 780
+	; LineNumber: 793
 	; Binary clause Simplified: EQUALS
 	lda GAME_SPEED
 	; Compare with pure num / var optimization
 	cmp #$4;keep
 	bne title_screen_elseblock348
 title_screen_ConditionalTrueBlock347: ;Main true block ;keep 
-	; LineNumber: 781
-	; LineNumber: 782
-	; Assigning single variable : x
+	; LineNumber: 794
+	; LineNumber: 795
 	lda #$0
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta x
-	; Assigning single variable : y
 	lda #$7
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta y
-	; Assigning single variable : this_str
 	lda #<R3
 	ldx #>R3
 	sta this_str
 	stx this_str+1
-	; Assigning single variable : str_len
 	lda #$1
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta str_len
 	jsr textat
-	; LineNumber: 784
+	; LineNumber: 797
 	jmp title_screen_elsedoneblock349
 title_screen_elseblock348
-	; LineNumber: 785
-	; LineNumber: 786
-	; Assigning single variable : x
+	; LineNumber: 798
+	; LineNumber: 799
 	lda #$0
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta x
-	; Assigning single variable : y
 	lda #$7
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta y
-	; Assigning single variable : this_str
+	; Assigning a string : this_str
 	lda #<title_screen_stringassignstr356
 	sta this_str
 	lda #>title_screen_stringassignstr356
 	sta this_str+1
-	; Assigning single variable : str_len
 	lda #$1
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta str_len
 	jsr textat
-	; LineNumber: 787
+	; LineNumber: 800
 title_screen_elsedoneblock349
-	; LineNumber: 790
+	; LineNumber: 803
 	; Binary clause Simplified: NOTEQUALS
+	; Assigning to register
 	; Assigning register : _xy
 	ldx #$09
 	ldy #$04
@@ -2947,81 +2828,73 @@ title_screen_elsedoneblock349
 	cmp #$0;keep
 	beq title_screen_elsedoneblock361
 title_screen_ConditionalTrueBlock359: ;Main true block ;keep 
-	; LineNumber: 790
-	; LineNumber: 794
+	; LineNumber: 803
+	; LineNumber: 807
 	
 ; // GRAPHIC KEYBOARD
 ; // Numeric Keypad
-	; Assigning single variable : n_key_up
 	; Integer constant assigning
 	ldy #$40
 	lda #$03
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta n_key_up
 	sty n_key_up+1
-	; LineNumber: 795
-	; Assigning single variable : n_key_down
+	; LineNumber: 808
 	; Integer constant assigning
 	lda #$05
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta n_key_down
 	sty n_key_down+1
-	; LineNumber: 796
-	; Assigning single variable : n_key_left
+	; LineNumber: 809
 	; Integer constant assigning
 	lda #$04
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta n_key_left
 	sty n_key_left+1
-	; LineNumber: 797
-	; Assigning single variable : n_key_right
+	; LineNumber: 810
 	; Integer constant assigning
 	ldy #$80
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta n_key_right
 	sty n_key_right+1
-	; LineNumber: 800
+	; LineNumber: 813
 	
 ; // Regular keys        
-	; Assigning single variable : key_up
 	; Integer constant assigning
 	ldy #$01
 	lda #$03
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta key_up
 	sty key_up+1
-	; LineNumber: 801
-	; Assigning single variable : key_down
+	; LineNumber: 814
 	; Integer constant assigning
 	lda #$05
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta key_down
 	sty key_down+1
-	; LineNumber: 802
-	; Assigning single variable : key_left
+	; LineNumber: 815
 	; Integer constant assigning
 	lda #$04
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta key_left
 	sty key_left+1
-	; LineNumber: 803
-	; Assigning single variable : key_right
+	; LineNumber: 816
 	; Integer constant assigning
 	ldy #$02
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta key_right
 	sty key_right+1
-	; LineNumber: 805
-	; Assigning single variable : READY_TO_PLAY
+	; LineNumber: 818
 	lda #$1
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta READY_TO_PLAY
-	; LineNumber: 806
+	; LineNumber: 819
 	jsr ScrollY
-	; LineNumber: 807
+	; LineNumber: 820
 title_screen_elsedoneblock361
-	; LineNumber: 810
+	; LineNumber: 823
 	; Binary clause Simplified: NOTEQUALS
+	; Assigning to register
 	; Assigning register : _xy
 	ldx #$08
 	ldy #$04
@@ -3030,83 +2903,76 @@ title_screen_elsedoneblock361
 	cmp #$0;keep
 	beq title_screen_elsedoneblock367
 title_screen_ConditionalTrueBlock365: ;Main true block ;keep 
-	; LineNumber: 811
-	; LineNumber: 813
+	; LineNumber: 824
+	; LineNumber: 826
 	
 ; // BUSINESS KEYBOARD			
 ; // Numeric Keypad
-	; Assigning single variable : n_key_up
 	; Integer constant assigning
-	ldy #$16
+	ldy #$10
 	lda #$00
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta n_key_up
 	sty n_key_up+1
-	; LineNumber: 814
-	; Assigning single variable : n_key_down
+	; LineNumber: 827
 	; Integer constant assigning
 	ldy #$80
 	lda #$02
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta n_key_down
 	sty n_key_down+1
-	; LineNumber: 815
-	; Assigning single variable : n_key_left
+	; LineNumber: 828
 	; Integer constant assigning
 	lda #$05
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta n_key_left
 	sty n_key_left+1
-	; LineNumber: 816
-	; Assigning single variable : n_key_right
+	; LineNumber: 829
 	; Integer constant assigning
 	lda #$03
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta n_key_right
 	sty n_key_right+1
-	; LineNumber: 819
+	; LineNumber: 832
 	
 ; // Regular keys        
-	; Assigning single variable : key_up
 	; Integer constant assigning
 	ldy #$02
 	lda #$04
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta key_up
 	sty key_up+1
-	; LineNumber: 820
-	; Assigning single variable : key_down
+	; LineNumber: 833
 	; Integer constant assigning
+	ldy #$04
 	lda #$02
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta key_down
 	sty key_down+1
-	; LineNumber: 821
-	; Assigning single variable : key_left
+	; LineNumber: 834
 	; Integer constant assigning
 	ldy #$01
 	lda #$03
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta key_left
 	sty key_left+1
-	; LineNumber: 822
-	; Assigning single variable : key_right
+	; LineNumber: 835
 	; Integer constant assigning
 	ldy #$02
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta key_right
 	sty key_right+1
-	; LineNumber: 824
-	; Assigning single variable : READY_TO_PLAY
+	; LineNumber: 837
 	lda #$1
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta READY_TO_PLAY
-	; LineNumber: 825
+	; LineNumber: 838
 	jsr ScrollY
-	; LineNumber: 826
+	; LineNumber: 839
 title_screen_elsedoneblock367
-	; LineNumber: 829
+	; LineNumber: 842
 	; Binary clause Simplified: NOTEQUALS
+	; Assigning to register
 	; Assigning register : _xy
 	ldx #$05
 	ldy #$04
@@ -3118,6 +2984,7 @@ title_screen_elsedoneblock367
 title_screen_localfailed375: ;keep
 	; ; logical OR, second chance
 	; Binary clause Simplified: NOTEQUALS
+	; Assigning to register
 	; Assigning register : _xy
 	ldx #$02
 	ldy #$08
@@ -3126,76 +2993,71 @@ title_screen_localfailed375: ;keep
 	cmp #$0;keep
 	beq title_screen_elsedoneblock373
 title_screen_ConditionalTrueBlock371: ;Main true block ;keep 
-	; LineNumber: 829
-	; LineNumber: 831
-	; Assigning single variable : READY_TO_PLAY
+	; LineNumber: 842
+	; LineNumber: 844
 	lda #$2
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta READY_TO_PLAY
-	; LineNumber: 832
+	; LineNumber: 845
 	jsr ScrollY
-	; LineNumber: 833
+	; LineNumber: 846
 title_screen_elsedoneblock373
-	; LineNumber: 838
+	; LineNumber: 851
 	jmp title_screen_while176
 title_screen_elsedoneblock179
 title_screen_loopend181
-	; LineNumber: 841
+	; LineNumber: 854
 	rts
 	; NodeProcedureDecl -1
 	; ***********  Defining procedure : score_screen
 	;    Procedure type : User-defined procedure
-	; LineNumber: 846
+	; LineNumber: 859
 score_screen
-	; LineNumber: 847
+	; LineNumber: 860
 	jsr cls
-	; LineNumber: 849
+	; LineNumber: 862
 	; Binary clause Simplified: EQUALS
 	lda WON_GAME
 	; Compare with pure num / var optimization
 	cmp #$1;keep
 	bne score_screen_elseblock380
 score_screen_ConditionalTrueBlock379: ;Main true block ;keep 
-	; LineNumber: 849
-	; LineNumber: 851
-	; Assigning single variable : petscii_pointer
+	; LineNumber: 862
+	; LineNumber: 864
 	lda #<success
 	ldx #>success
 	sta petscii_pointer
 	stx petscii_pointer+1
-	; LineNumber: 853
+	; LineNumber: 866
 	jmp score_screen_elsedoneblock381
 score_screen_elseblock380
-	; LineNumber: 853
-	; LineNumber: 855
-	; Assigning single variable : petscii_pointer
+	; LineNumber: 866
+	; LineNumber: 868
 	lda #<rip
 	ldx #>rip
 	sta petscii_pointer
 	stx petscii_pointer+1
-	; LineNumber: 856
+	; LineNumber: 869
 score_screen_elsedoneblock381
-	; LineNumber: 857
-	; Assigning single variable : source_p
+	; LineNumber: 870
 	lda petscii_pointer
 	ldx petscii_pointer+1
 	sta source_p
 	stx source_p+1
-	; Assigning single variable : dest_p
 	lda #<$8000
 	ldx #>$8000
 	sta dest_p
 	stx dest_p+1
 	jsr copy_8040_screen
-	; LineNumber: 859
+	; LineNumber: 872
 	; Binary clause Simplified: EQUALS
 	lda DETECTED_SCREEN_WIDTH
 	; Compare with pure num / var optimization
 	cmp #$28;keep
 	bne score_screen_elseblock388
 score_screen_ConditionalTrueBlock387: ;Main true block ;keep 
-	; LineNumber: 860
-	; LineNumber: 860
+	; LineNumber: 873
+	; LineNumber: 873
 	; memcpyfast
 	ldx #12
 score_screen_memcpy401
@@ -3203,7 +3065,7 @@ score_screen_memcpy401
 	sta $8000,x
 	dex
 	bpl score_screen_memcpy401
-	; LineNumber: 861
+	; LineNumber: 874
 	; memcpyfast
 	ldx #12
 score_screen_memcpy402
@@ -3211,7 +3073,7 @@ score_screen_memcpy402
 	sta $8028,x
 	dex
 	bpl score_screen_memcpy402
-	; LineNumber: 862
+	; LineNumber: 875
 	; memcpyfast
 	ldx #12
 score_screen_memcpy403
@@ -3219,7 +3081,7 @@ score_screen_memcpy403
 	sta $8050,x
 	dex
 	bpl score_screen_memcpy403
-	; LineNumber: 863
+	; LineNumber: 876
 	; memcpyfast
 	ldx #12
 score_screen_memcpy404
@@ -3227,11 +3089,11 @@ score_screen_memcpy404
 	sta $8078,x
 	dex
 	bpl score_screen_memcpy404
-	; LineNumber: 866
+	; LineNumber: 879
 	jmp score_screen_elsedoneblock389
 score_screen_elseblock388
-	; LineNumber: 867
-	; LineNumber: 867
+	; LineNumber: 880
+	; LineNumber: 880
 	; memcpyfast
 	ldx #12
 score_screen_memcpy406
@@ -3239,7 +3101,7 @@ score_screen_memcpy406
 	sta $8000,x
 	dex
 	bpl score_screen_memcpy406
-	; LineNumber: 868
+	; LineNumber: 881
 	; memcpyfast
 	ldx #12
 score_screen_memcpy407
@@ -3247,7 +3109,7 @@ score_screen_memcpy407
 	sta $8050,x
 	dex
 	bpl score_screen_memcpy407
-	; LineNumber: 869
+	; LineNumber: 882
 	; memcpyfast
 	ldx #12
 score_screen_memcpy408
@@ -3255,7 +3117,7 @@ score_screen_memcpy408
 	sta $80a0,x
 	dex
 	bpl score_screen_memcpy408
-	; LineNumber: 870
+	; LineNumber: 883
 	; memcpyfast
 	ldx #12
 score_screen_memcpy409
@@ -3263,9 +3125,9 @@ score_screen_memcpy409
 	sta $80f0,x
 	dex
 	bpl score_screen_memcpy409
-	; LineNumber: 874
+	; LineNumber: 887
 score_screen_elsedoneblock389
-	; LineNumber: 876
+	; LineNumber: 889
 	; MoveTo optimization
 	lda #$0d
 	sta screenmemory
@@ -3273,7 +3135,7 @@ score_screen_elsedoneblock389
 	clc
 	adc #$00
 	sta screenmemory+1
-	; LineNumber: 877
+	; LineNumber: 890
 	clc
 	lda #<over
 	adc #$0
@@ -3282,7 +3144,7 @@ score_screen_elsedoneblock389
 	sty print_text+1
 	ldx #$d ; optimized, look out for bugs
 	jsr printstring
-	; LineNumber: 879
+	; LineNumber: 892
 	; MoveTo optimization
 	lda #$5d
 	sta screenmemory
@@ -3290,7 +3152,7 @@ score_screen_elsedoneblock389
 	clc
 	adc #$00
 	sta screenmemory+1
-	; LineNumber: 880
+	; LineNumber: 893
 	clc
 	lda #<score
 	adc #$0
@@ -3299,7 +3161,7 @@ score_screen_elsedoneblock389
 	sty print_text+1
 	ldx #$d ; optimized, look out for bugs
 	jsr printstring
-	; LineNumber: 882
+	; LineNumber: 895
 	; MoveTo optimization
 	lda #$69
 	sta screenmemory
@@ -3307,9 +3169,9 @@ score_screen_elsedoneblock389
 	clc
 	adc #$00
 	sta screenmemory+1
-	; LineNumber: 882
+	; LineNumber: 895
 	; integer assignment NodeVar
-	ldy player_score+1 ; Next one
+	ldy player_score+1 ; keep
 	lda player_score
 	sta ipd_div_lo
 	sty ipd_div_hi
@@ -3320,9 +3182,9 @@ score_screen_printdecimal414
 	sta (screenmemory),y
 	dey
 	bpl score_screen_printdecimal414
-	; LineNumber: 885
+	; LineNumber: 898
 	jsr Key_Read
-	; LineNumber: 888
+	; LineNumber: 901
 score_screen_while415
 score_screen_loopstart419
 	; Binary clause Simplified: EQUALS
@@ -3331,10 +3193,10 @@ score_screen_loopstart419
 	cmp #$0;keep
 	bne score_screen_elsedoneblock418
 score_screen_ConditionalTrueBlock416: ;Main true block ;keep 
-	; LineNumber: 889
-	; LineNumber: 890
+	; LineNumber: 902
+	; LineNumber: 903
 	jsr Key_Read
-	; LineNumber: 893
+	; LineNumber: 906
 	; Binary clause Simplified: GREATEREQUAL
 	; abs(x) byte
 	; Right is PURE NUMERIC : Is word =0
@@ -3355,77 +3217,68 @@ score_screen_abslabel438
 	cmp #$2;keep
 	bcc score_screen_elseblock434
 score_screen_ConditionalTrueBlock433: ;Main true block ;keep 
-	; LineNumber: 894
-	; LineNumber: 895
-	; Assigning single variable : x
+	; LineNumber: 907
+	; LineNumber: 908
 	lda #$e
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta x
-	; Assigning single variable : y
 	lda #$18
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta y
-	; Assigning single variable : this_str
 	lda #<space
 	ldx #>space
 	sta this_str
 	stx this_str+1
-	; Assigning single variable : str_len
 	lda #$19
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta str_len
 	jsr textat
-	; LineNumber: 897
+	; LineNumber: 910
 	jmp score_screen_elsedoneblock435
 score_screen_elseblock434
-	; LineNumber: 897
-	; LineNumber: 899
-	; Assigning single variable : x
+	; LineNumber: 910
+	; LineNumber: 912
 	lda #$e
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta x
-	; Assigning single variable : y
 	lda #$18
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta y
-	; Assigning single variable : this_str
 	lda #<space2
 	ldx #>space2
 	sta this_str
 	stx this_str+1
-	; Assigning single variable : str_len
 	lda #$19
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta str_len
 	jsr textat
-	; LineNumber: 900
+	; LineNumber: 913
 score_screen_elsedoneblock435
-	; LineNumber: 901
+	; LineNumber: 914
 	jmp score_screen_while415
 score_screen_elsedoneblock418
 score_screen_loopend420
-	; LineNumber: 902
+	; LineNumber: 915
 	jsr ScrollY
-	; LineNumber: 903
+	; LineNumber: 916
 	rts
 	; NodeProcedureDecl -1
 	; ***********  Defining procedure : sprite_xy
 	;    Procedure type : User-defined procedure
-	; LineNumber: 909
-	; LineNumber: 907
-spr_p	=                  $16
-	; LineNumber: 905
+	; LineNumber: 922
+	; LineNumber: 920
+spr_p	=   $16
+	; LineNumber: 918
 spr_x	dc.b	0
-	; LineNumber: 905
+	; LineNumber: 918
 spr_y	dc.b	0
-	; LineNumber: 905
-source_str	=                  $0B
-	; LineNumber: 905
+	; LineNumber: 918
+source_str	=   $0B
+	; LineNumber: 918
 spr_len	dc.b	0
 sprite_xy_block441
 sprite_xy
-	; LineNumber: 910
-	; Assigning single variable : spr_p
+	; LineNumber: 923
 	; Generic 16 bit op
 	ldy #0
 	lda spr_x
@@ -3435,7 +3288,7 @@ sprite_xy_rightvarInteger_var444 = $54
 	; Generic 16 bit op
 	lda #<level_strips
 	ldy #>level_strips
-sprite_xy_rightvarInteger_var447 =                  $56
+sprite_xy_rightvarInteger_var447 =   $56
 	sta sprite_xy_rightvarInteger_var447
 	sty sprite_xy_rightvarInteger_var447+1
 	; Right is PURE NUMERIC : Is word =1
@@ -3470,7 +3323,7 @@ sprite_xy_wordAdd442
 	lda sprite_xy_rightvarInteger_var444
 	sta spr_p
 	sty spr_p+1
-	; LineNumber: 910
+	; LineNumber: 923
 	; memcpyfast
 	ldy spr_len
 	dey
@@ -3479,8 +3332,7 @@ sprite_xy_memcpy448
 	sta (spr_p),y
 	dey
 	bpl sprite_xy_memcpy448
-	; LineNumber: 912
-	; Assigning single variable : spr_p
+	; LineNumber: 925
 	; Generic 16 bit op
 	ldy #0
 	lda #$27
@@ -3490,13 +3342,13 @@ sprite_xy_rightvarInteger_var451 = $54
 	; Generic 16 bit op
 	ldy #0
 	lda spr_x
-sprite_xy_rightvarInteger_var454 =                  $56
+sprite_xy_rightvarInteger_var454 =   $56
 	sta sprite_xy_rightvarInteger_var454
 	sty sprite_xy_rightvarInteger_var454+1
 	; Generic 16 bit op
 	lda #<level_strips
 	ldy #>level_strips
-sprite_xy_rightvarInteger_var457 =                  $58
+sprite_xy_rightvarInteger_var457 =   $58
 	sta sprite_xy_rightvarInteger_var457
 	sty sprite_xy_rightvarInteger_var457+1
 	; Right is PURE NUMERIC : Is word =1
@@ -3541,7 +3393,7 @@ sprite_xy_wordAdd449
 	lda sprite_xy_rightvarInteger_var451
 	sta spr_p
 	sty spr_p+1
-	; LineNumber: 912
+	; LineNumber: 925
 	; memcpyfast
 	ldy spr_len
 	dey
@@ -3550,79 +3402,70 @@ sprite_xy_memcpy458
 	sta (spr_p),y
 	dey
 	bpl sprite_xy_memcpy458
-	; LineNumber: 914
+	; LineNumber: 927
 	rts
 	; NodeProcedureDecl -1
 	; ***********  Defining procedure : init_vars
 	;    Procedure type : User-defined procedure
-	; LineNumber: 922
-	; LineNumber: 918
-this_row	=                  $16
-	; LineNumber: 918
-target_strip	=                  $0B
-	; LineNumber: 919
+	; LineNumber: 935
+	; LineNumber: 931
+this_row	=   $16
+	; LineNumber: 931
+target_strip	=   $0B
+	; LineNumber: 932
 iteration	dc.b	0
-	; LineNumber: 920
+	; LineNumber: 933
 homeplate	dc.b	$d3
 init_vars_block459
 init_vars
-	; LineNumber: 923
+	; LineNumber: 936
 	jsr cls
-	; LineNumber: 924
-	; Assigning single variable : FROGS_SAVED
+	; LineNumber: 937
 	lda #$0
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta FROGS_SAVED
-	; LineNumber: 927
-	; Assigning single variable : READY_TO_PLAY
-	; Calling storevariable
+	; LineNumber: 940
+	; Calling storevariable on generic assign expression
 	sta READY_TO_PLAY
-	; LineNumber: 931
+	; LineNumber: 944
 	
 ; //	Key::SetupScreenCodes();
 ; // Init the playfield
-	; Assigning single variable : screenmemory
 	lda #$00
 	ldx #$80
 	sta screenmemory
 	stx screenmemory+1
-	; LineNumber: 932
-	; Assigning single variable : petscii_pointer
+	; LineNumber: 945
 	lda #<level2
 	ldx #>level2
 	sta petscii_pointer
 	stx petscii_pointer+1
-	; LineNumber: 933
-	; Assigning single variable : source_p
+	; LineNumber: 946
 	ldx petscii_pointer+1
 	sta source_p
 	stx source_p+1
-	; Assigning single variable : dest_p
 	lda #<screenmemory
 	ldx #>screenmemory
 	sta dest_p
 	stx dest_p+1
 	jsr copy_8040_screen
-	; LineNumber: 934
-	; Assigning single variable : this_row
+	; LineNumber: 947
 	lda petscii_pointer
 	ldx petscii_pointer+1
 	sta this_row
 	stx this_row+1
-	; LineNumber: 935
-	; Assigning single variable : target_strip
+	; LineNumber: 948
 	lda #<level_strips
 	ldx #>level_strips
 	sta target_strip
 	stx target_strip+1
-	; LineNumber: 949
-	; Assigning single variable : iteration
+	; LineNumber: 962
 	lda #$1
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta iteration
 init_vars_forloop460
-	; LineNumber: 939
-	; LineNumber: 941
+	; LineNumber: 952
+	; LineNumber: 954
 	
 ; // Obstacle Blanks
 ; // Copy the source twice
@@ -3633,8 +3476,7 @@ init_vars_memcpy472
 	sta (target_strip),y
 	dey
 	bpl init_vars_memcpy472
-	; LineNumber: 942
-	; Assigning single variable : target_strip
+	; LineNumber: 955
 	lda target_strip
 	clc
 	adc #$28
@@ -3643,7 +3485,7 @@ init_vars_memcpy472
 	bcc init_vars_WordAdd473
 	inc target_strip+1
 init_vars_WordAdd473
-	; LineNumber: 943
+	; LineNumber: 956
 	; memcpyfast
 	ldy #39
 init_vars_memcpy474
@@ -3651,8 +3493,7 @@ init_vars_memcpy474
 	sta (target_strip),y
 	dey
 	bpl init_vars_memcpy474
-	; LineNumber: 944
-	; Assigning single variable : target_strip
+	; LineNumber: 957
 	lda target_strip
 	clc
 	adc #$28
@@ -3661,10 +3502,9 @@ init_vars_memcpy474
 	bcc init_vars_WordAdd475
 	inc target_strip+1
 init_vars_WordAdd475
-	; LineNumber: 947
+	; LineNumber: 960
 	
 ; // Next row
-	; Assigning single variable : this_row
 	lda this_row
 	clc
 	adc #$28
@@ -3673,10 +3513,11 @@ init_vars_WordAdd475
 	bcc init_vars_WordAdd476
 	inc this_row+1
 init_vars_WordAdd476
-	; LineNumber: 948
+	; LineNumber: 961
 init_vars_forloopcounter462
 init_vars_loopstart463
 	; Compare is onpage
+	; Test Inc dec D
 	inc iteration
 	lda #$19
 	cmp iteration ;keep
@@ -3684,7 +3525,7 @@ init_vars_loopstart463
 init_vars_loopdone477: ;keep
 init_vars_forloopend461
 init_vars_loopend464
-	; LineNumber: 951
+	; LineNumber: 964
 	
 ; // Init the "sprites"
 	; memcpy
@@ -3695,7 +3536,7 @@ init_vars_memcpy478
 	inx
 	cpx #$9
 	bne init_vars_memcpy478
-	; LineNumber: 952
+	; LineNumber: 965
 	; memcpy
 	ldx #0
 init_vars_memcpy479
@@ -3704,7 +3545,7 @@ init_vars_memcpy479
 	inx
 	cpx #$9
 	bne init_vars_memcpy479
-	; LineNumber: 953
+	; LineNumber: 966
 	; memcpy
 	ldx #0
 init_vars_memcpy480
@@ -3713,7 +3554,7 @@ init_vars_memcpy480
 	inx
 	cpx #$5
 	bne init_vars_memcpy480
-	; LineNumber: 954
+	; LineNumber: 967
 	; memcpy
 	ldx #0
 init_vars_memcpy481
@@ -3722,7 +3563,7 @@ init_vars_memcpy481
 	inx
 	cpx #$5
 	bne init_vars_memcpy481
-	; LineNumber: 955
+	; LineNumber: 968
 	; memcpy
 	ldx #0
 init_vars_memcpy482
@@ -3731,7 +3572,7 @@ init_vars_memcpy482
 	inx
 	cpx #$5
 	bne init_vars_memcpy482
-	; LineNumber: 956
+	; LineNumber: 969
 	; memcpy
 	ldx #0
 init_vars_memcpy483
@@ -3740,7 +3581,7 @@ init_vars_memcpy483
 	inx
 	cpx #$5
 	bne init_vars_memcpy483
-	; LineNumber: 957
+	; LineNumber: 970
 	; memcpy
 	ldx #0
 init_vars_memcpy484
@@ -3749,7 +3590,7 @@ init_vars_memcpy484
 	inx
 	cpx #$5
 	bne init_vars_memcpy484
-	; LineNumber: 959
+	; LineNumber: 972
 	; memcpy
 	ldx #0
 init_vars_memcpy485
@@ -3758,7 +3599,7 @@ init_vars_memcpy485
 	inx
 	cpx #$8
 	bne init_vars_memcpy485
-	; LineNumber: 960
+	; LineNumber: 973
 	; memcpy
 	ldx #0
 init_vars_memcpy486
@@ -3767,7 +3608,7 @@ init_vars_memcpy486
 	inx
 	cpx #$8
 	bne init_vars_memcpy486
-	; LineNumber: 961
+	; LineNumber: 974
 	; memcpy
 	ldx #0
 init_vars_memcpy487
@@ -3776,7 +3617,7 @@ init_vars_memcpy487
 	inx
 	cpx #$4
 	bne init_vars_memcpy487
-	; LineNumber: 962
+	; LineNumber: 975
 	; memcpy
 	ldx #0
 init_vars_memcpy488
@@ -3785,30 +3626,25 @@ init_vars_memcpy488
 	inx
 	cpx #$4
 	bne init_vars_memcpy488
-	; LineNumber: 966
+	; LineNumber: 979
 	
 ; // "Sprite" start positions
-	; Assigning single variable : spr_x
 	lda #$a
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta spr_x
-	; Assigning single variable : spr_y
 	; Load Byte array
-	ldx #$0
-	lda obstacles_y,x
-	; Calling storevariable
+	lda obstacles_y +#$0 ; array with const index optimization
+	; Calling storevariable on generic assign expression
 	sta spr_y
-	; Assigning single variable : source_str
 	lda #<str_crockr
 	ldx #>str_crockr
 	sta source_str
 	stx source_str+1
-	; Assigning single variable : spr_len
 	lda #$9
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta spr_len
 	jsr sprite_xy
-	; LineNumber: 967
+	; LineNumber: 980
 	; Optimization: replacing a > N with a >= N+1
 	; Binary clause Simplified: GREATEREQUAL
 	lda GAME_SPEED
@@ -3816,52 +3652,42 @@ init_vars_memcpy488
 	cmp #$5;keep
 	bcc init_vars_elsedoneblock492
 init_vars_ConditionalTrueBlock490: ;Main true block ;keep 
-	; LineNumber: 966
-	; LineNumber: 967
-	; Assigning single variable : spr_x
+	; LineNumber: 979
+	; LineNumber: 980
 	lda #$18
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta spr_x
-	; Assigning single variable : spr_y
 	; Load Byte array
-	ldx #$0
-	lda obstacles_y,x
-	; Calling storevariable
+	lda obstacles_y +#$0 ; array with const index optimization
+	; Calling storevariable on generic assign expression
 	sta spr_y
-	; Assigning single variable : source_str
 	lda #<str_logr
 	ldx #>str_logr
 	sta source_str
 	stx source_str+1
-	; Assigning single variable : spr_len
 	lda #$5
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta spr_len
 	jsr sprite_xy
-	; LineNumber: 967
+	; LineNumber: 980
 init_vars_elsedoneblock492
-	; LineNumber: 969
-	; Assigning single variable : spr_x
+	; LineNumber: 982
 	lda #$1e
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta spr_x
-	; Assigning single variable : spr_y
 	; Load Byte array
-	ldx #$1
-	lda obstacles_y,x
-	; Calling storevariable
+	lda obstacles_y +#$1 ; array with const index optimization
+	; Calling storevariable on generic assign expression
 	sta spr_y
-	; Assigning single variable : source_str
 	lda #<str_crockl
 	ldx #>str_crockl
 	sta source_str
 	stx source_str+1
-	; Assigning single variable : spr_len
 	lda #$9
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta spr_len
 	jsr sprite_xy
-	; LineNumber: 970
+	; LineNumber: 983
 	; Optimization: replacing a > N with a >= N+1
 	; Binary clause Simplified: GREATEREQUAL
 	lda GAME_SPEED
@@ -3869,94 +3695,74 @@ init_vars_elsedoneblock492
 	cmp #$5;keep
 	bcc init_vars_elsedoneblock498
 init_vars_ConditionalTrueBlock496: ;Main true block ;keep 
-	; LineNumber: 969
-	; LineNumber: 970
-	; Assigning single variable : spr_x
+	; LineNumber: 982
+	; LineNumber: 983
 	lda #$5
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta spr_x
-	; Assigning single variable : spr_y
 	; Load Byte array
-	ldx #$1
-	lda obstacles_y,x
-	; Calling storevariable
+	lda obstacles_y +#$1 ; array with const index optimization
+	; Calling storevariable on generic assign expression
 	sta spr_y
-	; Assigning single variable : source_str
 	lda #<str_logl
 	ldx #>str_logl
 	sta source_str
 	stx source_str+1
-	; Assigning single variable : spr_len
 	lda #$5
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta spr_len
 	jsr sprite_xy
-	; LineNumber: 970
+	; LineNumber: 983
 init_vars_elsedoneblock498
-	; LineNumber: 972
-	; Assigning single variable : spr_x
+	; LineNumber: 985
 	lda #$4
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta spr_x
-	; Assigning single variable : spr_y
 	; Load Byte array
-	ldx #$2
-	lda obstacles_y,x
-	; Calling storevariable
+	lda obstacles_y +#$2 ; array with const index optimization
+	; Calling storevariable on generic assign expression
 	sta spr_y
-	; Assigning single variable : source_str
 	lda #<str_logr
 	ldx #>str_logr
 	sta source_str
 	stx source_str+1
-	; Assigning single variable : spr_len
 	lda #$5
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta spr_len
 	jsr sprite_xy
-	; LineNumber: 973
-	; Assigning single variable : spr_x
+	; LineNumber: 986
 	lda #$e
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta spr_x
-	; Assigning single variable : spr_y
 	; Load Byte array
-	ldx #$2
-	lda obstacles_y,x
-	; Calling storevariable
+	lda obstacles_y +#$2 ; array with const index optimization
+	; Calling storevariable on generic assign expression
 	sta spr_y
-	; Assigning single variable : source_str
 	lda #<str_logr
 	ldx #>str_logr
 	sta source_str
 	stx source_str+1
-	; Assigning single variable : spr_len
 	lda #$5
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta spr_len
 	jsr sprite_xy
-	; LineNumber: 975
-	; Assigning single variable : spr_x
+	; LineNumber: 988
 	lda #$18
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta spr_x
-	; Assigning single variable : spr_y
 	; Load Byte array
-	ldx #$3
-	lda obstacles_y,x
-	; Calling storevariable
+	lda obstacles_y +#$3 ; array with const index optimization
+	; Calling storevariable on generic assign expression
 	sta spr_y
-	; Assigning single variable : source_str
 	lda #<str_logl
 	ldx #>str_logl
 	sta source_str
 	stx source_str+1
-	; Assigning single variable : spr_len
 	lda #$5
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta spr_len
 	jsr sprite_xy
-	; LineNumber: 976
+	; LineNumber: 989
 	; Optimization: replacing a > N with a >= N+1
 	; Binary clause Simplified: GREATEREQUAL
 	lda GAME_SPEED
@@ -3964,52 +3770,42 @@ init_vars_elsedoneblock498
 	cmp #$5;keep
 	bcc init_vars_elsedoneblock504
 init_vars_ConditionalTrueBlock502: ;Main true block ;keep 
-	; LineNumber: 975
-	; LineNumber: 976
-	; Assigning single variable : spr_x
+	; LineNumber: 988
+	; LineNumber: 989
 	lda #$22
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta spr_x
-	; Assigning single variable : spr_y
 	; Load Byte array
-	ldx #$3
-	lda obstacles_y,x
-	; Calling storevariable
+	lda obstacles_y +#$3 ; array with const index optimization
+	; Calling storevariable on generic assign expression
 	sta spr_y
-	; Assigning single variable : source_str
 	lda #<str_logl
 	ldx #>str_logl
 	sta source_str
 	stx source_str+1
-	; Assigning single variable : spr_len
 	lda #$5
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta spr_len
 	jsr sprite_xy
-	; LineNumber: 976
+	; LineNumber: 989
 init_vars_elsedoneblock504
-	; LineNumber: 978
-	; Assigning single variable : spr_x
+	; LineNumber: 991
 	lda #$a
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta spr_x
-	; Assigning single variable : spr_y
 	; Load Byte array
-	ldx #$4
-	lda obstacles_y,x
-	; Calling storevariable
+	lda obstacles_y +#$4 ; array with const index optimization
+	; Calling storevariable on generic assign expression
 	sta spr_y
-	; Assigning single variable : source_str
 	lda #<str_turtles
 	ldx #>str_turtles
 	sta source_str
 	stx source_str+1
-	; Assigning single variable : spr_len
 	lda #$5
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta spr_len
 	jsr sprite_xy
-	; LineNumber: 979
+	; LineNumber: 992
 	; Optimization: replacing a > N with a >= N+1
 	; Binary clause Simplified: GREATEREQUAL
 	lda GAME_SPEED
@@ -4017,999 +3813,842 @@ init_vars_elsedoneblock504
 	cmp #$5;keep
 	bcc init_vars_elsedoneblock510
 init_vars_ConditionalTrueBlock508: ;Main true block ;keep 
-	; LineNumber: 978
-	; LineNumber: 979
-	; Assigning single variable : spr_x
+	; LineNumber: 991
+	; LineNumber: 992
 	lda #$14
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta spr_x
-	; Assigning single variable : spr_y
 	; Load Byte array
-	ldx #$4
-	lda obstacles_y,x
-	; Calling storevariable
+	lda obstacles_y +#$4 ; array with const index optimization
+	; Calling storevariable on generic assign expression
 	sta spr_y
-	; Assigning single variable : source_str
 	lda #<str_turtles
 	ldx #>str_turtles
 	sta source_str
 	stx source_str+1
-	; Assigning single variable : spr_len
 	lda #$5
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta spr_len
 	jsr sprite_xy
-	; LineNumber: 979
+	; LineNumber: 992
 init_vars_elsedoneblock510
-	; LineNumber: 980
-	; Assigning single variable : spr_x
+	; LineNumber: 993
 	lda #$1e
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta spr_x
-	; Assigning single variable : spr_y
 	; Load Byte array
-	ldx #$4
-	lda obstacles_y,x
-	; Calling storevariable
+	lda obstacles_y +#$4 ; array with const index optimization
+	; Calling storevariable on generic assign expression
 	sta spr_y
-	; Assigning single variable : source_str
 	lda #<str_turtles
 	ldx #>str_turtles
 	sta source_str
 	stx source_str+1
-	; Assigning single variable : spr_len
 	lda #$5
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta spr_len
 	jsr sprite_xy
-	; LineNumber: 982
-	; Assigning single variable : spr_x
+	; LineNumber: 995
 	lda #$8
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta spr_x
-	; Assigning single variable : spr_y
 	; Load Byte array
-	ldx #$5
-	lda obstacles_y,x
-	; Calling storevariable
+	lda obstacles_y +#$5 ; array with const index optimization
+	; Calling storevariable on generic assign expression
 	sta spr_y
-	; Assigning single variable : source_str
 	lda #<str_cart
 	ldx #>str_cart
 	sta source_str
 	stx source_str+1
-	; Assigning single variable : spr_len
 	lda #$4
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta spr_len
 	jsr sprite_xy
-	; LineNumber: 983
-	; Assigning single variable : spr_x
+	; LineNumber: 996
 	lda #$8
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta spr_x
-	; Assigning single variable : spr_y
 	; Load Byte array
-	ldx #$6
-	lda obstacles_y,x
-	; Calling storevariable
+	lda obstacles_y +#$6 ; array with const index optimization
+	; Calling storevariable on generic assign expression
 	sta spr_y
-	; Assigning single variable : source_str
 	lda #<str_carb
 	ldx #>str_carb
 	sta source_str
 	stx source_str+1
-	; Assigning single variable : spr_len
 	lda #$4
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta spr_len
 	jsr sprite_xy
-	; LineNumber: 984
-	; Assigning single variable : spr_x
+	; LineNumber: 997
 	lda #$22
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta spr_x
-	; Assigning single variable : spr_y
 	; Load Byte array
-	ldx #$5
-	lda obstacles_y,x
-	; Calling storevariable
+	lda obstacles_y +#$5 ; array with const index optimization
+	; Calling storevariable on generic assign expression
 	sta spr_y
-	; Assigning single variable : source_str
 	lda #<str_cart
 	ldx #>str_cart
 	sta source_str
 	stx source_str+1
-	; Assigning single variable : spr_len
 	lda #$4
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta spr_len
 	jsr sprite_xy
-	; LineNumber: 985
-	; Assigning single variable : spr_x
+	; LineNumber: 998
 	lda #$22
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta spr_x
-	; Assigning single variable : spr_y
 	; Load Byte array
-	ldx #$6
-	lda obstacles_y,x
-	; Calling storevariable
+	lda obstacles_y +#$6 ; array with const index optimization
+	; Calling storevariable on generic assign expression
 	sta spr_y
-	; Assigning single variable : source_str
 	lda #<str_carb
 	ldx #>str_carb
 	sta source_str
 	stx source_str+1
-	; Assigning single variable : spr_len
 	lda #$4
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta spr_len
 	jsr sprite_xy
-	; LineNumber: 987
+	; LineNumber: 1000
 	; Binary clause Simplified: EQUALS
 	lda GAME_SPEED
 	; Compare with pure num / var optimization
 	cmp #$4;keep
 	bne init_vars_elsedoneblock516
 init_vars_ConditionalTrueBlock514: ;Main true block ;keep 
-	; LineNumber: 986
-	; LineNumber: 988
-	; Assigning single variable : spr_x
+	; LineNumber: 999
+	; LineNumber: 1001
 	lda #$e
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta spr_x
-	; Assigning single variable : spr_y
 	; Load Byte array
-	ldx #$5
-	lda obstacles_y,x
-	; Calling storevariable
+	lda obstacles_y +#$5 ; array with const index optimization
+	; Calling storevariable on generic assign expression
 	sta spr_y
-	; Assigning single variable : source_str
 	lda #<str_cart
 	ldx #>str_cart
 	sta source_str
 	stx source_str+1
-	; Assigning single variable : spr_len
 	lda #$4
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta spr_len
 	jsr sprite_xy
-	; LineNumber: 989
-	; Assigning single variable : spr_x
+	; LineNumber: 1002
 	lda #$e
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta spr_x
-	; Assigning single variable : spr_y
 	; Load Byte array
-	ldx #$6
-	lda obstacles_y,x
-	; Calling storevariable
+	lda obstacles_y +#$6 ; array with const index optimization
+	; Calling storevariable on generic assign expression
 	sta spr_y
-	; Assigning single variable : source_str
 	lda #<str_carb
 	ldx #>str_carb
 	sta source_str
 	stx source_str+1
-	; Assigning single variable : spr_len
 	lda #$4
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta spr_len
 	jsr sprite_xy
-	; LineNumber: 990
+	; LineNumber: 1003
 init_vars_elsedoneblock516
-	; LineNumber: 992
-	; Assigning single variable : spr_x
+	; LineNumber: 1005
 	lda #$13
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta spr_x
-	; Assigning single variable : spr_y
 	; Load Byte array
-	ldx #$7
-	lda obstacles_y,x
-	; Calling storevariable
+	lda obstacles_y +#$7 ; array with const index optimization
+	; Calling storevariable on generic assign expression
 	sta spr_y
-	; Assigning single variable : source_str
 	lda #<str_cart
 	ldx #>str_cart
 	sta source_str
 	stx source_str+1
-	; Assigning single variable : spr_len
 	lda #$4
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta spr_len
 	jsr sprite_xy
-	; LineNumber: 993
-	; Assigning single variable : spr_x
+	; LineNumber: 1006
 	lda #$13
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta spr_x
-	; Assigning single variable : spr_y
 	; Load Byte array
-	ldx #$8
-	lda obstacles_y,x
-	; Calling storevariable
+	lda obstacles_y +#$8 ; array with const index optimization
+	; Calling storevariable on generic assign expression
 	sta spr_y
-	; Assigning single variable : source_str
 	lda #<str_carb
 	ldx #>str_carb
 	sta source_str
 	stx source_str+1
-	; Assigning single variable : spr_len
 	lda #$4
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta spr_len
 	jsr sprite_xy
-	; LineNumber: 994
-	; Assigning single variable : spr_x
+	; LineNumber: 1007
 	lda #$1d
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta spr_x
-	; Assigning single variable : spr_y
 	; Load Byte array
-	ldx #$7
-	lda obstacles_y,x
-	; Calling storevariable
+	lda obstacles_y +#$7 ; array with const index optimization
+	; Calling storevariable on generic assign expression
 	sta spr_y
-	; Assigning single variable : source_str
 	lda #<str_cart
 	ldx #>str_cart
 	sta source_str
 	stx source_str+1
-	; Assigning single variable : spr_len
 	lda #$4
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta spr_len
 	jsr sprite_xy
-	; LineNumber: 995
-	; Assigning single variable : spr_x
+	; LineNumber: 1008
 	lda #$1d
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta spr_x
-	; Assigning single variable : spr_y
 	; Load Byte array
-	ldx #$8
-	lda obstacles_y,x
-	; Calling storevariable
+	lda obstacles_y +#$8 ; array with const index optimization
+	; Calling storevariable on generic assign expression
 	sta spr_y
-	; Assigning single variable : source_str
 	lda #<str_carb
 	ldx #>str_carb
 	sta source_str
 	stx source_str+1
-	; Assigning single variable : spr_len
 	lda #$4
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta spr_len
 	jsr sprite_xy
-	; LineNumber: 997
+	; LineNumber: 1010
 	; Binary clause Simplified: EQUALS
 	lda GAME_SPEED
 	; Compare with pure num / var optimization
 	cmp #$4;keep
 	bne init_vars_elsedoneblock522
 init_vars_ConditionalTrueBlock520: ;Main true block ;keep 
-	; LineNumber: 996
-	; LineNumber: 998
-	; Assigning single variable : spr_x
+	; LineNumber: 1009
+	; LineNumber: 1011
 	lda #$5
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta spr_x
-	; Assigning single variable : spr_y
 	; Load Byte array
-	ldx #$7
-	lda obstacles_y,x
-	; Calling storevariable
+	lda obstacles_y +#$7 ; array with const index optimization
+	; Calling storevariable on generic assign expression
 	sta spr_y
-	; Assigning single variable : source_str
 	lda #<str_cart
 	ldx #>str_cart
 	sta source_str
 	stx source_str+1
-	; Assigning single variable : spr_len
 	lda #$4
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta spr_len
 	jsr sprite_xy
-	; LineNumber: 999
-	; Assigning single variable : spr_x
+	; LineNumber: 1012
 	lda #$5
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta spr_x
-	; Assigning single variable : spr_y
 	; Load Byte array
-	ldx #$8
-	lda obstacles_y,x
-	; Calling storevariable
+	lda obstacles_y +#$8 ; array with const index optimization
+	; Calling storevariable on generic assign expression
 	sta spr_y
-	; Assigning single variable : source_str
 	lda #<str_carb
 	ldx #>str_carb
 	sta source_str
 	stx source_str+1
-	; Assigning single variable : spr_len
 	lda #$4
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta spr_len
 	jsr sprite_xy
-	; LineNumber: 1000
+	; LineNumber: 1013
 init_vars_elsedoneblock522
-	; LineNumber: 1003
-	; Assigning single variable : spr_x
+	; LineNumber: 1016
 	lda #$0
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta spr_x
-	; Assigning single variable : spr_y
 	; Load Byte array
-	ldx #$9
-	lda obstacles_y,x
-	; Calling storevariable
+	lda obstacles_y +#$9 ; array with const index optimization
+	; Calling storevariable on generic assign expression
 	sta spr_y
-	; Assigning single variable : source_str
 	lda #<str_truckt_r
 	ldx #>str_truckt_r
 	sta source_str
 	stx source_str+1
-	; Assigning single variable : spr_len
 	lda #$8
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta spr_len
 	jsr sprite_xy
-	; LineNumber: 1004
-	; Assigning single variable : spr_x
+	; LineNumber: 1017
 	lda #$0
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta spr_x
-	; Assigning single variable : spr_y
 	; Load Byte array
-	ldx #$a
-	lda obstacles_y,x
-	; Calling storevariable
+	lda obstacles_y +#$a ; array with const index optimization
+	; Calling storevariable on generic assign expression
 	sta spr_y
-	; Assigning single variable : source_str
 	lda #<str_truckb_r
 	ldx #>str_truckb_r
 	sta source_str
 	stx source_str+1
-	; Assigning single variable : spr_len
 	lda #$8
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta spr_len
 	jsr sprite_xy
-	; LineNumber: 1005
+	; LineNumber: 1018
 	; Binary clause Simplified: EQUALS
 	lda GAME_SPEED
 	; Compare with pure num / var optimization
 	cmp #$4;keep
-	bne init_vars_localfailed530
-	jmp init_vars_ConditionalTrueBlock526
-init_vars_localfailed530
-	jmp init_vars_elsedoneblock528
+	bne init_vars_elsedoneblock528
 init_vars_ConditionalTrueBlock526: ;Main true block ;keep 
-	; LineNumber: 1004
-	; LineNumber: 1006
-	; Assigning single variable : spr_x
-	lda #$a
-	; Calling storevariable
-	sta spr_x
-	; Assigning single variable : spr_y
-	; Load Byte array
-	ldx #$9
-	lda obstacles_y,x
-	; Calling storevariable
-	sta spr_y
-	; Assigning single variable : source_str
-	lda #<str_truckt_r
-	ldx #>str_truckt_r
-	sta source_str
-	stx source_str+1
-	; Assigning single variable : spr_len
-	lda #$8
-	; Calling storevariable
-	sta spr_len
-	jsr sprite_xy
-	; LineNumber: 1007
-	; Assigning single variable : spr_x
-	lda #$a
-	; Calling storevariable
-	sta spr_x
-	; Assigning single variable : spr_y
-	; Load Byte array
-	ldx #$a
-	lda obstacles_y,x
-	; Calling storevariable
-	sta spr_y
-	; Assigning single variable : source_str
-	lda #<str_truckb_r
-	ldx #>str_truckb_r
-	sta source_str
-	stx source_str+1
-	; Assigning single variable : spr_len
-	lda #$8
-	; Calling storevariable
-	sta spr_len
-	jsr sprite_xy
-	; LineNumber: 1009
-	; Assigning single variable : spr_x
-	lda #$1e
-	; Calling storevariable
-	sta spr_x
-	; Assigning single variable : spr_y
-	; Load Byte array
-	ldx #$9
-	lda obstacles_y,x
-	; Calling storevariable
-	sta spr_y
-	; Assigning single variable : source_str
-	lda #<str_truckt_r
-	ldx #>str_truckt_r
-	sta source_str
-	stx source_str+1
-	; Assigning single variable : spr_len
-	lda #$8
-	; Calling storevariable
-	sta spr_len
-	jsr sprite_xy
-	; LineNumber: 1010
-	; Assigning single variable : spr_x
-	lda #$1e
-	; Calling storevariable
-	sta spr_x
-	; Assigning single variable : spr_y
-	; Load Byte array
-	ldx #$a
-	lda obstacles_y,x
-	; Calling storevariable
-	sta spr_y
-	; Assigning single variable : source_str
-	lda #<str_truckb_r
-	ldx #>str_truckb_r
-	sta source_str
-	stx source_str+1
-	; Assigning single variable : spr_len
-	lda #$8
-	; Calling storevariable
-	sta spr_len
-	jsr sprite_xy
-	; LineNumber: 1011
-init_vars_elsedoneblock528
-	; LineNumber: 1013
-	; Assigning single variable : spr_x
-	lda #$13
-	; Calling storevariable
-	sta spr_x
-	; Assigning single variable : spr_y
-	; Load Byte array
-	ldx #$b
-	lda obstacles_y,x
-	; Calling storevariable
-	sta spr_y
-	; Assigning single variable : source_str
-	lda #<str_truckt_r
-	ldx #>str_truckt_r
-	sta source_str
-	stx source_str+1
-	; Assigning single variable : spr_len
-	lda #$8
-	; Calling storevariable
-	sta spr_len
-	jsr sprite_xy
-	; LineNumber: 1014
-	; Assigning single variable : spr_x
-	lda #$13
-	; Calling storevariable
-	sta spr_x
-	; Assigning single variable : spr_y
-	; Load Byte array
-	ldx #$c
-	lda obstacles_y,x
-	; Calling storevariable
-	sta spr_y
-	; Assigning single variable : source_str
-	lda #<str_truckb_r
-	ldx #>str_truckb_r
-	sta source_str
-	stx source_str+1
-	; Assigning single variable : spr_len
-	lda #$8
-	; Calling storevariable
-	sta spr_len
-	jsr sprite_xy
-	; LineNumber: 1015
-	; Assigning single variable : spr_x
-	lda #$20
-	; Calling storevariable
-	sta spr_x
-	; Assigning single variable : spr_y
-	; Load Byte array
-	ldx #$b
-	lda obstacles_y,x
-	; Calling storevariable
-	sta spr_y
-	; Assigning single variable : source_str
-	lda #<str_truckt_r
-	ldx #>str_truckt_r
-	sta source_str
-	stx source_str+1
-	; Assigning single variable : spr_len
-	lda #$8
-	; Calling storevariable
-	sta spr_len
-	jsr sprite_xy
-	; LineNumber: 1016
-	; Assigning single variable : spr_x
-	lda #$20
-	; Calling storevariable
-	sta spr_x
-	; Assigning single variable : spr_y
-	; Load Byte array
-	ldx #$c
-	lda obstacles_y,x
-	; Calling storevariable
-	sta spr_y
-	; Assigning single variable : source_str
-	lda #<str_truckb_r
-	ldx #>str_truckb_r
-	sta source_str
-	stx source_str+1
-	; Assigning single variable : spr_len
-	lda #$8
-	; Calling storevariable
-	sta spr_len
-	jsr sprite_xy
-	; LineNumber: 1018
-	; Assigning single variable : frog_x
-	lda #$14
-	; Calling storevariable
-	sta frog_x
+	; LineNumber: 1017
 	; LineNumber: 1019
-	; Assigning single variable : frog_y
+	lda #$a
+	; Calling storevariable on generic assign expression
+	sta spr_x
+	; Load Byte array
+	lda obstacles_y +#$9 ; array with const index optimization
+	; Calling storevariable on generic assign expression
+	sta spr_y
+	lda #<str_truckt_r
+	ldx #>str_truckt_r
+	sta source_str
+	stx source_str+1
+	lda #$8
+	; Calling storevariable on generic assign expression
+	sta spr_len
+	jsr sprite_xy
+	; LineNumber: 1020
+	lda #$a
+	; Calling storevariable on generic assign expression
+	sta spr_x
+	; Load Byte array
+	lda obstacles_y +#$a ; array with const index optimization
+	; Calling storevariable on generic assign expression
+	sta spr_y
+	lda #<str_truckb_r
+	ldx #>str_truckb_r
+	sta source_str
+	stx source_str+1
+	lda #$8
+	; Calling storevariable on generic assign expression
+	sta spr_len
+	jsr sprite_xy
+	; LineNumber: 1022
+	lda #$1e
+	; Calling storevariable on generic assign expression
+	sta spr_x
+	; Load Byte array
+	lda obstacles_y +#$9 ; array with const index optimization
+	; Calling storevariable on generic assign expression
+	sta spr_y
+	lda #<str_truckt_r
+	ldx #>str_truckt_r
+	sta source_str
+	stx source_str+1
+	lda #$8
+	; Calling storevariable on generic assign expression
+	sta spr_len
+	jsr sprite_xy
+	; LineNumber: 1023
+	lda #$1e
+	; Calling storevariable on generic assign expression
+	sta spr_x
+	; Load Byte array
+	lda obstacles_y +#$a ; array with const index optimization
+	; Calling storevariable on generic assign expression
+	sta spr_y
+	lda #<str_truckb_r
+	ldx #>str_truckb_r
+	sta source_str
+	stx source_str+1
+	lda #$8
+	; Calling storevariable on generic assign expression
+	sta spr_len
+	jsr sprite_xy
+	; LineNumber: 1024
+init_vars_elsedoneblock528
+	; LineNumber: 1026
+	lda #$13
+	; Calling storevariable on generic assign expression
+	sta spr_x
+	; Load Byte array
+	lda obstacles_y +#$b ; array with const index optimization
+	; Calling storevariable on generic assign expression
+	sta spr_y
+	lda #<str_truckt_r
+	ldx #>str_truckt_r
+	sta source_str
+	stx source_str+1
+	lda #$8
+	; Calling storevariable on generic assign expression
+	sta spr_len
+	jsr sprite_xy
+	; LineNumber: 1027
+	lda #$13
+	; Calling storevariable on generic assign expression
+	sta spr_x
+	; Load Byte array
+	lda obstacles_y +#$c ; array with const index optimization
+	; Calling storevariable on generic assign expression
+	sta spr_y
+	lda #<str_truckb_r
+	ldx #>str_truckb_r
+	sta source_str
+	stx source_str+1
+	lda #$8
+	; Calling storevariable on generic assign expression
+	sta spr_len
+	jsr sprite_xy
+	; LineNumber: 1028
+	lda #$20
+	; Calling storevariable on generic assign expression
+	sta spr_x
+	; Load Byte array
+	lda obstacles_y +#$b ; array with const index optimization
+	; Calling storevariable on generic assign expression
+	sta spr_y
+	lda #<str_truckt_r
+	ldx #>str_truckt_r
+	sta source_str
+	stx source_str+1
+	lda #$8
+	; Calling storevariable on generic assign expression
+	sta spr_len
+	jsr sprite_xy
+	; LineNumber: 1029
+	lda #$20
+	; Calling storevariable on generic assign expression
+	sta spr_x
+	; Load Byte array
+	lda obstacles_y +#$c ; array with const index optimization
+	; Calling storevariable on generic assign expression
+	sta spr_y
+	lda #<str_truckb_r
+	ldx #>str_truckb_r
+	sta source_str
+	stx source_str+1
+	lda #$8
+	; Calling storevariable on generic assign expression
+	sta spr_len
+	jsr sprite_xy
+	; LineNumber: 1031
+	lda #$14
+	; Calling storevariable on generic assign expression
+	sta frog_x
+	; LineNumber: 1032
 	lda #$18
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta frog_y
-	; LineNumber: 1021
-	; Assigning single variable : KEYPRESS
-	ldy #0
+	; LineNumber: 1034
+	ldy #0   ; Force integer assignment, set y = 0 for values lower than 255
 	lda #$0
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta KEYPRESS
 	sty KEYPRESS+1
-	; LineNumber: 1022
-	; Assigning single variable : ALIVE
+	; LineNumber: 1035
 	lda #$1
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta ALIVE
-	; LineNumber: 1023
-	; Assigning single variable : WON_GAME
+	; LineNumber: 1036
 	lda #$0
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta WON_GAME
-	; LineNumber: 1025
-	; Assigning single variable : player_lives
+	; LineNumber: 1038
 	lda #$3
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta player_lives
-	; LineNumber: 1026
-	; Assigning single variable : player_score
+	; LineNumber: 1039
 	lda #$0
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta player_score
 	sty player_score+1
-	; LineNumber: 1029
+	; LineNumber: 1042
 	
 ; // Home plates
-	; Assigning single variable : x
 	lda #$3
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta x
-	; Assigning single variable : y
 	lda #$1
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta y
-	; Assigning single variable : this_str
 	lda #<homeplate
 	ldx #>homeplate
 	sta this_str
 	stx this_str+1
-	; Assigning single variable : str_len
 	lda #$1
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta str_len
 	jsr textat
-	; LineNumber: 1030
-	; Assigning single variable : x
+	; LineNumber: 1043
 	lda #$a
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta x
-	; Assigning single variable : y
 	lda #$1
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta y
-	; Assigning single variable : this_str
 	lda #<homeplate
 	ldx #>homeplate
 	sta this_str
 	stx this_str+1
-	; Assigning single variable : str_len
 	lda #$1
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta str_len
 	jsr textat
-	; LineNumber: 1031
-	; Assigning single variable : x
+	; LineNumber: 1044
 	lda #$12
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta x
-	; Assigning single variable : y
 	lda #$1
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta y
-	; Assigning single variable : this_str
 	lda #<homeplate
 	ldx #>homeplate
 	sta this_str
 	stx this_str+1
-	; Assigning single variable : str_len
 	lda #$1
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta str_len
 	jsr textat
-	; LineNumber: 1032
-	; Assigning single variable : x
+	; LineNumber: 1045
 	lda #$18
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta x
-	; Assigning single variable : y
 	lda #$1
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta y
-	; Assigning single variable : this_str
 	lda #<homeplate
 	ldx #>homeplate
 	sta this_str
 	stx this_str+1
-	; Assigning single variable : str_len
 	lda #$1
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta str_len
 	jsr textat
-	; LineNumber: 1033
-	; Assigning single variable : x
+	; LineNumber: 1046
 	lda #$1f
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta x
-	; Assigning single variable : y
 	lda #$1
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta y
-	; Assigning single variable : this_str
 	lda #<homeplate
 	ldx #>homeplate
 	sta this_str
 	stx this_str+1
-	; Assigning single variable : str_len
 	lda #$1
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta str_len
 	jsr textat
-	; LineNumber: 1034
-	; Assigning single variable : x
+	; LineNumber: 1047
 	lda #$25
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta x
-	; Assigning single variable : y
 	lda #$1
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta y
-	; Assigning single variable : this_str
 	lda #<homeplate
 	ldx #>homeplate
 	sta this_str
 	stx this_str+1
-	; Assigning single variable : str_len
 	lda #$1
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta str_len
 	jsr textat
-	; LineNumber: 1035
+	; LineNumber: 1048
 	rts
 	; NodeProcedureDecl -1
 	; ***********  Defining procedure : move_obstacles
 	;    Procedure type : User-defined procedure
-	; LineNumber: 1039
+	; LineNumber: 1052
 move_obstacles
-	; LineNumber: 1042
+	; LineNumber: 1055
 	
 ; // TRSE way of incrementing 
 ; // counter with loop back to 0
+	; Test Inc dec D
 	inc obstacles_x_rl
 	lda obstacles_x_rl
 	cmp #$27 ; keep
-	bne move_obstacles_incmax534
+	bne move_obstacles_incmax532
 	lda #$0
 	sta obstacles_x_rl
-move_obstacles_incmax534
-	; LineNumber: 1043
-	; Assigning single variable : obstacles_x_lr
+move_obstacles_incmax532
+	; LineNumber: 1056
 	; 8 bit binop
 	; Add/sub where right value is constant number
 	lda #$27
 	sec
 	sbc obstacles_x_rl
 	 ; end add / sub var with constant
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta obstacles_x_lr
-	; LineNumber: 1044
+	; LineNumber: 1057
 	rts
 	; NodeProcedureDecl -1
 	; ***********  Defining procedure : move_traffic
 	;    Procedure type : User-defined procedure
-	; LineNumber: 1048
+	; LineNumber: 1061
 move_traffic
-	; LineNumber: 1051
+	; LineNumber: 1064
 	
 ; // TRSE way of incrementing 
 ; // counter with loop back to 0
+	; Test Inc dec D
 	inc traffic_x_rl
 	lda traffic_x_rl
 	cmp #$27 ; keep
-	bne move_traffic_incmax537
+	bne move_traffic_incmax534
 	lda #$0
 	sta traffic_x_rl
-move_traffic_incmax537
-	; LineNumber: 1052
-	; Assigning single variable : traffic_x_lr
+move_traffic_incmax534
+	; LineNumber: 1065
 	; 8 bit binop
 	; Add/sub where right value is constant number
 	lda #$27
 	sec
 	sbc traffic_x_rl
 	 ; end add / sub var with constant
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta traffic_x_lr
-	; LineNumber: 1053
+	; LineNumber: 1066
 	rts
 	; NodeProcedureDecl -1
 	; ***********  Defining procedure : frog_ride
 	;    Procedure type : User-defined procedure
-	; LineNumber: 1060
-	; LineNumber: 1058
+	; LineNumber: 1073
+	; LineNumber: 1071
 char_under	dc.b	0
-frog_ride_block538
+frog_ride_block535
 frog_ride
-	; LineNumber: 1061
-	; Assigning single variable : char_under
-	; Assigning single variable : sx
+	; LineNumber: 1074
 	lda frog_x
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta sx
-	; Assigning single variable : sy
 	lda frog_y
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta sy
 	jsr getat
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta char_under
-	; LineNumber: 1064
-	cmp #$51 ;keep
-	bne frog_ride_casenext540
-	; LineNumber: 1067
-	; LineNumber: 1068
+	; LineNumber: 1077
+	lda #$51
+	cmp char_under ;keep
+	bne frog_ride_casenext537
+	; LineNumber: 1080
+	; LineNumber: 1081
 	; Optimization: replacing a > N with a >= N+1
 	; Binary clause Simplified: GREATEREQUAL
 	lda frog_x
 	; Compare with pure num / var optimization
 	cmp #$1;keep
-	bcc frog_ride_elsedoneblock545
-frog_ride_ConditionalTrueBlock543: ;Main true block ;keep 
-	; LineNumber: 1069
-	; LineNumber: 1070
+	bcc frog_ride_elsedoneblock542
+frog_ride_ConditionalTrueBlock540: ;Main true block ;keep 
+	; LineNumber: 1082
+	; LineNumber: 1083
 	
 ; // Ride turtles and logs etc
+	; Test Inc dec D
 	dec frog_x
-	; LineNumber: 1071
-frog_ride_elsedoneblock545
-	; LineNumber: 1072
-	jmp frog_ride_caseend539
-frog_ride_casenext540
-	lda char_under
-	cmp #$a8 ;keep
-	bne frog_ride_casenext550
-	; LineNumber: 1075
-	; LineNumber: 1076
+	; LineNumber: 1084
+frog_ride_elsedoneblock542
+	; LineNumber: 1085
+	jmp frog_ride_caseend536
+frog_ride_casenext537
+	lda #$a8
+	cmp char_under ;keep
+	bne frog_ride_casenext545
+	; LineNumber: 1088
+	; LineNumber: 1089
 	; Binary clause Simplified: LESS
 	lda frog_x
 	; Compare with pure num / var optimization
 	cmp #$26;keep
-	bcs frog_ride_elsedoneblock555
-frog_ride_ConditionalTrueBlock553: ;Main true block ;keep 
-	; LineNumber: 1077
-	; LineNumber: 1078
+	bcs frog_ride_elsedoneblock550
+frog_ride_ConditionalTrueBlock548: ;Main true block ;keep 
+	; LineNumber: 1090
+	; LineNumber: 1091
 	
 ; // (
+	; Test Inc dec D
 	inc frog_x
-	; LineNumber: 1079
-frog_ride_elsedoneblock555
-	; LineNumber: 1080
-	jmp frog_ride_caseend539
-frog_ride_casenext550
-	lda char_under
-	cmp #$a9 ;keep
-	bne frog_ride_casenext560
-	; LineNumber: 1083
-	; LineNumber: 1084
-	; Optimization: replacing a > N with a >= N+1
-	; Binary clause Simplified: GREATEREQUAL
-	lda frog_x
-	; Compare with pure num / var optimization
-	cmp #$1;keep
-	bcc frog_ride_elsedoneblock565
-frog_ride_ConditionalTrueBlock563: ;Main true block ;keep 
-	; LineNumber: 1085
-	; LineNumber: 1086
-	
-; // ) 
-	dec frog_x
-	; LineNumber: 1087
-frog_ride_elsedoneblock565
-	; LineNumber: 1088
-	jmp frog_ride_caseend539
-frog_ride_casenext560
-	lda char_under
-	cmp #$dc ;keep
-	bne frog_ride_casenext570
-	; LineNumber: 1091
 	; LineNumber: 1092
-	; Binary clause Simplified: LESS
-	lda frog_x
-	; Compare with pure num / var optimization
-	cmp #$26;keep
-	bcs frog_ride_elsedoneblock575
-frog_ride_localsuccess578: ;keep
-	; ; logical AND, second requirement
-	; Optimization: replacing a > N with a >= N+1
-	; Binary clause Simplified: GREATEREQUAL
-	lda frog_y
-	; Compare with pure num / var optimization
-	cmp #$5;keep
-	bcc frog_ride_elsedoneblock575
-frog_ride_ConditionalTrueBlock573: ;Main true block ;keep 
+frog_ride_elsedoneblock550
 	; LineNumber: 1093
-	; LineNumber: 1094
-	
-; // Crock body 
-	inc frog_x
-	; LineNumber: 1095
-frog_ride_elsedoneblock575
+	jmp frog_ride_caseend536
+frog_ride_casenext545
+	lda #$a9
+	cmp char_under ;keep
+	bne frog_ride_casenext553
+	; LineNumber: 1096
 	; LineNumber: 1097
 	; Optimization: replacing a > N with a >= N+1
 	; Binary clause Simplified: GREATEREQUAL
 	lda frog_x
 	; Compare with pure num / var optimization
 	cmp #$1;keep
-	bcc frog_ride_elsedoneblock584
-frog_ride_localsuccess587: ;keep
+	bcc frog_ride_elsedoneblock558
+frog_ride_ConditionalTrueBlock556: ;Main true block ;keep 
+	; LineNumber: 1098
+	; LineNumber: 1099
+	
+; // ) 
+	; Test Inc dec D
+	dec frog_x
+	; LineNumber: 1100
+frog_ride_elsedoneblock558
+	; LineNumber: 1101
+	jmp frog_ride_caseend536
+frog_ride_casenext553
+	lda #$dc
+	cmp char_under ;keep
+	bne frog_ride_casenext561
+	; LineNumber: 1104
+	; LineNumber: 1105
+	; Binary clause Simplified: LESS
+	lda frog_x
+	; Compare with pure num / var optimization
+	cmp #$26;keep
+	bcs frog_ride_elsedoneblock566
+frog_ride_localsuccess568: ;keep
+	; ; logical AND, second requirement
+	; Optimization: replacing a > N with a >= N+1
+	; Binary clause Simplified: GREATEREQUAL
+	lda frog_y
+	; Compare with pure num / var optimization
+	cmp #$5;keep
+	bcc frog_ride_elsedoneblock566
+frog_ride_ConditionalTrueBlock564: ;Main true block ;keep 
+	; LineNumber: 1106
+	; LineNumber: 1107
+	
+; // Crock body 
+	; Test Inc dec D
+	inc frog_x
+	; LineNumber: 1108
+frog_ride_elsedoneblock566
+	; LineNumber: 1110
+	; Optimization: replacing a > N with a >= N+1
+	; Binary clause Simplified: GREATEREQUAL
+	lda frog_x
+	; Compare with pure num / var optimization
+	cmp #$1;keep
+	bcc frog_ride_elsedoneblock573
+frog_ride_localsuccess575: ;keep
 	; ; logical AND, second requirement
 	; Binary clause Simplified: EQUALS
 	lda frog_y
 	; Compare with pure num / var optimization
 	cmp #$4;keep
-	bne frog_ride_elsedoneblock584
-frog_ride_ConditionalTrueBlock582: ;Main true block ;keep 
-	; LineNumber: 1098
-	; LineNumber: 1099
+	bne frog_ride_elsedoneblock573
+frog_ride_ConditionalTrueBlock571: ;Main true block ;keep 
+	; LineNumber: 1111
+	; LineNumber: 1112
+	; Test Inc dec D
 	dec frog_x
-	; LineNumber: 1100
-frog_ride_elsedoneblock584
-	; LineNumber: 1101
-	jmp frog_ride_caseend539
-frog_ride_casenext570
-frog_ride_caseend539
-	; LineNumber: 1103
+	; LineNumber: 1113
+frog_ride_elsedoneblock573
+	; LineNumber: 1114
+frog_ride_casenext561
+frog_ride_caseend536
+	; LineNumber: 1116
 	rts
 	; NodeProcedureDecl -1
 	; ***********  Defining procedure : show_obstacles
 	;    Procedure type : User-defined procedure
-	; LineNumber: 1110
-	; LineNumber: 1107
+	; LineNumber: 1123
+	; LineNumber: 1120
 strip_num	dc.b	0
-	; LineNumber: 1107
+	; LineNumber: 1120
 this_strip	dc.b	0
-	; LineNumber: 1108
-this_source_offset	=                  $16
-	; LineNumber: 1109
+	; LineNumber: 1121
+this_source_offset	=   $16
+	; LineNumber: 1122
 game_move	dc.b	0
-show_obstacles_block590
+show_obstacles_block577
 show_obstacles
-	; LineNumber: 1113
+	; LineNumber: 1126
 	; Binary clause Simplified: EQUALS
 	; Modulo
 	; Right is PURE NUMERIC : Is word =0
 	; 8 bit mul of power 2
 	lda GAME_SPEED
 	lsr
-show_obstacles_val_var596 = $54
-	sta show_obstacles_val_var596
+show_obstacles_val_var583 = $54
+	sta show_obstacles_val_var583
 	lda GAME_TICKS
 	sec
-show_obstacles_modulo597
-	sbc show_obstacles_val_var596
-	bcs show_obstacles_modulo597
-	adc show_obstacles_val_var596
+show_obstacles_modulo584
+	sbc show_obstacles_val_var583
+	bcs show_obstacles_modulo584
+	adc show_obstacles_val_var583
 	; Compare with pure num / var optimization
 	cmp #$0;keep
-	bne show_obstacles_elsedoneblock594
-show_obstacles_ConditionalTrueBlock592: ;Main true block ;keep 
-	; LineNumber: 1114
-	; LineNumber: 1115
+	bne show_obstacles_elsedoneblock581
+show_obstacles_ConditionalTrueBlock579: ;Main true block ;keep 
+	; LineNumber: 1127
+	; LineNumber: 1128
 	
 ; // Sets traffic speed
 	jsr move_traffic
-	; LineNumber: 1116
-show_obstacles_elsedoneblock594
-	; LineNumber: 1119
+	; LineNumber: 1129
+show_obstacles_elsedoneblock581
+	; LineNumber: 1132
 	; Binary clause Simplified: EQUALS
 	; Modulo
 	lda GAME_SPEED
-show_obstacles_val_var605 = $54
-	sta show_obstacles_val_var605
+show_obstacles_val_var592 = $54
+	sta show_obstacles_val_var592
 	lda GAME_TICKS
 	sec
-show_obstacles_modulo606
-	sbc show_obstacles_val_var605
-	bcs show_obstacles_modulo606
-	adc show_obstacles_val_var605
+show_obstacles_modulo593
+	sbc show_obstacles_val_var592
+	bcs show_obstacles_modulo593
+	adc show_obstacles_val_var592
 	; Compare with pure num / var optimization
 	cmp #$0;keep
-	bne show_obstacles_elseblock601
-show_obstacles_ConditionalTrueBlock600: ;Main true block ;keep 
-	; LineNumber: 1120
-	; LineNumber: 1122
+	bne show_obstacles_elseblock588
+show_obstacles_ConditionalTrueBlock587: ;Main true block ;keep 
+	; LineNumber: 1133
+	; LineNumber: 1135
 	
 ; // Update obstacles positions
 ; // Update obstacles positions
 	jsr move_obstacles
-	; LineNumber: 1123
-	; Assigning single variable : game_move
+	; LineNumber: 1136
 	lda #$1
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta game_move
-	; LineNumber: 1125
-	jmp show_obstacles_elsedoneblock602
-show_obstacles_elseblock601
-	; LineNumber: 1126
-	; LineNumber: 1127
-	; Assigning single variable : game_move
+	; LineNumber: 1138
+	jmp show_obstacles_elsedoneblock589
+show_obstacles_elseblock588
+	; LineNumber: 1139
+	; LineNumber: 1140
 	lda #$0
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta game_move
-	; LineNumber: 1128
-show_obstacles_elsedoneblock602
-	; LineNumber: 1151
-	; Assigning single variable : strip_num
+	; LineNumber: 1141
+show_obstacles_elsedoneblock589
+	; LineNumber: 1164
 	lda #$0
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta strip_num
-show_obstacles_forloop609
-	; LineNumber: 1132
-	; LineNumber: 1133
+show_obstacles_forloop596
+	; LineNumber: 1145
+	; LineNumber: 1146
 	
 ; // "Scroll" each line of obstacle according to direction
-	; Assigning single variable : this_strip
 	; Load Byte array
 	ldx strip_num
 	lda obstacles_y,x
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta this_strip
-	; LineNumber: 1134
-	; Assigning single variable : screenmemory
+	; LineNumber: 1147
 	; Generic 16 bit op
 	; Integer constant assigning
 	ldy #$80
 	lda #$00
-show_obstacles_rightvarInteger_var637 = $54
-	sta show_obstacles_rightvarInteger_var637
-	sty show_obstacles_rightvarInteger_var637+1
+show_obstacles_rightvarInteger_var624 = $54
+	sta show_obstacles_rightvarInteger_var624
+	sty show_obstacles_rightvarInteger_var624+1
 	; Mul 16x8 setup
 	ldy #0
 	lda this_strip
@@ -5020,24 +4659,23 @@ show_obstacles_rightvarInteger_var637 = $54
 	jsr mul16x8_procedure
 	; Low bit binop:
 	clc
-	adc show_obstacles_rightvarInteger_var637
-show_obstacles_wordAdd635
-	sta show_obstacles_rightvarInteger_var637
+	adc show_obstacles_rightvarInteger_var624
+show_obstacles_wordAdd622
+	sta show_obstacles_rightvarInteger_var624
 	; High-bit binop
 	tya
-	adc show_obstacles_rightvarInteger_var637+1
+	adc show_obstacles_rightvarInteger_var624+1
 	tay
-	lda show_obstacles_rightvarInteger_var637
+	lda show_obstacles_rightvarInteger_var624
 	sta screenmemory
 	sty screenmemory+1
-	; LineNumber: 1136
-	; Assigning single variable : this_source_offset
+	; LineNumber: 1149
 	; Generic 16 bit op
 	lda #<level_strips
 	ldy #>level_strips
-show_obstacles_rightvarInteger_var640 = $54
-	sta show_obstacles_rightvarInteger_var640
-	sty show_obstacles_rightvarInteger_var640+1
+show_obstacles_rightvarInteger_var627 = $54
+	sta show_obstacles_rightvarInteger_var627
+	sty show_obstacles_rightvarInteger_var627+1
 	; Right is PURE NUMERIC : Is word =1
 	; 16 bit mul or div
 	; Mul 16x8 setup
@@ -5050,95 +4688,91 @@ show_obstacles_rightvarInteger_var640 = $54
 	jsr mul16x8_procedure
 	; Low bit binop:
 	clc
-	adc show_obstacles_rightvarInteger_var640
-show_obstacles_wordAdd638
-	sta show_obstacles_rightvarInteger_var640
+	adc show_obstacles_rightvarInteger_var627
+show_obstacles_wordAdd625
+	sta show_obstacles_rightvarInteger_var627
 	; High-bit binop
 	tya
-	adc show_obstacles_rightvarInteger_var640+1
+	adc show_obstacles_rightvarInteger_var627+1
 	tay
-	lda show_obstacles_rightvarInteger_var640
+	lda show_obstacles_rightvarInteger_var627
 	sta this_source_offset
 	sty this_source_offset+1
-	; LineNumber: 1138
+	; LineNumber: 1151
 	; Binary clause Simplified: EQUALS
 	; Load Byte array
 	ldx strip_num
 	lda strip_direction,x
 	; Compare with pure num / var optimization
 	cmp #$1;keep
-	bne show_obstacles_elseblock643
-show_obstacles_ConditionalTrueBlock642: ;Main true block ;keep 
-	; LineNumber: 1139
-	; LineNumber: 1140
-	; Assigning single variable : this_source_offset
+	bne show_obstacles_elseblock630
+show_obstacles_ConditionalTrueBlock629: ;Main true block ;keep 
+	; LineNumber: 1152
+	; LineNumber: 1153
 	lda this_source_offset
 	clc
 	adc obstacles_x_rl
 	sta this_source_offset+0
 	; Optimization : A := A op 8 bit - var and bvar are the same - perform inc
-	bcc show_obstacles_WordAdd650
+	bcc show_obstacles_WordAdd637
 	inc this_source_offset+1
-show_obstacles_WordAdd650
-	; LineNumber: 1142
-	jmp show_obstacles_elsedoneblock644
-show_obstacles_elseblock643
-	; LineNumber: 1143
-	; LineNumber: 1144
-	; Assigning single variable : this_source_offset
+show_obstacles_WordAdd637
+	; LineNumber: 1155
+	jmp show_obstacles_elsedoneblock631
+show_obstacles_elseblock630
+	; LineNumber: 1156
+	; LineNumber: 1157
 	lda this_source_offset
 	clc
 	adc obstacles_x_lr
 	sta this_source_offset+0
 	; Optimization : A := A op 8 bit - var and bvar are the same - perform inc
-	bcc show_obstacles_WordAdd652
+	bcc show_obstacles_WordAdd639
 	inc this_source_offset+1
-show_obstacles_WordAdd652
-	; LineNumber: 1145
-show_obstacles_elsedoneblock644
-	; LineNumber: 1146
+show_obstacles_WordAdd639
+	; LineNumber: 1158
+show_obstacles_elsedoneblock631
+	; LineNumber: 1159
 	; memcpyfast
 	ldy #39
-show_obstacles_memcpy653
+show_obstacles_memcpy640
 	lda (this_source_offset),y
 	sta (screenmemory),y
 	dey
-	bpl show_obstacles_memcpy653
-	; LineNumber: 1150
-show_obstacles_forloopcounter611
-show_obstacles_loopstart612
+	bpl show_obstacles_memcpy640
+	; LineNumber: 1163
+show_obstacles_forloopcounter598
+show_obstacles_loopstart599
+	; Test Inc dec D
 	inc strip_num
 	lda #$5
 	cmp strip_num ;keep
-	beq show_obstacles_loopdone654
-show_obstacles_loopnotdone655
-	jmp show_obstacles_forloop609
-show_obstacles_loopdone654
-show_obstacles_forloopend610
-show_obstacles_loopend613
-	; LineNumber: 1171
-	; Assigning single variable : strip_num
+	beq show_obstacles_loopdone641
+show_obstacles_loopnotdone642
+	jmp show_obstacles_forloop596
+show_obstacles_loopdone641
+show_obstacles_forloopend597
+show_obstacles_loopend600
+	; LineNumber: 1184
 	lda #$5
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta strip_num
-show_obstacles_forloop656
-	; LineNumber: 1153
-	; LineNumber: 1154
-	; Assigning single variable : this_strip
+show_obstacles_forloop643
+	; LineNumber: 1166
+	; LineNumber: 1167
 	; Load Byte array
 	ldx strip_num
 	lda obstacles_y,x
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta this_strip
-	; LineNumber: 1155
-	; Assigning single variable : screenmemory
+	; LineNumber: 1168
 	; Generic 16 bit op
 	; Integer constant assigning
 	ldy #$80
 	lda #$00
-show_obstacles_rightvarInteger_var684 = $54
-	sta show_obstacles_rightvarInteger_var684
-	sty show_obstacles_rightvarInteger_var684+1
+show_obstacles_rightvarInteger_var671 = $54
+	sta show_obstacles_rightvarInteger_var671
+	sty show_obstacles_rightvarInteger_var671+1
 	; Mul 16x8 setup
 	ldy #0
 	lda this_strip
@@ -5149,24 +4783,23 @@ show_obstacles_rightvarInteger_var684 = $54
 	jsr mul16x8_procedure
 	; Low bit binop:
 	clc
-	adc show_obstacles_rightvarInteger_var684
-show_obstacles_wordAdd682
-	sta show_obstacles_rightvarInteger_var684
+	adc show_obstacles_rightvarInteger_var671
+show_obstacles_wordAdd669
+	sta show_obstacles_rightvarInteger_var671
 	; High-bit binop
 	tya
-	adc show_obstacles_rightvarInteger_var684+1
+	adc show_obstacles_rightvarInteger_var671+1
 	tay
-	lda show_obstacles_rightvarInteger_var684
+	lda show_obstacles_rightvarInteger_var671
 	sta screenmemory
 	sty screenmemory+1
-	; LineNumber: 1156
-	; Assigning single variable : this_source_offset
+	; LineNumber: 1169
 	; Generic 16 bit op
 	lda #<level_strips
 	ldy #>level_strips
-show_obstacles_rightvarInteger_var687 = $54
-	sta show_obstacles_rightvarInteger_var687
-	sty show_obstacles_rightvarInteger_var687+1
+show_obstacles_rightvarInteger_var674 = $54
+	sta show_obstacles_rightvarInteger_var674
+	sty show_obstacles_rightvarInteger_var674+1
 	; Right is PURE NUMERIC : Is word =1
 	; 16 bit mul or div
 	; Mul 16x8 setup
@@ -5179,904 +4812,880 @@ show_obstacles_rightvarInteger_var687 = $54
 	jsr mul16x8_procedure
 	; Low bit binop:
 	clc
-	adc show_obstacles_rightvarInteger_var687
-show_obstacles_wordAdd685
-	sta show_obstacles_rightvarInteger_var687
+	adc show_obstacles_rightvarInteger_var674
+show_obstacles_wordAdd672
+	sta show_obstacles_rightvarInteger_var674
 	; High-bit binop
 	tya
-	adc show_obstacles_rightvarInteger_var687+1
+	adc show_obstacles_rightvarInteger_var674+1
 	tay
-	lda show_obstacles_rightvarInteger_var687
+	lda show_obstacles_rightvarInteger_var674
 	sta this_source_offset
 	sty this_source_offset+1
-	; LineNumber: 1158
+	; LineNumber: 1171
 	; Binary clause Simplified: EQUALS
 	; Load Byte array
 	ldx strip_num
 	lda strip_direction,x
 	; Compare with pure num / var optimization
 	cmp #$1;keep
-	bne show_obstacles_elseblock690
-show_obstacles_ConditionalTrueBlock689: ;Main true block ;keep 
-	; LineNumber: 1159
-	; LineNumber: 1160
-	; Assigning single variable : this_source_offset
+	bne show_obstacles_elseblock677
+show_obstacles_ConditionalTrueBlock676: ;Main true block ;keep 
+	; LineNumber: 1172
+	; LineNumber: 1173
 	lda this_source_offset
 	clc
 	adc traffic_x_rl
 	sta this_source_offset+0
 	; Optimization : A := A op 8 bit - var and bvar are the same - perform inc
-	bcc show_obstacles_WordAdd697
+	bcc show_obstacles_WordAdd684
 	inc this_source_offset+1
-show_obstacles_WordAdd697
-	; LineNumber: 1162
-	jmp show_obstacles_elsedoneblock691
-show_obstacles_elseblock690
-	; LineNumber: 1163
-	; LineNumber: 1164
-	; Assigning single variable : this_source_offset
+show_obstacles_WordAdd684
+	; LineNumber: 1175
+	jmp show_obstacles_elsedoneblock678
+show_obstacles_elseblock677
+	; LineNumber: 1176
+	; LineNumber: 1177
 	lda this_source_offset
 	clc
 	adc traffic_x_lr
 	sta this_source_offset+0
 	; Optimization : A := A op 8 bit - var and bvar are the same - perform inc
-	bcc show_obstacles_WordAdd699
+	bcc show_obstacles_WordAdd686
 	inc this_source_offset+1
-show_obstacles_WordAdd699
-	; LineNumber: 1165
-show_obstacles_elsedoneblock691
-	; LineNumber: 1166
+show_obstacles_WordAdd686
+	; LineNumber: 1178
+show_obstacles_elsedoneblock678
+	; LineNumber: 1179
 	; memcpyfast
 	ldy #39
-show_obstacles_memcpy700
+show_obstacles_memcpy687
 	lda (this_source_offset),y
 	sta (screenmemory),y
 	dey
-	bpl show_obstacles_memcpy700
-	; LineNumber: 1170
-show_obstacles_forloopcounter658
-show_obstacles_loopstart659
+	bpl show_obstacles_memcpy687
+	; LineNumber: 1183
+show_obstacles_forloopcounter645
+show_obstacles_loopstart646
+	; Test Inc dec D
 	inc strip_num
 	lda #$d
 	cmp strip_num ;keep
-	beq show_obstacles_loopdone701
-show_obstacles_loopnotdone702
-	jmp show_obstacles_forloop656
-show_obstacles_loopdone701
-show_obstacles_forloopend657
-show_obstacles_loopend660
-	; LineNumber: 1173
+	beq show_obstacles_loopdone688
+show_obstacles_loopnotdone689
+	jmp show_obstacles_forloop643
+show_obstacles_loopdone688
+show_obstacles_forloopend644
+show_obstacles_loopend647
+	; LineNumber: 1186
 	; Binary clause Simplified: EQUALS
 	lda game_move
 	; Compare with pure num / var optimization
 	cmp #$1;keep
-	bne show_obstacles_elsedoneblock706
-show_obstacles_ConditionalTrueBlock704: ;Main true block ;keep 
-	; LineNumber: 1174
-	; LineNumber: 1177
+	bne show_obstacles_elsedoneblock693
+show_obstacles_ConditionalTrueBlock691: ;Main true block ;keep 
+	; LineNumber: 1187
+	; LineNumber: 1190
 	
 ; // Is the frog riding an object?
 	jsr frog_ride
-	; LineNumber: 1178
-show_obstacles_elsedoneblock706
-	; LineNumber: 1181
+	; LineNumber: 1191
+show_obstacles_elsedoneblock693
+	; LineNumber: 1194
 	
 ; // RESET SCREEN MEMORY
-	; Assigning single variable : screenmemory
 	lda #$00
 	ldx #$80
 	sta screenmemory
 	stx screenmemory+1
-	; LineNumber: 1183
+	; LineNumber: 1196
 	rts
 	; NodeProcedureDecl -1
 	; ***********  Defining procedure : kill_frog
 	;    Procedure type : User-defined procedure
-	; LineNumber: 1186
+	; LineNumber: 1199
 kill_frog
-	; LineNumber: 1187
-	; Assigning single variable : x
+	; LineNumber: 1200
 	lda frog_old_x
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta x
-	; Assigning single variable : y
 	lda frog_old_y
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta y
-	; Assigning single variable : this_str
 	lda #<previous_tile
 	ldx #>previous_tile
 	sta this_str
 	stx this_str+1
-	; Assigning single variable : str_len
 	lda #$1
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta str_len
 	jsr textat
-	; LineNumber: 1188
-	; Assigning single variable : x
+	; LineNumber: 1201
 	lda frog_x
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta x
-	; Assigning single variable : y
 	lda frog_y
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta y
-	; Assigning single variable : this_str
 	lda #<next_tile
 	ldx #>next_tile
 	sta this_str
 	stx this_str+1
-	; Assigning single variable : str_len
 	lda #$1
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta str_len
 	jsr textat
-	; LineNumber: 1189
-	; Assigning single variable : previous_tile
+	; LineNumber: 1202
 	lda #$20
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta previous_tile
-	; LineNumber: 1190
-	; Assigning single variable : next_tile
-	; Calling storevariable
+	; LineNumber: 1203
+	; Calling storevariable on generic assign expression
 	sta next_tile
-	; LineNumber: 1191
-	; Assigning single variable : frog_x
+	; LineNumber: 1204
 	lda #$14
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta frog_x
-	; LineNumber: 1192
-	; Assigning single variable : frog_y
+	; LineNumber: 1205
 	lda #$18
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta frog_y
-	; LineNumber: 1193
-	; Assigning single variable : frog_old_x
+	; LineNumber: 1206
 	lda frog_x
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta frog_old_x
-	; LineNumber: 1194
-	; Assigning single variable : frog_old_y
+	; LineNumber: 1207
 	lda frog_y
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta frog_old_y
-	; LineNumber: 1195
+	; LineNumber: 1208
 	jsr burp
-	; LineNumber: 1196
+	; LineNumber: 1209
+	; Test Inc dec D
 	dec player_lives
-	; LineNumber: 1197
+	; LineNumber: 1210
 	rts
 	; NodeProcedureDecl -1
 	; ***********  Defining procedure : check_collisions
 	;    Procedure type : User-defined procedure
-	; LineNumber: 1202
+	; LineNumber: 1215
 check_collisions
-	; LineNumber: 1204
+	; LineNumber: 1217
 	
 ; // CHECK COLLISSIONS
-	; Assigning single variable : next_tile
-	; Assigning single variable : sx
 	lda frog_x
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta sx
-	; Assigning single variable : sy
 	lda frog_y
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta sy
 	jsr getat
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta next_tile
-	; LineNumber: 1210
-	cmp frogcharA ;keep
-	bne check_collisions_casenext713
-	; LineNumber: 1214
-	; LineNumber: 1215
+	; LineNumber: 1223
+	lda frogcharA
+	cmp next_tile ;keep
+	bne check_collisions_casenext699
+	; LineNumber: 1227
+	; LineNumber: 1228
 	; Binary clause Simplified: LESS
 	lda frog_y
 	; Compare with pure num / var optimization
 	cmp #$18;keep
-	bcs check_collisions_elsedoneblock718
-check_collisions_ConditionalTrueBlock716: ;Main true block ;keep 
-	; LineNumber: 1216
-	; LineNumber: 1217
+	bcs check_collisions_elsedoneblock704
+check_collisions_ConditionalTrueBlock702: ;Main true block ;keep 
+	; LineNumber: 1229
+	; LineNumber: 1230
 	
 ; // There is no function to search a string
 ; // or check an array, or return array size,
 ; // so we need to check each character individually
 ; // Can't occupy where already landed
-	; Assigning single variable : frog_x
 	lda frog_old_x
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta frog_x
-	; LineNumber: 1218
-	; Assigning single variable : frog_y
-	lda frog_old_y
-	; Calling storevariable
-	sta frog_y
-	; LineNumber: 1219
-check_collisions_elsedoneblock718
-	; LineNumber: 1220
-	jmp check_collisions_caseend712
-check_collisions_casenext713
-	lda next_tile
-	cmp frogcharB ;keep
-	bne check_collisions_casenext721
-	; LineNumber: 1222
-	; LineNumber: 1223
-	; Binary clause Simplified: LESS
-	lda frog_y
-	; Compare with pure num / var optimization
-	cmp #$18;keep
-	bcs check_collisions_elsedoneblock726
-check_collisions_ConditionalTrueBlock724: ;Main true block ;keep 
-	; LineNumber: 1224
-	; LineNumber: 1225
-	; Assigning single variable : frog_x
-	lda frog_old_x
-	; Calling storevariable
-	sta frog_x
-	; LineNumber: 1226
-	; Assigning single variable : frog_y
-	lda frog_old_y
-	; Calling storevariable
-	sta frog_y
-	; LineNumber: 1227
-check_collisions_elsedoneblock726
-	; LineNumber: 1228
-	jmp check_collisions_caseend712
-check_collisions_casenext721
-	lda next_tile
-	cmp #$66 ;keep
-	bne check_collisions_casenext729
 	; LineNumber: 1231
+	lda frog_old_y
+	; Calling storevariable on generic assign expression
+	sta frog_y
 	; LineNumber: 1232
+check_collisions_elsedoneblock704
+	; LineNumber: 1233
+	jmp check_collisions_caseend698
+check_collisions_casenext699
+	lda frogcharB
+	cmp next_tile ;keep
+	bne check_collisions_casenext707
+	; LineNumber: 1235
+	; LineNumber: 1236
 	; Binary clause Simplified: LESS
 	lda frog_y
 	; Compare with pure num / var optimization
 	cmp #$18;keep
-	bcs check_collisions_elsedoneblock734
-check_collisions_ConditionalTrueBlock732: ;Main true block ;keep 
-	; LineNumber: 1233
-	; LineNumber: 1234
-	
-; // Scenery
-	; Assigning single variable : frog_x
-	lda frog_old_x
-	; Calling storevariable
-	sta frog_x
-	; LineNumber: 1235
-	; Assigning single variable : frog_y
-	lda frog_old_y
-	; Calling storevariable
-	sta frog_y
-	; LineNumber: 1236
-check_collisions_elsedoneblock734
+	bcs check_collisions_elsedoneblock712
+check_collisions_ConditionalTrueBlock710: ;Main true block ;keep 
 	; LineNumber: 1237
-	jmp check_collisions_caseend712
-check_collisions_casenext729
-	lda next_tile
-	cmp #$68 ;keep
-	bne check_collisions_casenext737
-	; LineNumber: 1240
-	; LineNumber: 1241
-	; Assigning single variable : frog_x
+	; LineNumber: 1238
 	lda frog_old_x
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta frog_x
-	; LineNumber: 1242
-	; Assigning single variable : frog_y
+	; LineNumber: 1239
 	lda frog_old_y
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta frog_y
-	; LineNumber: 1243
-	jmp check_collisions_caseend712
-check_collisions_casenext737
-	lda next_tile
-	cmp #$5c ;keep
-	bne check_collisions_casenext739
+	; LineNumber: 1240
+check_collisions_elsedoneblock712
+	; LineNumber: 1241
+	jmp check_collisions_caseend698
+check_collisions_casenext707
+	lda #$66
+	cmp next_tile ;keep
+	bne check_collisions_casenext715
+	; LineNumber: 1244
+	; LineNumber: 1245
+	; Binary clause Simplified: LESS
+	lda frog_y
+	; Compare with pure num / var optimization
+	cmp #$18;keep
+	bcs check_collisions_elsedoneblock720
+check_collisions_ConditionalTrueBlock718: ;Main true block ;keep 
 	; LineNumber: 1246
 	; LineNumber: 1247
-	; Assigning single variable : frog_x
+	
+; // Scenery
 	lda frog_old_x
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta frog_x
 	; LineNumber: 1248
-	; Assigning single variable : frog_y
 	lda frog_old_y
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta frog_y
 	; LineNumber: 1249
-	jmp check_collisions_caseend712
-check_collisions_casenext739
-	lda next_tile
-	cmp #$20 ;keep
-	bne check_collisions_casenext741
+check_collisions_elsedoneblock720
+	; LineNumber: 1250
+	jmp check_collisions_caseend698
+check_collisions_casenext715
+	lda #$68
+	cmp next_tile ;keep
+	bne check_collisions_casenext723
+	; LineNumber: 1253
+	; LineNumber: 1254
+	lda frog_old_x
+	; Calling storevariable on generic assign expression
+	sta frog_x
 	; LineNumber: 1255
+	lda frog_old_y
+	; Calling storevariable on generic assign expression
+	sta frog_y
 	; LineNumber: 1256
+	jmp check_collisions_caseend698
+check_collisions_casenext723
+	lda #$5c
+	cmp next_tile ;keep
+	bne check_collisions_casenext725
+	; LineNumber: 1259
+	; LineNumber: 1260
+	lda frog_old_x
+	; Calling storevariable on generic assign expression
+	sta frog_x
+	; LineNumber: 1261
+	lda frog_old_y
+	; Calling storevariable on generic assign expression
+	sta frog_y
+	; LineNumber: 1262
+	jmp check_collisions_caseend698
+check_collisions_casenext725
+	lda #$20
+	cmp next_tile ;keep
+	bne check_collisions_casenext727
+	; LineNumber: 1268
+	; LineNumber: 1269
 	; Binary clause Simplified: LESS
 	lda frog_y
 	; Compare with pure num / var optimization
 	cmp #$9;keep
-	bcs check_collisions_elsedoneblock746
-check_collisions_localsuccess748: ;keep
+	bcs check_collisions_elsedoneblock732
+check_collisions_localsuccess734: ;keep
 	; ; logical AND, second requirement
 	; Optimization: replacing a > N with a >= N+1
 	; Binary clause Simplified: GREATEREQUAL
 	lda frog_y
 	; Compare with pure num / var optimization
 	cmp #$4;keep
-	bcc check_collisions_elsedoneblock746
-check_collisions_ConditionalTrueBlock744: ;Main true block ;keep 
-	; LineNumber: 1257
-	; LineNumber: 1258
+	bcc check_collisions_elsedoneblock732
+check_collisions_ConditionalTrueBlock730: ;Main true block ;keep 
+	; LineNumber: 1270
+	; LineNumber: 1271
 	
 ; // Water kills the frog for some reason?
 	jsr kill_frog
-	; LineNumber: 1259
-check_collisions_elsedoneblock746
-	; LineNumber: 1260
-	jmp check_collisions_caseend712
-check_collisions_casenext741
-	lda next_tile
-	cmp #$f0 ;keep
-	bne check_collisions_casenext750
-	; LineNumber: 1265
-	; LineNumber: 1266
+	; LineNumber: 1272
+check_collisions_elsedoneblock732
+	; LineNumber: 1273
+	jmp check_collisions_caseend698
+check_collisions_casenext727
+	lda #$f0
+	cmp next_tile ;keep
+	bne check_collisions_casenext736
+	; LineNumber: 1278
+	; LineNumber: 1279
 	
 ; // Traffic!
 	jsr kill_frog
-	; LineNumber: 1267
-	jmp check_collisions_caseend712
-check_collisions_casenext750
-	lda next_tile
-	cmp #$d7 ;keep
-	bne check_collisions_casenext752
-	; LineNumber: 1270
-	; LineNumber: 1271
-	jsr kill_frog
-	; LineNumber: 1272
-	jmp check_collisions_caseend712
-check_collisions_casenext752
-	lda next_tile
-	cmp #$ed ;keep
-	bne check_collisions_casenext754
-	; LineNumber: 1275
-	; LineNumber: 1276
-	jsr kill_frog
-	; LineNumber: 1278
-	jmp check_collisions_caseend712
-check_collisions_casenext754
-	lda next_tile
-	cmp #$ee ;keep
-	bne check_collisions_casenext756
 	; LineNumber: 1280
-	; LineNumber: 1281
-	jsr kill_frog
+	jmp check_collisions_caseend698
+check_collisions_casenext736
+	lda #$d7
+	cmp next_tile ;keep
+	bne check_collisions_casenext738
 	; LineNumber: 1283
-	jmp check_collisions_caseend712
-check_collisions_casenext756
-	lda next_tile
-	cmp #$fd ;keep
-	bne check_collisions_casenext758
-	; LineNumber: 1286
-	; LineNumber: 1287
+	; LineNumber: 1284
 	jsr kill_frog
+	; LineNumber: 1285
+	jmp check_collisions_caseend698
+check_collisions_casenext738
+	lda #$ed
+	cmp next_tile ;keep
+	bne check_collisions_casenext740
+	; LineNumber: 1288
 	; LineNumber: 1289
-	jmp check_collisions_caseend712
-check_collisions_casenext758
-	lda next_tile
-	cmp #$60 ;keep
-	bne check_collisions_casenext760
-	; LineNumber: 1292
+	jsr kill_frog
+	; LineNumber: 1291
+	jmp check_collisions_caseend698
+check_collisions_casenext740
+	lda #$ee
+	cmp next_tile ;keep
+	bne check_collisions_casenext742
 	; LineNumber: 1293
+	; LineNumber: 1294
 	jsr kill_frog
-	; LineNumber: 1295
-	jmp check_collisions_caseend712
-check_collisions_casenext760
-	lda next_tile
-	cmp #$f3 ;keep
-	bne check_collisions_casenext762
-	; LineNumber: 1298
+	; LineNumber: 1296
+	jmp check_collisions_caseend698
+check_collisions_casenext742
+	lda #$fd
+	cmp next_tile ;keep
+	bne check_collisions_casenext744
 	; LineNumber: 1299
+	; LineNumber: 1300
 	jsr kill_frog
-	; LineNumber: 1301
-	jmp check_collisions_caseend712
-check_collisions_casenext762
-	lda next_tile
-	cmp #$eb ;keep
-	bne check_collisions_casenext764
-	; LineNumber: 1304
+	; LineNumber: 1302
+	jmp check_collisions_caseend698
+check_collisions_casenext744
+	lda #$60
+	cmp next_tile ;keep
+	bne check_collisions_casenext746
 	; LineNumber: 1305
+	; LineNumber: 1306
 	jsr kill_frog
-	; LineNumber: 1307
-	jmp check_collisions_caseend712
-check_collisions_casenext764
-	lda next_tile
-	cmp #$f0 ;keep
-	bne check_collisions_casenext766
-	; LineNumber: 1310
+	; LineNumber: 1308
+	jmp check_collisions_caseend698
+check_collisions_casenext746
+	lda #$f3
+	cmp next_tile ;keep
+	bne check_collisions_casenext748
 	; LineNumber: 1311
+	; LineNumber: 1312
 	jsr kill_frog
-	; LineNumber: 1313
-	jmp check_collisions_caseend712
-check_collisions_casenext766
-	lda next_tile
-	cmp #$c6 ;keep
-	bne check_collisions_casenext768
+	; LineNumber: 1314
+	jmp check_collisions_caseend698
+check_collisions_casenext748
+	lda #$eb
+	cmp next_tile ;keep
+	bne check_collisions_casenext750
 	; LineNumber: 1317
 	; LineNumber: 1318
-	
-; // Crock!
 	jsr kill_frog
 	; LineNumber: 1320
-	jmp check_collisions_caseend712
-check_collisions_casenext768
-	lda next_tile
-	cmp #$a2 ;keep
-	bne check_collisions_casenext770
+	jmp check_collisions_caseend698
+check_collisions_casenext750
+	lda #$f0
+	cmp next_tile ;keep
+	bne check_collisions_casenext752
 	; LineNumber: 1323
 	; LineNumber: 1324
 	jsr kill_frog
-	; LineNumber: 1325
-	jmp check_collisions_caseend712
-check_collisions_casenext770
-	lda next_tile
-	cmp #$d6 ;keep
-	bne check_collisions_casenext772
+	; LineNumber: 1326
+	jmp check_collisions_caseend698
+check_collisions_casenext752
+	lda #$c6
+	cmp next_tile ;keep
+	bne check_collisions_casenext754
 	; LineNumber: 1330
 	; LineNumber: 1331
 	
-; // HOME
-; // Occupied
-	; Assigning single variable : frog_x
-	lda frog_old_x
-	; Calling storevariable
-	sta frog_x
-	; LineNumber: 1332
-	; Assigning single variable : frog_y
-	lda frog_old_y
-	; Calling storevariable
-	sta frog_y
+; // Crock!
+	jsr kill_frog
 	; LineNumber: 1333
-	jmp check_collisions_caseend712
-check_collisions_casenext772
-	lda next_tile
-	cmp #$d3 ;keep
-	bne check_collisions_casenext774
+	jmp check_collisions_caseend698
+check_collisions_casenext754
+	lda #$a2
+	cmp next_tile ;keep
+	bne check_collisions_casenext756
 	; LineNumber: 1336
 	; LineNumber: 1337
+	jsr kill_frog
+	; LineNumber: 1338
+	jmp check_collisions_caseend698
+check_collisions_casenext756
+	lda #$d6
+	cmp next_tile ;keep
+	bne check_collisions_casenext758
+	; LineNumber: 1343
+	; LineNumber: 1344
+	
+; // HOME
+; // Occupied
+	lda frog_old_x
+	; Calling storevariable on generic assign expression
+	sta frog_x
+	; LineNumber: 1345
+	lda frog_old_y
+	; Calling storevariable on generic assign expression
+	sta frog_y
+	; LineNumber: 1346
+	jmp check_collisions_caseend698
+check_collisions_casenext758
+	lda #$d3
+	cmp next_tile ;keep
+	bne check_collisions_casenext760
+	; LineNumber: 1349
+	; LineNumber: 1350
 	; Binary clause Simplified: NOTEQUALS
 	lda frog_x
 	; Compare with pure num / var optimization
 	cmp frog_old_x;keep
-	beq check_collisions_localfailed791
-	jmp check_collisions_ConditionalTrueBlock777
-check_collisions_localfailed791: ;keep
+	beq check_collisions_localfailed776
+	jmp check_collisions_ConditionalTrueBlock763
+check_collisions_localfailed776: ;keep
 	; ; logical OR, second chance
 	; Binary clause Simplified: NOTEQUALS
 	lda frog_y
 	; Compare with pure num / var optimization
 	cmp frog_old_y;keep
-	beq check_collisions_elsedoneblock779
-check_collisions_ConditionalTrueBlock777: ;Main true block ;keep 
-	; LineNumber: 1338
-	; LineNumber: 1339
+	beq check_collisions_elsedoneblock765
+check_collisions_ConditionalTrueBlock763: ;Main true block ;keep 
+	; LineNumber: 1351
+	; LineNumber: 1352
 	
 ; // Success
-	; Assigning single variable : player_score
-	ldy #0
 	lda player_score
 	clc
 	adc #$64
 	sta player_score+0
 	; Optimization : A := A op 8 bit - var and bvar are the same - perform inc
-	bcc check_collisions_WordAdd793
+	bcc check_collisions_WordAdd778
 	inc player_score+1
-check_collisions_WordAdd793
-	; LineNumber: 1340
+check_collisions_WordAdd778
+	; LineNumber: 1353
+	; Test Inc dec D
 	inc FROGS_SAVED
-	; LineNumber: 1341
+	; LineNumber: 1354
 	jsr ping
-	; LineNumber: 1343
+	; LineNumber: 1356
 	; Binary clause Simplified: EQUALS
 	lda FROGS_SAVED
 	; Compare with pure num / var optimization
 	cmp #$6;keep
-	bne check_collisions_elseblock797
-check_collisions_ConditionalTrueBlock796: ;Main true block ;keep 
-	; LineNumber: 1344
-	; LineNumber: 1346
+	bne check_collisions_elseblock781
+check_collisions_ConditionalTrueBlock780: ;Main true block ;keep 
+	; LineNumber: 1357
+	; LineNumber: 1359
 	
 ; // Yay you won!
-	; Assigning single variable : WON_GAME
 	lda #$1
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta WON_GAME
-	; LineNumber: 1348
-	jmp check_collisions_elsedoneblock798
-check_collisions_elseblock797
-	; LineNumber: 1349
-	; LineNumber: 1350
-	; Assigning single variable : frog_x
-	lda #$14
-	; Calling storevariable
-	sta frog_x
-	; LineNumber: 1351
-	; Assigning single variable : frog_y
-	lda #$18
-	; Calling storevariable
-	sta frog_y
-	; LineNumber: 1352
-	; Assigning single variable : frog_old_x
-	lda frog_x
-	; Calling storevariable
-	sta frog_old_x
-	; LineNumber: 1353
-	; Assigning single variable : frog_old_y
-	lda frog_y
-	; Calling storevariable
-	sta frog_old_y
-	; LineNumber: 1354
-check_collisions_elsedoneblock798
-	; LineNumber: 1355
-check_collisions_elsedoneblock779
-	; LineNumber: 1356
-	jmp check_collisions_caseend712
-check_collisions_casenext774
-	; LineNumber: 1360
+	; LineNumber: 1361
+	jmp check_collisions_elsedoneblock782
+check_collisions_elseblock781
+	; LineNumber: 1362
 	; LineNumber: 1363
-check_collisions_caseend712
+	lda #$14
+	; Calling storevariable on generic assign expression
+	sta frog_x
 	; LineNumber: 1364
+	lda #$18
+	; Calling storevariable on generic assign expression
+	sta frog_y
+	; LineNumber: 1365
+	lda frog_x
+	; Calling storevariable on generic assign expression
+	sta frog_old_x
+	; LineNumber: 1366
+	lda frog_y
+	; Calling storevariable on generic assign expression
+	sta frog_old_y
+	; LineNumber: 1367
+check_collisions_elsedoneblock782
+	; LineNumber: 1368
+check_collisions_elsedoneblock765
+	; LineNumber: 1369
+	jmp check_collisions_caseend698
+check_collisions_casenext760
+	; LineNumber: 1373
+	; LineNumber: 1376
+check_collisions_caseend698
+	; LineNumber: 1377
 	rts
 	; === main logic ============================================================================================ 
 	; NodeProcedureDecl -1
 	; ***********  Defining procedure : game_loop
 	;    Procedure type : User-defined procedure
-	; LineNumber: 1374
+	; LineNumber: 1387
 game_loop
-	; LineNumber: 1383
-game_loop_while805
-game_loop_loopstart809
+	; LineNumber: 1396
+game_loop_while789
+game_loop_loopstart793
 	; Binary clause Simplified: EQUALS
 	lda ALIVE
 	; Compare with pure num / var optimization
 	cmp #$1;keep
-	bne game_loop_localfailed945
-game_loop_localsuccess946: ;keep
+	bne game_loop_localfailed912
+game_loop_localsuccess913: ;keep
 	; ; logical AND, second requirement
 	; Binary clause Simplified: EQUALS
 	lda WON_GAME
 	; Compare with pure num / var optimization
 	cmp #$0;keep
-	bne game_loop_localfailed945
-	jmp game_loop_ConditionalTrueBlock806
-game_loop_localfailed945
-	jmp game_loop_elsedoneblock808
-game_loop_ConditionalTrueBlock806: ;Main true block ;keep 
-	; LineNumber: 1384
-	; LineNumber: 1386
+	bne game_loop_localfailed912
+	jmp game_loop_ConditionalTrueBlock790
+game_loop_localfailed912
+	jmp game_loop_elsedoneblock792
+game_loop_ConditionalTrueBlock790: ;Main true block ;keep 
+	; LineNumber: 1397
+	; LineNumber: 1399
 	
 ; //	Key::SetupScreenCodes();
 ; // Unit constants
 	jsr Key_Read
-	; LineNumber: 1388
-	; Assigning single variable : frog_old_x
+	; LineNumber: 1401
 	lda frog_x
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta frog_old_x
-	; LineNumber: 1389
-	; Assigning single variable : frog_old_y
+	; LineNumber: 1402
 	lda frog_y
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta frog_old_y
-	; LineNumber: 1390
+	; LineNumber: 1403
 	; Binary clause Simplified: NOTEQUALS
+	; Assigning to register
 	; Assigning register : _xy
 	ldx key_up
 	ldy key_up+1
 	jsr Key_Pressed
 	; Compare with pure num / var optimization
 	cmp #$0;keep
-	beq game_loop_localfailed963
-	jmp game_loop_ConditionalTrueBlock949
-game_loop_localfailed963: ;keep
+	beq game_loop_localfailed928
+	jmp game_loop_ConditionalTrueBlock916
+game_loop_localfailed928: ;keep
 	; ; logical OR, second chance
 	; Binary clause Simplified: NOTEQUALS
+	; Assigning to register
 	; Assigning register : _xy
 	ldx n_key_up
 	ldy n_key_up+1
 	jsr Key_Pressed
 	; Compare with pure num / var optimization
 	cmp #$0;keep
-	beq game_loop_elsedoneblock951
-game_loop_ConditionalTrueBlock949: ;Main true block ;keep 
-	; LineNumber: 1391
-	; LineNumber: 1392
+	beq game_loop_elsedoneblock918
+game_loop_ConditionalTrueBlock916: ;Main true block ;keep 
+	; LineNumber: 1404
+	; LineNumber: 1405
 	; Binary clause Simplified: GREATEREQUAL
 	lda frog_y
 	; Compare with pure num / var optimization
 	cmp #$2;keep
-	bcc game_loop_elsedoneblock968
-game_loop_ConditionalTrueBlock966: ;Main true block ;keep 
-	; LineNumber: 1393
-	; LineNumber: 1394
+	bcc game_loop_elsedoneblock933
+game_loop_ConditionalTrueBlock931: ;Main true block ;keep 
+	; LineNumber: 1406
+	; LineNumber: 1407
+	; Test Inc dec D
 	dec frog_y
-	; LineNumber: 1395
-	inc player_score
-	bne game_loop_incdec974
-	inc player_score +1
-game_loop_incdec974
-	; LineNumber: 1396
-game_loop_elsedoneblock968
-	; LineNumber: 1397
-game_loop_elsedoneblock951
-	; LineNumber: 1399
+	; LineNumber: 1408
+	lda player_score
+	clc
+	adc #$01
+	sta player_score+0
+	; Optimization : A := A op 8 bit - var and bvar are the same - perform inc
+	bcc game_loop_WordAdd937
+	inc player_score+1
+game_loop_WordAdd937
+	; LineNumber: 1409
+game_loop_elsedoneblock933
+	; LineNumber: 1410
+game_loop_elsedoneblock918
+	; LineNumber: 1412
 	; Binary clause Simplified: NOTEQUALS
+	; Assigning to register
 	; Assigning register : _xy
 	ldx key_right
 	ldy key_right+1
 	jsr Key_Pressed
 	; Compare with pure num / var optimization
 	cmp #$0;keep
-	beq game_loop_localfailed990
-	jmp game_loop_ConditionalTrueBlock976
-game_loop_localfailed990: ;keep
+	beq game_loop_localfailed951
+	jmp game_loop_ConditionalTrueBlock939
+game_loop_localfailed951: ;keep
 	; ; logical OR, second chance
 	; Binary clause Simplified: NOTEQUALS
+	; Assigning to register
 	; Assigning register : _xy
 	ldx n_key_right
 	ldy n_key_right+1
 	jsr Key_Pressed
 	; Compare with pure num / var optimization
 	cmp #$0;keep
-	beq game_loop_elsedoneblock978
-game_loop_ConditionalTrueBlock976: ;Main true block ;keep 
-	; LineNumber: 1400
-	; LineNumber: 1401
+	beq game_loop_elsedoneblock941
+game_loop_ConditionalTrueBlock939: ;Main true block ;keep 
+	; LineNumber: 1413
+	; LineNumber: 1414
 	; Binary clause Simplified: LESS
 	lda frog_x
 	; Compare with pure num / var optimization
 	cmp #$27;keep
-	bcs game_loop_elsedoneblock995
-game_loop_ConditionalTrueBlock993: ;Main true block ;keep 
-	; LineNumber: 1402
-	; LineNumber: 1403
+	bcs game_loop_elsedoneblock956
+game_loop_ConditionalTrueBlock954: ;Main true block ;keep 
+	; LineNumber: 1415
+	; LineNumber: 1416
+	; Test Inc dec D
 	inc frog_x
-	; LineNumber: 1404
-	inc player_score
-	bne game_loop_incdec1001
-	inc player_score +1
-game_loop_incdec1001
-	; LineNumber: 1405
-game_loop_elsedoneblock995
-	; LineNumber: 1406
-game_loop_elsedoneblock978
-	; LineNumber: 1408
+	; LineNumber: 1417
+	lda player_score
+	clc
+	adc #$01
+	sta player_score+0
+	; Optimization : A := A op 8 bit - var and bvar are the same - perform inc
+	bcc game_loop_WordAdd960
+	inc player_score+1
+game_loop_WordAdd960
+	; LineNumber: 1418
+game_loop_elsedoneblock956
+	; LineNumber: 1419
+game_loop_elsedoneblock941
+	; LineNumber: 1421
 	; Binary clause Simplified: NOTEQUALS
+	; Assigning to register
 	; Assigning register : _xy
 	ldx key_down
 	ldy key_down+1
 	jsr Key_Pressed
 	; Compare with pure num / var optimization
 	cmp #$0;keep
-	beq game_loop_localfailed1017
-	jmp game_loop_ConditionalTrueBlock1003
-game_loop_localfailed1017: ;keep
+	beq game_loop_localfailed974
+	jmp game_loop_ConditionalTrueBlock962
+game_loop_localfailed974: ;keep
 	; ; logical OR, second chance
 	; Binary clause Simplified: NOTEQUALS
+	; Assigning to register
 	; Assigning register : _xy
 	ldx n_key_down
 	ldy n_key_down+1
 	jsr Key_Pressed
 	; Compare with pure num / var optimization
 	cmp #$0;keep
-	beq game_loop_elsedoneblock1005
-game_loop_ConditionalTrueBlock1003: ;Main true block ;keep 
-	; LineNumber: 1409
-	; LineNumber: 1410
+	beq game_loop_elsedoneblock964
+game_loop_ConditionalTrueBlock962: ;Main true block ;keep 
+	; LineNumber: 1422
+	; LineNumber: 1423
 	; Binary clause Simplified: LESS
 	lda frog_y
 	; Compare with pure num / var optimization
 	cmp #$18;keep
-	bcs game_loop_elsedoneblock1022
-game_loop_ConditionalTrueBlock1020: ;Main true block ;keep 
-	; LineNumber: 1411
-	; LineNumber: 1412
+	bcs game_loop_elsedoneblock979
+game_loop_ConditionalTrueBlock977: ;Main true block ;keep 
+	; LineNumber: 1424
+	; LineNumber: 1425
+	; Test Inc dec D
 	inc frog_y
-	; LineNumber: 1413
-	inc player_score
-	bne game_loop_incdec1028
-	inc player_score +1
-game_loop_incdec1028
-	; LineNumber: 1414
-game_loop_elsedoneblock1022
-	; LineNumber: 1415
-game_loop_elsedoneblock1005
-	; LineNumber: 1416
+	; LineNumber: 1426
+	lda player_score
+	clc
+	adc #$01
+	sta player_score+0
+	; Optimization : A := A op 8 bit - var and bvar are the same - perform inc
+	bcc game_loop_WordAdd983
+	inc player_score+1
+game_loop_WordAdd983
+	; LineNumber: 1427
+game_loop_elsedoneblock979
+	; LineNumber: 1428
+game_loop_elsedoneblock964
+	; LineNumber: 1429
 	; Binary clause Simplified: NOTEQUALS
+	; Assigning to register
 	; Assigning register : _xy
 	ldx key_left
 	ldy key_left+1
 	jsr Key_Pressed
 	; Compare with pure num / var optimization
 	cmp #$0;keep
-	beq game_loop_localfailed1044
-	jmp game_loop_ConditionalTrueBlock1030
-game_loop_localfailed1044: ;keep
+	beq game_loop_localfailed997
+	jmp game_loop_ConditionalTrueBlock985
+game_loop_localfailed997: ;keep
 	; ; logical OR, second chance
 	; Binary clause Simplified: NOTEQUALS
+	; Assigning to register
 	; Assigning register : _xy
 	ldx n_key_left
 	ldy n_key_left+1
 	jsr Key_Pressed
 	; Compare with pure num / var optimization
 	cmp #$0;keep
-	beq game_loop_elsedoneblock1032
-game_loop_ConditionalTrueBlock1030: ;Main true block ;keep 
-	; LineNumber: 1417
-	; LineNumber: 1418
+	beq game_loop_elsedoneblock987
+game_loop_ConditionalTrueBlock985: ;Main true block ;keep 
+	; LineNumber: 1430
+	; LineNumber: 1431
 	; Binary clause Simplified: GREATEREQUAL
 	lda frog_x
 	; Compare with pure num / var optimization
 	cmp #$1;keep
-	bcc game_loop_elsedoneblock1049
-game_loop_ConditionalTrueBlock1047: ;Main true block ;keep 
-	; LineNumber: 1419
-	; LineNumber: 1420
+	bcc game_loop_elsedoneblock1002
+game_loop_ConditionalTrueBlock1000: ;Main true block ;keep 
+	; LineNumber: 1432
+	; LineNumber: 1433
+	; Test Inc dec D
 	dec frog_x
-	; LineNumber: 1421
-	inc player_score
-	bne game_loop_incdec1055
-	inc player_score +1
-game_loop_incdec1055
-	; LineNumber: 1422
-game_loop_elsedoneblock1049
-	; LineNumber: 1423
-game_loop_elsedoneblock1032
-	; LineNumber: 1426
+	; LineNumber: 1434
+	lda player_score
+	clc
+	adc #$01
+	sta player_score+0
+	; Optimization : A := A op 8 bit - var and bvar are the same - perform inc
+	bcc game_loop_WordAdd1006
+	inc player_score+1
+game_loop_WordAdd1006
+	; LineNumber: 1435
+game_loop_elsedoneblock1002
+	; LineNumber: 1436
+game_loop_elsedoneblock987
+	; LineNumber: 1439
 	
 ; // So different things can move at own speeds
+	; Test Inc dec D
 	inc GAME_TICKS
 	lda GAME_TICKS
 	cmp #$a ; keep
-	bne game_loop_incmax1057
+	bne game_loop_incmax1007
 	lda #$1
 	sta GAME_TICKS
-game_loop_incmax1057
-	; LineNumber: 1429
+game_loop_incmax1007
+	; LineNumber: 1442
 	
 ; // Show the obstacles in new positions
 	jsr show_obstacles
-	; LineNumber: 1432
+	; LineNumber: 1445
 	
 ; // "Collision detection"
 	jsr check_collisions
-	; LineNumber: 1435
+	; LineNumber: 1448
 	; Binary clause Simplified: LESS
 	lda player_lives
 	; Compare with pure num / var optimization
 	cmp #$1;keep
-	bcs game_loop_elsedoneblock1061
-game_loop_ConditionalTrueBlock1059: ;Main true block ;keep 
-	; LineNumber: 1436
-	; LineNumber: 1438
+	bcs game_loop_elsedoneblock1011
+game_loop_ConditionalTrueBlock1009: ;Main true block ;keep 
+	; LineNumber: 1449
+	; LineNumber: 1451
 	
 ; // Still alive?
 ; // Dead and didn't win :(
-	; Assigning single variable : ALIVE
 	lda #$0
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta ALIVE
-	; LineNumber: 1440
-game_loop_elsedoneblock1061
-	; LineNumber: 1445
+	; LineNumber: 1453
+game_loop_elsedoneblock1011
+	; LineNumber: 1458
 	; Binary clause Simplified: NOTEQUALS
 	lda frog_x
 	; Compare with pure num / var optimization
 	cmp frog_old_x;keep
-	beq game_loop_localfailed1069
-	jmp game_loop_ConditionalTrueBlock1065
-game_loop_localfailed1069: ;keep
+	beq game_loop_localfailed1019
+	jmp game_loop_ConditionalTrueBlock1015
+game_loop_localfailed1019: ;keep
 	; ; logical OR, second chance
 	; Binary clause Simplified: NOTEQUALS
 	lda frog_y
 	; Compare with pure num / var optimization
 	cmp frog_old_y;keep
-	beq game_loop_elsedoneblock1067
-game_loop_ConditionalTrueBlock1065: ;Main true block ;keep 
-	; LineNumber: 1446
-	; LineNumber: 1447
+	beq game_loop_elsedoneblock1017
+game_loop_ConditionalTrueBlock1015: ;Main true block ;keep 
+	; LineNumber: 1459
+	; LineNumber: 1460
 	
 ; // only undraw if different
-	; Assigning single variable : x
 	lda frog_old_x
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta x
-	; Assigning single variable : y
 	lda frog_old_y
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta y
-	; Assigning single variable : this_str
 	lda #<previous_tile
 	ldx #>previous_tile
 	sta this_str
 	stx this_str+1
-	; Assigning single variable : str_len
 	lda #$1
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta str_len
 	jsr textat
-	; LineNumber: 1448
-	; Assigning single variable : previous_tile
-	; Assigning single variable : sx
+	; LineNumber: 1461
 	lda frog_x
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta sx
-	; Assigning single variable : sy
 	lda frog_y
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta sy
 	jsr getat
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta previous_tile
-	; LineNumber: 1449
-game_loop_elsedoneblock1067
-	; LineNumber: 1452
+	; LineNumber: 1462
+game_loop_elsedoneblock1017
+	; LineNumber: 1465
 	; Binary clause Simplified: GREATEREQUAL
 	lda frog_y
 	; Compare with pure num / var optimization
 	cmp #$b;keep
-	bcc game_loop_elseblock1073
-game_loop_ConditionalTrueBlock1072: ;Main true block ;keep 
-	; LineNumber: 1453
-	; LineNumber: 1454
+	bcc game_loop_elseblock1023
+game_loop_ConditionalTrueBlock1022: ;Main true block ;keep 
+	; LineNumber: 1466
+	; LineNumber: 1467
 	
 ; // draw the frog because things might have changed onscreen
-	; Assigning single variable : x
 	lda frog_x
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta x
-	; Assigning single variable : y
 	lda frog_y
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta y
-	; Assigning single variable : this_str
 	lda #<frogcharA
 	ldx #>frogcharA
 	sta this_str
 	stx this_str+1
-	; Assigning single variable : str_len
 	lda #$1
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta str_len
 	jsr textat
-	; LineNumber: 1456
-	jmp game_loop_elsedoneblock1074
-game_loop_elseblock1073
-	; LineNumber: 1457
-	; LineNumber: 1458
-	; Assigning single variable : x
+	; LineNumber: 1469
+	jmp game_loop_elsedoneblock1024
+game_loop_elseblock1023
+	; LineNumber: 1470
+	; LineNumber: 1471
 	lda frog_x
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta x
-	; Assigning single variable : y
 	lda frog_y
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta y
-	; Assigning single variable : this_str
 	lda #<frogcharB
 	ldx #>frogcharB
 	sta this_str
 	stx this_str+1
-	; Assigning single variable : str_len
 	lda #$1
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta str_len
 	jsr textat
-	; LineNumber: 1459
-game_loop_elsedoneblock1074
-	; LineNumber: 1464
+	; LineNumber: 1472
+game_loop_elsedoneblock1024
+	; LineNumber: 1477
 	
 ; // Score and lives
 	; MoveTo optimization
@@ -6086,20 +5695,20 @@ game_loop_elsedoneblock1074
 	clc
 	adc #$00
 	sta screenmemory+1
-	; LineNumber: 1464
+	; LineNumber: 1477
 	; integer assignment NodeVar
-	ldy player_score+1 ; Next one
+	ldy player_score+1 ; keep
 	lda player_score
 	sta ipd_div_lo
 	sty ipd_div_hi
 	ldy #$3 ; optimized, look out for bugs
-game_loop_printdecimal1079
+game_loop_printdecimal1029
 	jsr init_printdecimal_div10 
 	ora #$30
 	sta (screenmemory),y
 	dey
-	bpl game_loop_printdecimal1079
-	; LineNumber: 1466
+	bpl game_loop_printdecimal1029
+	; LineNumber: 1479
 	; MoveTo optimization
 	lda #$24
 	sta screenmemory
@@ -6107,138 +5716,154 @@ game_loop_printdecimal1079
 	clc
 	adc #$00
 	sta screenmemory+1
-	; LineNumber: 1466
+	; LineNumber: 1479
 	ldy #0
 	lda player_lives
 	sta ipd_div_lo
 	sty ipd_div_hi
 	ldy #$1 ; optimized, look out for bugs
-game_loop_printdecimal1080
+game_loop_printdecimal1030
 	jsr init_printdecimal_div10 
 	ora #$30
 	sta (screenmemory),y
 	dey
-	bpl game_loop_printdecimal1080
-	; LineNumber: 1470
-	jmp game_loop_while805
-game_loop_elsedoneblock808
-game_loop_loopend810
-	; LineNumber: 1472
+	bpl game_loop_printdecimal1030
+	; LineNumber: 1483
+	jmp game_loop_while789
+game_loop_elsedoneblock792
+game_loop_loopend794
+	; LineNumber: 1485
 	rts
 	; NodeProcedureDecl -1
 	; ***********  Defining procedure : intro_loop
 	;    Procedure type : User-defined procedure
-	; LineNumber: 1475
+	; LineNumber: 1488
 intro_loop
-	; LineNumber: 1477
-intro_loop_while1082
-intro_loop_loopstart1086
+	; LineNumber: 1490
+intro_loop_while1032
+intro_loop_loopstart1036
 	; Binary clause Simplified: NOTEQUALS
 	lda READY_TO_PLAY
 	; Compare with pure num / var optimization
 	cmp #$1;keep
-	beq intro_loop_elsedoneblock1085
-intro_loop_ConditionalTrueBlock1083: ;Main true block ;keep 
-	; LineNumber: 1478
-	; LineNumber: 1479
+	beq intro_loop_elsedoneblock1035
+intro_loop_ConditionalTrueBlock1033: ;Main true block ;keep 
+	; LineNumber: 1491
+	; LineNumber: 1492
 	jsr title_screen
-	; LineNumber: 1480
+	; LineNumber: 1493
 	; Binary clause Simplified: EQUALS
 	lda READY_TO_PLAY
 	; Compare with pure num / var optimization
 	cmp #$2;keep
-	bne intro_loop_elsedoneblock1099
-intro_loop_ConditionalTrueBlock1097: ;Main true block ;keep 
-	; LineNumber: 1479
-	; LineNumber: 1480
+	bne intro_loop_elsedoneblock1049
+intro_loop_ConditionalTrueBlock1047: ;Main true block ;keep 
+	; LineNumber: 1492
+	; LineNumber: 1493
 	jsr help_screen
-	; LineNumber: 1480
-intro_loop_elsedoneblock1099
-	; LineNumber: 1481
-	jmp intro_loop_while1082
-intro_loop_elsedoneblock1085
-intro_loop_loopend1087
-	; LineNumber: 1482
+	; LineNumber: 1493
+intro_loop_elsedoneblock1049
+	; LineNumber: 1494
+	jmp intro_loop_while1032
+intro_loop_elsedoneblock1035
+intro_loop_loopend1037
+	; LineNumber: 1495
 	rts
 block1
-	; LineNumber: 1486
-	; Assigning single variable : is_80
+	; LineNumber: 1499
 	lda #$0
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta is_80
-	; LineNumber: 1487
+	; LineNumber: 1500
 	jsr uppercase
-	; LineNumber: 1488
-	; Assigning single variable : is_80
+	; LineNumber: 1501
 	jsr is_80_columns
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta is_80
-	; LineNumber: 1491
+	; LineNumber: 1504
 	; Binary clause Simplified: EQUALS
 	; Compare with pure num / var optimization
 	cmp #$1;keep
-	bne MainProgram_elsedoneblock1105
-MainProgram_ConditionalTrueBlock1103: ;Main true block ;keep 
-	; LineNumber: 1492
-	; LineNumber: 1493
+	bne MainProgram_elsedoneblock1055
+MainProgram_ConditionalTrueBlock1053: ;Main true block ;keep 
+	; LineNumber: 1505
+	; LineNumber: 1506
 	jsr cursor_down
-	; LineNumber: 1494
+	; LineNumber: 1507
 	jsr cursor_return
-	; LineNumber: 1495
+	; LineNumber: 1508
 	jsr cursor_graphic
-	; LineNumber: 1497
-	; Assigning single variable : DETECTED_SCREEN_WIDTH
+	; LineNumber: 1510
 	lda #$50
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta DETECTED_SCREEN_WIDTH
-	; LineNumber: 1498
+	; LineNumber: 1511
 	; Poke
 	; Optimization: shift is zero
 	sta p_SW
-	; LineNumber: 1499
-MainProgram_elsedoneblock1105
-	; LineNumber: 1500
-	; LineNumber: 1502
+	; LineNumber: 1512
+MainProgram_elsedoneblock1055
+	; LineNumber: 1513
+	; LineNumber: 1515
 	; Assigning memory location
-	; Assigning single variable : $8000
 	; Integer constant assigning
 	ldy #$80
 	lda #$00
-	; Calling storevariable
+	; Calling storevariable on generic assign expression
 	sta $8000
-	; LineNumber: 1503
-	; Assigning single variable : screenmemory
+	; LineNumber: 1516
 	ldx #$80
 	sta screenmemory
 	stx screenmemory+1
-	; LineNumber: 1506
+	; LineNumber: 1519
 	jsr cls
-	; LineNumber: 1508
-MainProgram_while1108
-MainProgram_loopstart1112
+	; LineNumber: 1521
+MainProgram_while1058
+MainProgram_loopstart1062
 	; Binary clause Simplified: NOTEQUALS
 	lda #$1
 	; Compare with pure num / var optimization
 	cmp #$0;keep
-	beq MainProgram_elsedoneblock1111
-MainProgram_ConditionalTrueBlock1109: ;Main true block ;keep 
-	; LineNumber: 1509
-	; LineNumber: 1511
+	beq MainProgram_elsedoneblock1061
+MainProgram_ConditionalTrueBlock1059: ;Main true block ;keep 
+	; LineNumber: 1522
+	; LineNumber: 1524
 	jsr intro_loop
-	; LineNumber: 1512
+	; LineNumber: 1525
 	jsr init_vars
-	; LineNumber: 1513
+	; LineNumber: 1526
 	jsr game_loop
-	; LineNumber: 1514
+	; LineNumber: 1527
 	jsr score_screen
-	; LineNumber: 1515
-	jmp MainProgram_while1108
-MainProgram_elsedoneblock1111
-MainProgram_loopend1113
-	; LineNumber: 1519
+	; LineNumber: 1528
+	jmp MainProgram_while1058
+MainProgram_elsedoneblock1061
+MainProgram_loopend1063
+	; LineNumber: 1532
 	; End of program
 	; Ending memory block
 EndBlock410
-title_screen_stringassignstr332	.dc "1",0
-title_screen_stringassignstr344	.dc "2",0
-title_screen_stringassignstr356	.dc "3",0
+title_screen_stringassignstr230		dc.b	1
+	dc.b	0
+title_screen_stringassignstr234		dc.b	1
+	dc.b	0
+title_screen_stringassignstr242		dc.b	2
+	dc.b	0
+title_screen_stringassignstr246		dc.b	2
+	dc.b	0
+title_screen_stringassignstr254		dc.b	3
+	dc.b	0
+title_screen_stringassignstr258		dc.b	3
+	dc.b	0
+title_screen_stringassignstr328		dc.b	1
+	dc.b	0
+title_screen_stringassignstr332		dc.b	1
+	dc.b	0
+title_screen_stringassignstr340		dc.b	2
+	dc.b	0
+title_screen_stringassignstr344		dc.b	2
+	dc.b	0
+title_screen_stringassignstr352		dc.b	3
+	dc.b	0
+title_screen_stringassignstr356		dc.b	3
+	dc.b	0

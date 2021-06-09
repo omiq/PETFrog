@@ -83,6 +83,19 @@ begin
 
 end;
 
+procedure print_char(_ch:byte;);
+
+begin
+
+	_A:=_ch;
+ 	call(#$FFD2);
+    
+end;
+
+
+
+
+
 procedure basic_print(_ptr:pointer;);
 var
 	next_ch: byte;

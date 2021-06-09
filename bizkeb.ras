@@ -1,0 +1,497 @@
+program bizkeys;
+
+var
+@use "input/key"  
+@use "crt"
+
+
+
+
+begin
+
+	
+
+	DefineScreen();	
+	screen_char_loc:=$8000;
+	screenmemory:=$8000;
+	
+	
+
+
+	while(1) do
+	begin
+	Key::Read();
+	
+
+// Constants for detecting keys on Business keyboard
+
+// Top row
+	if(Key::Pressed(Key::KBLEFTARROW)) then
+		begin
+
+			printstring("<--",0,3);
+		end;
+
+		
+
+	if(Key::Pressed(Key::KBEXCLAMATION)) then
+		begin
+
+			printstring("!  ",0,3);
+		end;
+
+		
+	if(Key::Pressed(Key::KBDBLQUOTE)) then
+		begin
+
+			printstring("'  ",0,3);
+		end;
+
+	if(Key::Pressed(Key::KBHASH)) then
+		begin
+
+			printstring("#  ",0,3);
+		end;
+	
+	if(Key::Pressed(Key::KBDOLLAR)) then
+		begin
+
+			printstring("$  ",0,3);
+		end;
+	
+	if(Key::Pressed(Key::KBPERCENT)) then
+		begin
+
+			printstring("%  ",0,3);
+		end;
+	
+	if(Key::Pressed(Key::KBAND)) then
+		begin
+
+			printstring("&  ",0,3);
+		end;
+		
+	if(Key::Pressed(Key::KBQUOTE)) then
+		begin
+
+			printstring("'' ",0,3);
+		end;
+	
+	if(Key::Pressed(Key::KBOPENBR)) then
+		begin
+
+			printstring("(",0,3);
+		end;
+	
+	if(Key::Pressed(Key::KBCLOSEDBR)) then
+		begin
+
+			printstring(")",0,3);
+		end;
+
+	if(Key::Pressed(Key::KB0)) then
+		begin
+
+			printstring("0",0,3);
+		end;
+			
+	if(Key::Pressed(Key::KBCOLON)) then
+		begin
+
+			printstring(":  ",0,3);
+		end;
+	
+	if(Key::Pressed(Key::KBEQUALS)) then
+		begin
+
+			printstring("=  ",0,3);
+		end;
+	
+	if(Key::Pressed(Key::KBUPARROW)) then
+		begin
+
+			printstring("^^^",0,3);
+		end;
+	
+	if(Key::Pressed(Key::KBLEFTRIGHT)) then
+		begin
+
+			printstring("<> ",0,3);
+		end;
+
+	if(Key::Pressed(Key::KBRUNSTOP)) then
+		begin
+
+			printstring("RUN",0,3);
+		end;
+	
+
+// Second row
+	if(Key::Pressed(Key::KBTAB)) then
+		begin
+
+			printstring("TAB",0,3);
+		end;
+		
+	if(Key::Pressed(Key::KBQ)) then
+		begin
+
+			printstring("Q  ",0,3);
+		end;
+			
+	if(Key::Pressed(Key::KBW)) then
+		begin
+
+			printstring("W  ",0,3);
+		end;
+			
+	if(Key::Pressed(Key::KBE)) then
+		begin
+
+			printstring("E  ",0,3);
+		end;
+			
+	if(Key::Pressed(Key::KBR)) then
+		begin
+
+			printstring("R  ",0,3);
+		end;
+			
+	if(Key::Pressed(Key::KBT)) then
+		begin
+
+			printstring("T  ",0,3);
+		end;
+			
+	if(Key::Pressed(Key::KBY)) then
+		begin
+
+			printstring("Y  ",0,3);
+		end;
+			
+	if(Key::Pressed(Key::KBU)) then
+		begin
+
+			printstring("U  ",0,3);
+		end;
+			
+	if(Key::Pressed(Key::KBI)) then
+		begin
+
+			printstring("I  ",0,3);
+		end;
+			
+	if(Key::Pressed(Key::KBO)) then
+		begin
+
+			printstring("O  ",0,3);
+		end;
+			
+	if(Key::Pressed(Key::KBP)) then
+		begin
+
+			printstring("P  ",0,3);
+		end;
+			
+	if(Key::Pressed(Key::KBOPENBRACE)) then
+		begin
+
+			printstring("[  ",0,3);
+		end;
+
+	if(Key::Pressed(Key::KBBACKSLASH)) then
+		begin
+
+			printstring("\  ",0,3);
+		end;
+
+	if(Key::Pressed(Key::KBUPDOWN)) then
+		begin
+
+			printstring("^V",0,3);
+		end;
+	
+	if(Key::Pressed(Key::KBINSTDEL)) then
+		begin
+
+			printstring("INS",0,3);
+		end;
+	
+
+
+// Third row
+	if(Key::Pressed(Key::KBESC)) then
+		begin
+
+			printstring("ESC",0,3);
+		end;
+		
+	if(Key::Pressed(Key::KBSHIFTLOCK)) then
+		begin
+
+			printstring("SHL",0,3);
+		end;
+
+	if(Key::Pressed(Key::KBA)) then
+		begin
+
+			printstring("A  ",0,3);
+		end;
+			
+	if(Key::Pressed(Key::KBS)) then
+		begin
+
+			printstring("S  ",0,3);
+		end;
+			
+	if(Key::Pressed(Key::KBD)) then
+		begin
+
+			printstring("D  ",0,3);
+		end;
+			
+	if(Key::Pressed(Key::KBF)) then
+		begin
+
+			printstring("F  ",0,3);
+		end;
+			
+	if(Key::Pressed(Key::KBG)) then
+		begin
+
+			printstring("G  ",0,3);
+		end;
+			
+	if(Key::Pressed(Key::KBH)) then
+		begin
+
+			printstring("H  ",0,3);
+		end;
+			
+	if(Key::Pressed(Key::KBJ)) then
+		begin
+
+			printstring("J  ",0,3);
+		end;
+			
+	if(Key::Pressed(Key::KBK)) then
+		begin
+
+			printstring("K  ",0,3);
+		end;
+			
+	if(Key::Pressed(Key::KBL)) then
+		begin
+
+			printstring("L  ",0,3);
+		end;
+			
+	if(Key::Pressed(Key::KBSEMICOLON)) then
+		begin
+
+			printstring(";  ",0,3);
+		end;
+
+	if(Key::Pressed(Key::KBAT)) then
+		begin
+
+			printstring("@  ",0,3);
+		end;
+			
+	if(Key::Pressed(Key::KBCLOSEBRACE)) then
+		begin
+
+			printstring("]  ",0,3);
+		end;
+
+	if(Key::Pressed(Key::KBRETURN)) then
+		begin
+
+			printstring("RET",0,3);
+		end;
+	
+
+
+// Bottom keys
+	if(Key::Pressed(Key::KBREVERSE)) then
+		begin
+
+			printstring("REV",0,3);
+		end;
+
+	if(Key::Pressed(Key::KBLSHIFT)) then
+		begin
+
+			printstring("LSH",0,3);
+		end;
+		
+	if(Key::Pressed(Key::KBZ)) then
+		begin
+
+			printstring("Z  ",0,3);
+		end;
+			
+	if(Key::Pressed(Key::KBX)) then
+		begin
+
+			printstring("X  ",0,3);
+		end;
+			
+	if(Key::Pressed(Key::KBC)) then
+		begin
+
+			printstring("C  ",0,3);
+		end;
+			
+	if(Key::Pressed(Key::KBV)) then
+		begin
+
+			printstring("V  ",0,3);
+		end;
+					// V key	
+	if(Key::Pressed(Key::KBB)) then
+		begin
+
+			printstring("B  ",0,3);
+		end;
+					// B key
+	if(Key::Pressed(Key::KBN)) then
+		begin
+
+			printstring("N  ",0,3);
+		end;
+					// N key	
+	if(Key::Pressed(Key::KBM)) then
+		begin
+
+			printstring("M  ",0,3);
+		end;
+				// M key
+	if(Key::Pressed(Key::KBCOMMA)) then
+		begin
+
+			printstring(",  ",0,3);
+		end;
+			// , key
+	if(Key::Pressed(Key::KBFULLSTOP)) then
+		begin
+
+			printstring(".  ",0,3);
+		end;
+
+
+	if(Key::Pressed(Key::KBRSHIFT)) then
+		begin
+
+			printstring("RSH",0,3);
+		end;
+// Right Shift key
+	if(Key::Pressed(Key::KBREPEAT)) then
+		begin
+
+			printstring("REP",0,3);
+		end;
+	// Repeat key
+	if(Key::Pressed(Key::KBCLRHOME)) then
+		begin
+
+			printstring("CLR",0,3);
+		end;
+	 	// Clear Home key
+
+
+// Space bar
+	if(Key::Pressed(Key::KBSPACE)) then
+		begin
+
+			printstring("SPC",0,3);
+		end;
+		// Space key
+
+
+// Numeric Keypad
+	if(Key::Pressed(Key::KB7)) then
+		begin
+
+			printstring("7  ",0,3);
+		end;
+				// 7 key
+	if(Key::Pressed(Key::KB8)) then
+		begin
+
+			printstring("8  ",0,3);
+		end;
+				// 8 key
+	if(Key::Pressed(Key::KB9)) then
+		begin
+
+			printstring("9  ",0,3);
+		end;
+				// 9 key
+	
+	if(Key::Pressed(Key::KB4)) then
+		begin
+
+			printstring("4  ",0,3);
+		end;
+				// 4 key
+	if(Key::Pressed(Key::KB5)) then
+		begin
+
+			printstring("5  ",0,3);
+		end;
+				// 5 key
+	if(Key::Pressed(Key::KB6)) then
+		begin
+
+			printstring("6  ",0,3);
+		end;
+				// 6 key
+	
+	if(Key::Pressed(Key::KB1)) then
+		begin
+
+			printstring("1  ",0,3);
+		end;
+					// 1 key
+	if(Key::Pressed(Key::KB2)) then
+		begin
+
+			printstring("2  ",0,3);
+		end;
+				// 2 key
+	if(Key::Pressed(Key::KB3)) then
+		begin
+
+			printstring("3  ",0,3);
+		end;
+				// 3 key
+	
+	if(Key::Pressed(Key::KB0)) then
+		begin
+
+			printstring("0  ",0,3);
+		end;
+			// 0 key
+	if(Key::Pressed(Key::KBPERIOD)) then
+		begin
+
+			printstring(" . ",0,3);
+		end;
+		// . key
+	
+	if(Key::Pressed(Key::NOKEY)) then
+		begin
+
+			printstring("   ",0,3);
+		end;
+
+	wait(1000);		
+
+	end;
+
+
+	
+
+end.
+
