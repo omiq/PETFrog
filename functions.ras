@@ -355,6 +355,9 @@ var
 	R1:byte=177;
 	R2:byte=178;
 	R3:byte=179;
+	R1N:byte=49;
+	R2N:byte=50;
+	R3N:byte=51;
 
 begin
 	
@@ -440,7 +443,7 @@ begin
 		end
 		else
 		begin
-			textat(0,5,"1",1);
+			textat(0,5,#R1N,1);
 		end;			
 
 		if(GAME_SPEED=5) then 
@@ -449,7 +452,7 @@ begin
 		end
 		else
 		begin
-			textat(0,6,"2",1);
+			textat(0,6,#R2N,1);
 		end;
 		
 		if(GAME_SPEED=4) then 
@@ -458,7 +461,7 @@ begin
 		end
 		else
 		begin
-			textat(0,7,"3",1);
+			textat(0,7,#R3N,1);
 		end;
 		
 		// GRAPHIC KEYBOARD
